@@ -29,6 +29,7 @@ module.exports = entry => ({
   },
 
   devtool: 'inline-source-map',
+  resolve: {extensions: ['.jsx', '.js', '.json']},  
 
   module: {
     rules: [

@@ -15,7 +15,6 @@ module.exports = (compiler, options = {}) => {
   let watcher = null
   const subject = new Rx.Subject()
   function stop() {
-    console.log('stopping')
     if (watcher) {
       watcher.close(() => subject.complete())
       watcher = null
@@ -26,7 +25,6 @@ module.exports = (compiler, options = {}) => {
   const fs = new MemoryFileSystem();
   compiler.outputFileSystem = fs;
   function start() {
-    console.log('starting')
     watcher = compiler.watch({}, (err, stats) => {  
       if (err) return subject.error(err)
 
