@@ -2,7 +2,7 @@
 const MemoryFileSystem = require('memory-fs')
     , Module = require('module')
     , {join} = require('path')
-    , Rx = require('rxjs')
+    , lazy = require('./lazy')
 
 /**
  * @param {object} compiler The WebPack compiler.
@@ -11,26 +11,16 @@ const MemoryFileSystem = require('memory-fs')
  * @return {Promise} A promise resolved with an object of file names mapping to
  * compiled modules.
  */
-module.exports = (compiler, options = {}) => {
-  let watcher = null
-  const subject = new Rx.Subject()
-  function stop() {
-    if (watcher) {
-      watcher.close(() => subject.complete())
-      watcher = null
-    }
-  }
-
-  // Compile to in-memory file system.
-  const fs = new MemoryFileSystem();
-  compiler.outputFileSystem = fs;
-  function start() {
-    watcher = compiler.watch({}, (err, stats) => {  
-      if (err) return subject.error(err)
+module.exports = (compiler, options = {}) => lazy(
+  function acquire({next, error, complete}) {
+    const fs = new MemoryFileSystem();
+    compiler.outputFileSystem = fs;    
+    return compiler.watch({}, (err, stats) => {  
+      if (err) return error(err)
 
       if (stats.hasErrors()) {
         const errors = stats.compilation ? stats.compilation.errors : null
-        return subject.error(errors)
+        return error(errors)
       }
 
       const { compilation } = stats;
@@ -38,7 +28,7 @@ module.exports = (compiler, options = {}) => {
       const files = Object.keys(compilation.assets);
       // Read each file and compile module
       const { outputPath } = compiler;
-      subject.next(files.reduce((obj, file) => {
+      next(files.reduce((obj, file) => {
         // Construct the module object
         // Get the code for the module.
         const path = join(outputPath, file);
@@ -56,16 +46,10 @@ module.exports = (compiler, options = {}) => {
         }
         return obj;
       }, {}))
-    })
+    })    
+  },  
+  function release({complete}, watcher) {
+    watcher.close(complete)
+    return null
   }
-
-  let subscribers = 0
-  return Rx.Observable.create(obs => {
-    subscribers++ || start()
-    const subscription = subject.subscribe(obs)
-    return () => {
-      subscription.unsubscribe()
-      --subscribers || stop()
-    }
-  })
-};
+)
