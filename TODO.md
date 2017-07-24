@@ -1,0 +1,3 @@
+- Takes a file, builds the file.
+  - will need to build JS
+  - will need to statically build HTML (though not at first)
