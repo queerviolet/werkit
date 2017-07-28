@@ -55,11 +55,11 @@ function actionToJsx({name, text, draftMode}) {
     <Action name=${str(name)}>${escape(text)}</Action>`
 }
 
+// TODO: use markdown-to-ast instead of this janky crap.
 const escape = text => text
   .replace(/(\{|\})/g, "{'$1'}")
   .replace(/</g, '&lt;')
   .replace(/>/g, '&gt;')
-  // .replace(/\}/g, "{'}'}")
 
 // TODO: Make this a tag parser that strips indentation.
 const block = String.raw
