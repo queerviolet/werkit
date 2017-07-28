@@ -18,7 +18,7 @@ function learnDotApi(config) {
   const {url} = config
       , auth = ifFunc(config.auth)(config)
 
-  const learn = {}
+  const learn = {config, auth}
   for (const method of ['get', 'post']) {
     learn[method] = (method === 'get' || method === 'delete')
       ? path => wrapAxios(path, method)
