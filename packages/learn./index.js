@@ -36,7 +36,7 @@ function learnDotApi(config) {
       ...configs
     )
     debug(path, method, config)
-    return await axios(config).then(res => res.data)
+    return axios(config).then(res => res.data)
   }
 }
 

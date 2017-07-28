@@ -13,53 +13,71 @@ if (module === require.main) {
     process.exit(1)
   }
   
+  require('babel-register')
+  const convert = require('./convert').default
+
   learn
     .get(`api/workshops/${workshopId}`)
-    .then(workshopToJsx)
+    .then(async workshop => Object.assign(workshop, {
+      concepts: await learn.get(`api/workshops/${workshop._id}/concepts`)
+    }))
+    .then(convert)
+    .then(jsxToSrc)
     .then(console.log)
     .catch(console.error)
 }
 
-const str = x => JSON.stringify(x)
+const {isValidElement, Children} = require('react')
+const {default: displayName} = require('react-display-name')
 
-/**
- * workshopToJsx(workshop) ~> String
- * 
- * Convert a learndot workshop to a JSX string.
- * 
- * @param {_id, name, description, artworkUrl} workshop
- */
-async function workshopToJsx({_id: id, name, description, artworkUrl}) {
-  const concepts = learn.get(`api/workshops/${id}/concepts`)
-  return block `
-    export default
-    <Workshop
-      name=${str(name)}
-      description=${str(description)}
-      artworkUrl=${str(`https://s3.amazonaws.com/learndotresources/${artworkUrl}`)}>${
-        (await concepts).map(conceptToJsx).join('')
-    }</Workshop>`
+function jsxToSrc({type, props}, indent='', indentBy=indent => indent + '  ') {
+  const {children} = props
+      , Component = displayName(type)
+      , childIndent = indentBy(indent)
+  return `${indent}<${Component} ${propsToSrc(props)}>
+${childrenToSrc(children, childIndent, indentBy)}
+${indent}</${Component}>`
 }
 
-function conceptToJsx({name, actions, draftMode}) {
-  if (draftMode) return ''
-  return block `
-    <Concept name=${str(name)}>${
-      actions.map(actionToJsx).join('')
-    }</Concept>`
+const propsToSrc =
+  props => Object.keys(props)
+    .map(prop => prop !== 'children' && `${prop}=${propValueToSrc(props[prop])}`)
+    .filter(x => x)
+    .join(' ')
+
+function propValueToSrc(value) {
+  switch (typeof value) {
+  case 'undefined':
+    return '{undefined}'  
+  case 'function':
+    return `{${value.toString()}}`
+  case 'string':
+    return JSON.stringify(value)
+  case 'number':
+  case 'object':
+  case 'string':
+    return `{${JSON.stringify(value, null, 2)}}`
+  }
 }
 
-function actionToJsx({name, text, draftMode}) {
-  if (draftMode) return ''
-  return block `
-    <Action name=${str(name)}>${escape(text)}</Action>`
+const childrenToSrc = (children, indent, indentBy) =>
+  Children.map(children,
+    value => childToSrc(value, indent, indentBy)
+  ).filter(x => x)
+   .join(`\n`)
+
+function childToSrc(value, indent, indentBy) {
+  switch (typeof value) {
+  case 'undefined':
+    return
+  case 'function':
+    return `{${value.toString()}}`
+  case 'number':
+  case 'object':
+  case 'string':
+    if (isValidElement(value)) {
+      return jsxToSrc(value, indent, indentBy)
+    }
+    return `{${JSON.stringify(value, null, 2)}}`
+  }
 }
-
-// TODO: use markdown-to-ast instead of this janky crap.
-const escape = text => text
-  .replace(/(\{|\})/g, "{'$1'}")
-  .replace(/</g, '&lt;')
-  .replace(/>/g, '&gt;')
-
-// TODO: Make this a tag parser that strips indentation.
-const block = String.raw
