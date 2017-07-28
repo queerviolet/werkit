@@ -40,7 +40,10 @@ module.exports = entry => ({
 
     // Provide globals
     new webpack.ProvidePlugin({
-      React: 'react'
+      React: 'react',
+      Workshop: './components/Workshop',
+      Concept: './components/Concept',      
+      Action: './components/Action',
     }),
   ],
 })
