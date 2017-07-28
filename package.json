@@ -24,9 +24,13 @@
     "remark": "^8.0.0",
     "remark-parse": "^4.0.0",
     "rxjs": "^5.4.2",
+    "traverse": "^0.6.6",
     "unified": "^6.1.5",
     "webpack": "^3.4.1",
     "webpack-dev-server": "^2.5.1",
     "webpack-to-memory": "^1.0.0"
+  },
+  "devDependencies": {
+    "lerna": "^2.0.0"
   }
 }

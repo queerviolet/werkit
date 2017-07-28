@@ -8,27 +8,15 @@ const debug = require('debug')('learndot')
     , [read, write] = [readFile, writeFile].map(promisify)    
     , axios = require('axios')
 
-module.exports = Object.assign(learnDotApi, learnDotApi())
+exports = module.exports = Object.assign(learnDotApi, learnDotApi())
 
-function learnDotApi({
-  baseUrl='https://learn.fullstackacademy.com',
-  tokenPath=join(homedir(), '.learn.token'),
-  interactive=true,
-}={}) {
-  const auth = {
-    get token() {
-      delete auth.token
-      auth.token = read(tokenPath)
-        .then(buf => buf.toString())
-        .catch(error => {
-          if (interactive)
-            return interactiveLogin(`${baseUrl}/auth/local`, tokenPath)
-          throw error
-        })
-        .catch(error => console.error(error.message))
-      return auth.token
-    }
-  }
+function learnDotApi(config) {
+  config = Object.assign({
+    url: 'https://learn.fullstackacademy.com',
+    auth: savedTokenOrInteractive,
+  }, config)
+  const {url} = config
+      , auth = ifFunc(config.auth)(config)
 
   const learn = {}
   for (const method of ['get', 'post']) {
@@ -36,11 +24,12 @@ function learnDotApi({
       ? path => wrapAxios(path, method)
       : path => (data, ...configs) => wrapAxios(path, method, ifDef(data, {data}), ...configs)
   }
+  return learn
   
   async function wrapAxios(path, method, ...configs) {
     const config = Object.assign(
       {
-        url: `${baseUrl}/${path}`,
+        url: `${url}/${path}`,
         headers: {Authorization: `Bearer ${await auth.token}`},
         method,
       },
@@ -49,8 +38,28 @@ function learnDotApi({
     debug(path, method, config)
     return await axios(config).then(res => res.data)
   }
+}
 
-  return learn
+function savedTokenOrInteractive({
+  url,
+  tokenPath=join(homedir(), '.learn.token'),
+  interative=true,
+}) {
+  const auth = {
+    get token() {
+      delete auth.token
+      auth.token = read(tokenPath)
+        .then(buf => buf.toString())
+        .catch(error => {
+          if (interactive)
+            return interactiveLogin(`${url}/auth/local`, tokenPath)
+          throw error
+        })
+        .catch(error => console.error(error.message))
+      return auth.token
+    }
+  }
+  return auth
 }
 
 async function interactiveLogin(authUrl, tokenPath) {
@@ -82,4 +91,8 @@ async function interactiveLogin(authUrl, tokenPath) {
 
 function ifDef(value, then=true, els=false) { 
   return typeof value !== 'undefined' ? then : els
+}
+
+function ifFunc(value, then=value, els=() => value) {
+  return typeof value === 'function' ? then : els
 }

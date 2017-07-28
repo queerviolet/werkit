@@ -4,7 +4,7 @@
  * Usage: node learn.import <workshop-id>
  */
 
-const learn = require('./learn.')
+const learn = require('learn.')
 
 if (module === require.main) {
   const workshopId = process.argv[2]
