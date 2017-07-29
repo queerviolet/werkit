@@ -34,9 +34,9 @@ function jsxToSrc({type, props}, indent='', indentBy=indent => indent + '  ') {
   const {children} = props
       , Component = displayName(type)
       , childIndent = indentBy(indent)
-  return `${indent}<${Component} ${propsToSrc(props)}>
-${childrenToSrc(children, childIndent, indentBy)}
-${indent}</${Component}>`
+  return [`${indent}<${Component} ${propsToSrc(props)}>`,
+          childrenToSrc(children, childIndent, indentBy),
+          `${indent}</${Component}>`,].join('\n')
 }
 
 const propsToSrc =
