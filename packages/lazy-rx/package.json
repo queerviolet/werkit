@@ -1,0 +1,14 @@
+{
+  "name": "lazy-rx",
+  "version": "0.0.1",
+  "description": "Create RxJS Observables that lazily acquire and release resources.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "rxjs": "~5"
+  }
+}
