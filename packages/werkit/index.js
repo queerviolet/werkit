@@ -1,10 +1,9 @@
 const path = require('path')
     , webpack = require('webpack')
     , WebpackDevServer = require('webpack-dev-server')
-    , load = require('./webpack-to-memory')
+    , rxquire = require('rxquire')
     , targets = {
       web: require('./webpack.config.web'),
-      node: require('./webpack.config.node')
     }
 
 module.exports = {serve, exports}
@@ -27,14 +26,29 @@ function serve(entry) {
   }).listen((...args) => console.log(args))
 }
 
-function exports(entry) {
-  return load(compile(entry, 'node'))
-            .map(files => files['index.js'])
-            .map(({default: module}) => module)
-}
+const {config: {plugin}} = require('rxquire/webpack')
+    , flow = require('rxquire/flow')
+    , {resolve} = require
+
+const components = (...components) => Object.assign(
+  ...components.map(name => ({
+    [name]: require.resolve(`./components/${name}.jsx`)
+  }))
+)
+
+const globals = flow(
+    {React: 'react'},
+    components('Workshop',
+               'Concept',
+               'Action'))()
+
+const werk = entry =>  
+  rxquire()
+    .config(plugin(new webpack.ProvidePlugin(globals)))
+    (entry)
 
 function main(_node, _index, entry) {
-  exports(entry)
+  werk(entry)
     .map(index => JSON.stringify(index, 0, 2))
     .subscribe(console.log, console.error)
 }

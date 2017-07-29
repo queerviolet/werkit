@@ -1,6 +1,6 @@
 - [ ] Finish refactoring with Lerna
   - [X] Move components out of root and into werkit
-  - [ ] Move ProviderPlugin out of rxquire and into werkit
+  - [X] Move ProviderPlugin out of rxquire and into werkit
   - [ ] Audit dependencies
 - [ ] Markdown -> JSX converter
   - remarkable-react or remark-react?

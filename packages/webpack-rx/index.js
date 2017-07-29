@@ -2,12 +2,9 @@ const lazy = require('lazy-rx')
 
 /**
  * @param {object} compiler The WebPack compiler.
- * @param {object} options Options.
- * @param {boolean} [options.source=false] Whether to return source, rather than compile.
- * @return {Promise} A promise resolved with an object of file names mapping to
- * compiled modules.
+ * @return {Observable} An Observable with the compilation stats.
  */
-module.exports = (compiler, options = {}) => lazy(
+module.exports = (compiler) => lazy(
   function acquire({next, error, complete}) {
     return compiler.watch({}, (err, stats) => {  
       if (err) return error(err)
