@@ -23,7 +23,7 @@ if (module === require.main) {
     }))
     .then(convert)
     .then(jsxToSrc)
-    .then(console.log)
+    .then(jsx => console.log(`export default\n${jsx}`))
     .catch(console.error)
 }
 

@@ -7,11 +7,15 @@ const Workshop = ({name, description, artworkUrl, concepts}) =>
   }</Workshop>
 
 const Concept = ({name, actions, draftMode}) =>
-  <Concept {...{name}}>{
+  <Concept {...{name}} key={key(name)}>{
     actions.map(Action)
   }</Concept>
 
 const Action = ({name, text}) =>
-  <Action {...{name}}>{text}</Action>
+  <Action {...{name}} key={key(name)}>{text}</Action>
+
+const key = name => name
+  .toLowerCase()
+  .replace(/\s+/g, '-')
 
 export default Workshop
