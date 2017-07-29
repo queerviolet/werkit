@@ -41,7 +41,7 @@ function createRxquire({resolve=resolveFromCwd}={}, pipelines={}) {
 function mergeFlowPair(f, g) {  
   return input => {
     input = Object.assign({}, input, f(input))
-    return Object.assign({}, input, g(input))
+    return Object.assign(input, g(input))
   }
 }
 
@@ -59,8 +59,8 @@ function webpack({config, webpack=require('webpack')}) {
   return {compiler: webpack(config)}
 }
 
-function watch({compiler}) {
-  return {compilation: webpackRx(compiler)}
+function watch({compiler, watcher=require('webpack-rx')}) {
+  return {compilation: watcher(compiler)}
 }
 
 function source({fs, compilation, compiler: {outputPath}}) {
