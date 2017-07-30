@@ -6,8 +6,7 @@
 
 const learn = require('learn.')
 
-if (module === require.main) {
-  const workshopId = process.argv[2]
+function main([_1, _2, workshopId]) {
   if (!workshopId) {
     console.error(`Usage: node learn.import <workshop-id>`)
     process.exit(1)
@@ -23,27 +22,44 @@ if (module === require.main) {
     }))
     .then(convert)
     .then(jsxToSrc)
+    .then($ => $(asString).state)
     .then(jsx => console.log(`export default\n${jsx}`))
     .catch(console.error)
 }
 
 const {isValidElement, Children} = require('react')
-const {default: displayName} = require('react-display-name')
+    , {default: displayName} = require('react-display-name')
 
-function jsxToSrc({type, props}, indent='', indentBy=indent => indent + '  ') {
+    , serializer = require('./serializer')
+    , {enter, tab: tabBy, popTab, append, asString} = serializer
+    , tab = tabBy('  ')
+    , lt = append('<'), gt = append('>'), end = append('</')
+    , eq = append('=')
+    , spc = append(' ')
+    , curly = {open: append('{'), close: append('}')}
+
+function jsxToSrc({type, props}, $=serializer()) {
   const {children} = props
       , Component = displayName(type)
-      , childIndent = indentBy(indent)
-  return [`${indent}<${Component} ${propsToSrc(props)}>`,
-          childrenToSrc(children, childIndent, indentBy),
-          `${indent}</${Component}>`,].join('\n')
+      , isInline = jsxToSrc.inline[Component]
+  
+  isInline || $ (enter)
+              $ (lt)(append(Component))
+  propsToSrc(props, $)
+              $ (gt)
+  isInline || $ (enter) (tab)
+  childrenToSrc(children, $)
+  isInline || $ (popTab)
+              $ (end)(append(Component))(gt)
+  return $
 }
 
+jsxToSrc.inline = {code: true}
+
 const propsToSrc =
-  props => Object.keys(props)
-    .map(prop => prop !== 'children' && `${prop}=${propValueToSrc(props[prop])}`)
-    .filter(x => x)
-    .join(' ')
+  (props, $) => Object.keys(props)
+    .forEach(prop => prop !== 'children' &&
+      $ (spc) (append(prop)) (eq) (append(propValueToSrc(props[prop]))))
 
 function propValueToSrc(value) {
   switch (typeof value) {
@@ -60,24 +76,24 @@ function propValueToSrc(value) {
   }
 }
 
-const childrenToSrc = (children, indent, indentBy) =>
-  Children.map(children,
-    value => childToSrc(value, indent, indentBy)
-  ).filter(x => x)
-   .join(`\n`)
+const childrenToSrc = (children, $) =>
+  Children.forEach(children, child => childToSrc(child, $))
 
-function childToSrc(value, indent, indentBy) {
+function childToSrc(value, $) {
   switch (typeof value) {
   case 'undefined':
-    return
+    return $
   case 'function':
-    return `{${value.toString()}}`
+    return $ (curly.open) (append(value.toString())) (curly.close)
   case 'number':
   case 'object':
   case 'string':
     if (isValidElement(value)) {
-      return jsxToSrc(value, indent, indentBy)
+      return jsxToSrc(value, $)
     }
-    return `{${JSON.stringify(value, null, 2)}}`
+    return $ (curly.open) (append(JSON.stringify(value, null, 2))) (curly.close)
   }
+  return $
 }
+
+if (module === require.main) main(process.argv)

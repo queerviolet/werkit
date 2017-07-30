@@ -1,9 +1,10 @@
-- [ ] Finish refactoring with Lerna
+- [X] Refactor with lerna
   - [X] Move components out of root and into werkit
   - [X] Move ProviderPlugin out of rxquire and into werkit
-  - [ ] Audit dependencies
+- [ ] Audit dependencies #chore
 - [X] Give Concepts, Actions keys #importing
 - [ ] Markdown -> JSX converter
+  - [ ] Refactor serializer with state machine
   - remarkable-react or remark-react?
     - remark-react looks like it has better syntax highlighting support
 - [ ] Bonsai

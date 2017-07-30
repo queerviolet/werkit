@@ -41,8 +41,8 @@ const append = (str='') => ({
   call: appender, str
 })
 
-const toString = ({lines, line}) => [...lines, line].join('\n')
+const asString = ({lines, line}) => [...lines, line].join('\n')
 
 Object.assign(serializer, {
-  start, enter, tab, popTab, append
+  start, enter, tab, popTab, append, asString
 })

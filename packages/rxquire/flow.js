@@ -1,5 +1,5 @@
 module.exports = function flow(...funcs) {
-  return funcs.reduce(flowPair)
+  return funcs.reduce(flowPair, null)
 }
 
 function flowPair(f, g) {  

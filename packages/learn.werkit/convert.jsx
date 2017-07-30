@@ -1,4 +1,6 @@
 import React from 'react'
+import remark from 'remark'
+import remarkReact from 'remark-react'
 
 const Workshop = ({name, description, artworkUrl, concepts}) =>
   <Workshop {...{name, description}}
@@ -12,10 +14,14 @@ const Concept = ({name, actions, draftMode}) =>
   }</Concept>
 
 const Action = ({name, text}) =>
-  <Action {...{name}} key={key(name)}>{text}</Action>
+  <Action {...{name}} key={key(name)}>{markdown(text)}</Action>
 
 const key = name => name
   .toLowerCase()
   .replace(/\s+/g, '-')
+
+const renderer = remark().use(remarkReact, {
+})
+const markdown = text => renderer.processSync(text).contents
 
 export default Workshop
