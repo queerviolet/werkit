@@ -14,6 +14,8 @@
   },
   "dependencies": {
     "babel-register": "^6.24.1",
+    "esformatter": "^0.10.0",
+    "esformatter-jsx": "^8.0.1",
     "jsx-to-string": "^1.1.0",
     "learn.": "~0",
     "react": "^15.6.1",

@@ -5,15 +5,17 @@
  */
 
 const learn = require('learn.')
+    , esformatter = require('esformatter')
+esformatter.register(require('esformatter-jsx'))
+
+require('babel-register')
+const {default: convert, isRaw} = require('./convert')
 
 function main([_1, _2, workshopId]) {
   if (!workshopId) {
     console.error(`Usage: node learn.import <workshop-id>`)
     process.exit(1)
   }
-  
-  require('babel-register')
-  const convert = require('./convert').default
 
   learn
     .get(`api/workshops/${workshopId}`)
@@ -23,7 +25,9 @@ function main([_1, _2, workshopId]) {
     .then(convert)
     .then(jsxToSrc)
     .then($ => $(asString).state)
-    .then(jsx => console.log(`export default\n${jsx}`))
+    .then(esformatter.format)
+    .then(jsx => `export default${jsx}`)
+    .then(console.log)
     .catch(console.error)
 }
 
@@ -32,7 +36,7 @@ const {isValidElement, Children} = require('react')
 
     , serializer = require('./serializer')
     , {enter, tab: tabBy, popTab, append, asString} = serializer
-    , tab = tabBy('  ')
+    , tab = tabBy('')
     , lt = append('<'), gt = append('>'), end = append('</')
     , eq = append('=')
     , spc = append(' ')
@@ -47,14 +51,14 @@ function jsxToSrc({type, props}, $=serializer()) {
               $ (lt)(append(Component))
   propsToSrc(props, $)
               $ (gt)
-  isInline || $ (enter) (tab)
+  isInline || $ (tab)
   childrenToSrc(children, $)
   isInline || $ (popTab)
               $ (end)(append(Component))(gt)
   return $
 }
 
-jsxToSrc.inline = {code: true}
+jsxToSrc.inline = {strong: true, em: true, code: true}
 
 const propsToSrc =
   (props, $) => Object.keys(props)
@@ -64,7 +68,7 @@ const propsToSrc =
 function propValueToSrc(value) {
   switch (typeof value) {
   case 'undefined':
-    return '{undefined}'  
+    return '{undefined}'
   case 'function':
     return `{${value.toString()}}`
   case 'string':
@@ -85,9 +89,15 @@ function childToSrc(value, $) {
     return $
   case 'function':
     return $ (curly.open) (append(value.toString())) (curly.close)
+  case 'string':
+    if (value.search(/[\{\}<>]/) >= 0)
+      return $ (curly.open) (append(backtickEscape(value))) (curly.close)
+    return $ (append(value))
   case 'number':
   case 'object':
-  case 'string':
+    if (isRaw(value)) {
+      return $ (append(Children.map(value.props.children, child => child.toString()).join('')))
+    }
     if (isValidElement(value)) {
       return jsxToSrc(value, $)
     }
@@ -95,5 +105,7 @@ function childToSrc(value, $) {
   }
   return $
 }
+
+const backtickEscape = str => `\`${str.replace(/`/g, '\\`')}\``
 
 if (module === require.main) main(process.argv)

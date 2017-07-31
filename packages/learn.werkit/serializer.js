@@ -23,7 +23,6 @@ const enter = flow(({line, lines, indent}) => ({
 }))
 
 const tab = (by='  ') => flow(({indent, line, levels}) => ({
-  line: by + line,
   indent: by + indent,
   levels: [...levels, indent],
 }))

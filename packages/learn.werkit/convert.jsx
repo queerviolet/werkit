@@ -1,6 +1,7 @@
 import React from 'react'
-import remark from 'remark'
-import remarkReact from 'remark-react'
+import remark from 'remark-parse'
+import unified from 'unified'
+import traverse from 'traverse'
 
 const Workshop = ({name, description, artworkUrl, concepts}) =>
   <Workshop {...{name, description}}
@@ -10,18 +11,23 @@ const Workshop = ({name, description, artworkUrl, concepts}) =>
 
 const Concept = ({name, actions, draftMode}) =>
   <Concept {...{name}} key={key(name)}>{
-    actions.map(Action)
+    actions.map(Action(key(name)))
   }</Concept>
 
-const Action = ({name, text}) =>
-  <Action {...{name}} key={key(name)}>{markdown(text)}</Action>
+const Action = conceptKey => ({name, text}) => {
+  const keyPath = `${conceptKey}-${key(name)}`
+  return <Action {...{name}} key={keyPath}><RAW>{'{'}require('./{keyPath}.md'){'}'}</RAW></Action>
+}
+
+const RAW = () => {}
+
+export function isRaw(node) {
+  return React.isValidElement(node) && node.type === RAW
+}
 
 const key = name => name
   .toLowerCase()
   .replace(/\s+/g, '-')
-
-const renderer = remark().use(remarkReact, {
-})
-const markdown = text => renderer.processSync(text).contents
+  .replace(/:/g, '')
 
 export default Workshop
