@@ -24,29 +24,34 @@ function config(output={
       devtool: 'inline-source-map',
       resolve: {extensions: ['.jsx', '.js', '.json']},
 
-      module: {
-        rules: [
-          {
-            test: /\.jsx?$/,
-            use: [
-              'babel-loader',
-            ],
-            exclude: /node_modules/,
-          },
-        ],
-      }
+      // module: {
+      //   rules: [
+      //     ,
+      //   ],
+      // }
     }
   })
 }
 config.plugin = plugin
+config.rule = rule
 
 function plugin(plugin) {
   return ({config}) => ({
-    config: flow(config, ({plugins=[]}) => ({plugins: [...plugins, plugin]}))()
+    config: flow(({plugins=[]}) => ({plugins: [...plugins, plugin]}))(config)
   })
 }
 
-function compiler(webpack=require('webpack')) {
+function rule(rule) {
+  return ({config}) => ({
+    config: flow(({module={}}) => ({
+      module: flow(({rules=[]}) => ({
+        rules: [...rules, rule],
+      }))(module)
+    }))(config)
+  })
+}
+
+function compiler(webpack=require('webpack')) {  
   return ({config}) => ({
     compiler: webpack(config)
   })

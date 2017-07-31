@@ -26,7 +26,7 @@ function serve(entry) {
   }).listen((...args) => console.log(args))
 }
 
-const {config: {plugin}} = require('rxquire/webpack')
+const {config: {plugin, rule}} = require('rxquire/webpack')
     , flow = require('rxquire/flow')
     , {resolve} = require
 
@@ -42,10 +42,23 @@ const globals = flow(
                'Concept',
                'Action'))()
 
-const werk = entry =>  
-  rxquire()
-    .config(plugin(new webpack.ProvidePlugin(globals)))
-    (entry)
+const werk = rxquire()
+  .config(rule({
+    test: /\.jsx?$/,
+    use: 'babel-loader',
+    exclude: /node_modules/,
+  }))
+  .config(rule({
+    test: /\.(jpeg?|png|)$/,
+    use: 'url-loader',
+    exclude: /node_modules/,
+  }))
+  .config(rule({
+    test: /\.(txt|md|markdown)$/,
+    use: 'raw-loader',
+    exclude: /node_modules/,    
+  }))
+  .config(plugin(new webpack.ProvidePlugin(globals)))
 
 function main(_node, _index, entry) {
   werk(entry)
