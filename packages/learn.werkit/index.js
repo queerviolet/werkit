@@ -4,39 +4,62 @@
  * Usage: node learn.import <workshop-id>
  */
 
-const learn = require('learn.')
+const fs = require('fs')
+    , {promisify} = require('util')
+    , {join} = require('path')
+    , mkdir = promisify(fs.mkdir)
+    , writeFile = promisify(fs.writeFile)
+    , learn = require('learn.')
     , esformatter = require('esformatter')
 esformatter.register(require('esformatter-jsx'))
 
 require('babel-register')
-const {default: convert, isRaw} = require('./convert')
+const {default: convert, isRaw, rawValue, assets} = require('./convert')
 
-function main([_1, _2, workshopId]) {
+async function main([_1, _2, workshopId]) {
   if (!workshopId) {
     console.error(`Usage: node learn.import <workshop-id>`)
     process.exit(1)
   }
 
-  learn
+  const jsx = learn
     .get(`api/workshops/${workshopId}`)
     .then(async workshop => Object.assign(workshop, {
       concepts: await learn.get(`api/workshops/${workshop._id}/concepts`)
     }))
     .then(convert)
+  
+  const indexSrc = jsx
     .then(jsxToSrc)
     .then($ => $(asString).state)
     .then(esformatter.format)
     .then(jsx => `export default${jsx}`)
-    .then(console.log)
-    .catch(console.error)
+
+  const outputDir = (await jsx).key
+  await mkdir(outputDir)
+    .catch(error => error.code === 'EEXIST' || Promise.reject(error))
+  
+  return jsx
+    .then(assets)
+    .then(assets => Object.assign(assets, {'index.jsx': indexSrc}))
+    .then(write(outputDir))
 }
+
+const write = outputDir => assets => Promise.all(
+  Object.keys(assets)
+    .map(async path =>
+      writeFile(join(outputDir, path), await assets[path])
+        .then(() => path))
+)
+
+
 
 const {isValidElement, Children} = require('react')
     , {default: displayName} = require('react-display-name')
 
     , serializer = require('./serializer')
     , {enter, tab: tabBy, popTab, append, asString} = serializer
-    , tab = tabBy('')
+    , tab = tabBy('  ')
     , lt = append('<'), gt = append('>'), end = append('</')
     , eq = append('=')
     , spc = append(' ')
@@ -59,10 +82,10 @@ function jsxToSrc({type, props}, $=serializer()) {
 }
 
 jsxToSrc.inline = {strong: true, em: true, code: true}
-
+jsxToSrc.suppressProp = {children: true, __assets: true}
 const propsToSrc =
   (props, $) => Object.keys(props)
-    .forEach(prop => prop !== 'children' &&
+    .forEach(prop => jsxToSrc.suppressProp[prop] ||
       $ (spc) (append(prop)) (eq) (append(propValueToSrc(props[prop]))))
 
 function propValueToSrc(value) {
@@ -76,6 +99,9 @@ function propValueToSrc(value) {
   case 'number':
   case 'object':
   case 'string':
+    if (isRaw(value)) {
+      return rawValue(value)
+    }
     return `{${JSON.stringify(value, null, 2)}}`
   }
 }
@@ -96,7 +122,7 @@ function childToSrc(value, $) {
   case 'number':
   case 'object':
     if (isRaw(value)) {
-      return $ (append(Children.map(value.props.children, child => child.toString()).join('')))
+      return $ (append(rawValue(value)))
     }
     if (isValidElement(value)) {
       return jsxToSrc(value, $)
@@ -108,4 +134,4 @@ function childToSrc(value, $) {
 
 const backtickEscape = str => `\`${str.replace(/`/g, '\\`')}\``
 
-if (module === require.main) main(process.argv)
+if (module === require.main) main(process.argv).then(console.log, console.error)
