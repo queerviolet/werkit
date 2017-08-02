@@ -24,7 +24,7 @@ function createRxquire({resolve=resolveFromCwd}={}, pipelines={}) {
   function rxquire(module) {
     const {config, compiler, compilation, exports} = pipelines || {}
     const middleware = flow(config, compiler, compilation, exports)
-    return middleware({entry: resolve(module)}).exports
+    return middleware({entry: resolve(module)})
   }
 
   rxquire.use = stage => mw => createRxquire({resolve}, Object.assign({},

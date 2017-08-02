@@ -1,4 +1,5 @@
-const {join} = require('path')
+const debug = require('debug')('rxquire:webpack')
+    , {join} = require('path')
     , flow = require('./flow')
 
 const webpack = module.exports = {
@@ -20,20 +21,20 @@ function config(output={
     config: {
       target: 'node',
       entry, output,
-
       devtool: 'inline-source-map',
-      resolve: {extensions: ['.jsx', '.js', '.json']},
-
-      // module: {
-      //   rules: [
-      //     ,
-      //   ],
-      // }
+      resolve: {
+        modules: [join(__dirname, 'node_modules'), 'node_modules'],
+        extensions: ['.jsx', '.js', '.json'],
+      },
+      resolveLoader: {
+        modules: [join(__dirname, 'node_modules'), 'node_modules'],
+        extensions: ['.js', '.json'],
+        mainFields: ['loader', 'main']        
+      }
     }
   })
 }
-config.plugin = plugin
-config.rule = rule
+Object.assign(config, {plugin, rule, resolve, resolveLoader, resolveAll})
 
 function plugin(plugin) {
   return ({config}) => ({
@@ -51,10 +52,37 @@ function rule(rule) {
   })
 }
 
-function compiler(webpack=require('webpack')) {  
+function resolve(dir) {
   return ({config}) => ({
-    compiler: webpack(config)
-  })
+    config: flow(({resolve={}}) => ({
+      resolve: flow(({modules=[]}) => ({
+        modules: [dir, ...modules],
+      }))(resolve)
+    }))(config)
+  })  
+}
+
+function resolveLoader(dir) {
+  return ({config}) => ({
+    config: flow(({resolveLoader={}}) => ({
+      resolveLoader: flow(({modules=[]}) => ({
+        modules: [dir, ...modules],
+      }))(resolveLoader)
+    }))(config)
+  })  
+}
+
+function resolveAll(dir) {
+  return x => resolve(dir)(resolveLoader(dir)(x))
+}
+
+function compiler(webpack=require('webpack')) {    
+  return ({config}) => {
+    debug(JSON.stringify(config, 0, 2))
+    return ({
+      compiler: webpack(config)
+    })
+  }
 }
 compiler.memoryFs = memoryFs
 

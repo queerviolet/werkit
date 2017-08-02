@@ -26,9 +26,8 @@ function serve(entry) {
   }).listen((...args) => console.log(args))
 }
 
-const {config: {plugin, rule}} = require('rxquire/webpack')
+const {config: {plugin, rule, resolveAll}} = require('rxquire/webpack')
     , flow = require('rxquire/flow')
-    , {resolve} = require
 
 const components = (...components) => Object.assign(
   ...components.map(name => ({
@@ -42,10 +41,25 @@ const globals = flow(
                'Concept',
                'Action'))()
 
+const werkitModules = path.join(__dirname, 'node_modules')
+const my = module => path.join(werkitModules, module)
+
 const werk = rxquire()
   .config(rule({
     test: /\.jsx?$/,
-    use: 'babel-loader',
+    use: {
+      loader: 'babel-loader',
+      options: {
+        "presets": [
+          [my('babel-preset-es2015'), {"modules": false}],
+          my('babel-preset-stage-2'),
+          my('babel-preset-react')
+        ],
+        "plugins": [
+          my('react-hot-loader/babel')
+        ]
+      },
+    },
     exclude: /node_modules/,
   }))
   .config(rule({
@@ -58,10 +72,11 @@ const werk = rxquire()
     use: 'raw-loader',
     exclude: /node_modules/,    
   }))
+  .config(resolveAll(werkitModules))
   .config(plugin(new webpack.ProvidePlugin(globals)))
 
 function main(_node, _index, entry) {
-  werk(entry)
+  werk(entry).exports
     .map(index => JSON.stringify(index, 0, 2))
     .subscribe(console.log, console.error)
 }
