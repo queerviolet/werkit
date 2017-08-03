@@ -34,7 +34,14 @@ function config(output={
     }
   })
 }
-Object.assign(config, {plugin, rule, resolve, resolveLoader, resolveAll})
+Object.assign(config, {plugin, target, rule, resolve, resolveLoader, resolveAll})
+
+function target(target) {
+  return ({config}) => {
+    config.target = target
+    return config
+  }
+}
 
 function plugin(plugin) {
   return ({config}) => ({
@@ -78,19 +85,18 @@ function resolveAll(dir) {
 
 function compiler(webpack=require('webpack')) {    
   return ({config}) => {
-    debug(JSON.stringify(config, 0, 2))
+    debug(JSON.stringify(config, 0, 2))    
     return ({
       compiler: webpack(config)
     })
   }
 }
-compiler.memoryFs = memoryFs
+compiler.outputFs = outputFs
 
-function memoryFs(MemoryFileSystem=require('memory-fs')) {
+function outputFs(outputFs) {
   return ({compiler}) => {
-    const fs = new MemoryFileSystem
-    compiler.outputFileSystem = fs
-    return {compiler, fs}
+    compiler.outputFileSystem = outputFs
+    return {outputFs}
   }
 }
 
@@ -98,7 +104,7 @@ function watcher(watcher=require('webpack-rx')) {
   return ({compiler}) => ({watcher: watcher(compiler)})
 }
 
-function source({fs, watcher, compiler: {outputPath}}) {
+function source({outputFs: fs, watcher, compiler: {outputPath}}) {
   return {
     source: watcher.map(
       ({compilation: {assets}}) => Object.assign(

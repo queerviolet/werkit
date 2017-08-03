@@ -4,6 +4,7 @@ const Module = require('module')
     , {resolve: resolveFromCwd} = require('path')
     , webpack = require('./webpack')
     , flow = require('./flow')
+    , MemoryFileSystem = require('memory-fs')
 
 module.exports = createRxquire
 
@@ -16,7 +17,7 @@ function main([_0, _1, file]) {
 function createRxquire({resolve=resolveFromCwd}={}, pipelines={}) {
   pipelines = flow({
     config: flow(webpack.config('index.js')),
-    compiler: flow(webpack.compiler(), webpack.compiler.memoryFs()),
+    compiler: flow(webpack.compiler(), webpack.compiler.outputFs(new MemoryFileSystem)),
     compilation: flow(webpack.watcher()),
     exports: flow(webpack.source, createRxquire.module.exports('index.js'))
   }, pipelines)()
@@ -24,6 +25,7 @@ function createRxquire({resolve=resolveFromCwd}={}, pipelines={}) {
   function rxquire(module) {
     const {config, compiler, compilation, exports} = pipelines || {}
     const middleware = flow(config, compiler, compilation, exports)
+    if (Array.isArray(module)) return middleware({entry: module})
     return middleware({entry: resolve(module)})
   }
 
