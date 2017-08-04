@@ -36,3 +36,8 @@ pre.lowlight {
   left: 50%;
   transform: translate(-50%);
 }
+
+nav.workshop {
+  position: fixed;
+  top: 9px; left: 9px;
+}

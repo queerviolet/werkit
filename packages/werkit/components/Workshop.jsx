@@ -2,6 +2,7 @@ require('./Workshop.css')
 
 const Concept = require('./Concept')
     , Action = require('./Action')
+    , {link} = require('../slug')
 
 const tree = ({type, props}, key) => {
   if (type === Concept)
@@ -15,16 +16,16 @@ const Nav = ({children}) =>
 
 Nav.Node = ({name, children}) =>
   <div>
-    <h2>{name}</h2>
+    <h2>{link(name)}</h2>
     {children}
   </div>
 
 Nav.Action = ({name}) =>
-  <li><a href={`#${Action.slug(name)}`}>{name}</a></li>
+  <li>{link(name)}</li>
 
 module.exports = ({name, children}) => 
-<div>
-  <h1>{name}</h1>
-  <Nav>{children}</Nav>
-  {children}
-</div>
+  <div>
+    <h1>{name}</h1>
+    <nav className='workshop'><Nav>{children}</Nav></nav>
+    {children}
+  </div>
