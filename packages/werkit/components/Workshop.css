@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css?family=Crimson+Text|Lora');
+
+html {
+  font-family: 'Crimson Text';
+  font-size: 16px;
+}
+
+pre {
+  font-size: 14px;
+}
+
+#main {
+  width: 36em;
+  margin: auto;
+}
+
+img {
+  width: 125%;
+  left: 50%;
+  position: relative;
+  transform: translate(-50%);
+  margin-top: 9px;
+  margin-bottom: 9px;
+  text-align: center;
+  display: block;  
+  box-shadow: 2px 2px 8px gray;
+}

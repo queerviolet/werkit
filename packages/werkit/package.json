@@ -28,6 +28,7 @@
     "mktemp": "^0.4.0",
     "raw-loader": "^0.5.1",
     "react": "^15.6.1",
+    "react-css": "0.0.2",
     "react-dom": "^15.6.1",
     "react-hot-loader": "^3.0.0-beta.7",
     "react-lowlight": "^1.1.1",
@@ -47,7 +48,8 @@
     "void-elements": "^3.1.0",
     "webpack": "^3.4.1",
     "webpack-dev-server": "^2.5.1",
-    "webpack-to-memory": "^1.0.0"
+    "webpack-to-memory": "^1.0.0",
+    "serialize-jsx": "~0"
   },
   "devDependencies": {
     "lerna": "^2.0.0"

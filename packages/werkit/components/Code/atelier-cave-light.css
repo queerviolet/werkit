@@ -1,0 +1,87 @@
+/* Base16 Atelier Cave Light - Theme */
+/* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/cave) */
+/* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+/* Atelier-Cave Comment */
+.hljs-inline-comment,
+.hljs-inline-quote {
+  color: #655f6d;
+}
+
+/* Atelier-Cave Red */
+.hljs-inline-variable,
+.hljs-inline-template-variable,
+.hljs-inline-attribute,
+.hljs-inline-tag,
+.hljs-inline-name,
+.hljs-inline-regexp,
+.hljs-inline-link,
+.hljs-inline-name,
+.hljs-inline-name,
+.hljs-inline-selector-id,
+.hljs-inline-selector-class {
+  color: #be4678;
+}
+
+/* Atelier-Cave Orange */
+.hljs-inline-number,
+.hljs-inline-meta,
+.hljs-inline-built_in,
+.hljs-inline-builtin-name,
+.hljs-inline-literal,
+.hljs-inline-type,
+.hljs-inline-params {
+  color: #aa573c;
+}
+
+/* Atelier-Cave Green */
+.hljs-inline-string,
+.hljs-inline-symbol,
+.hljs-inline-bullet {
+  color: #2a9292;
+}
+
+/* Atelier-Cave Blue */
+.hljs-inline-title,
+.hljs-inline-section {
+  color: #576ddb;
+}
+
+/* Atelier-Cave Purple */
+.hljs-inline-keyword,
+.hljs-inline-selector-tag {
+  color: #955ae7;
+}
+
+.hljs-inline-deletion,
+.hljs-inline-addition {
+  color: #19171c;
+  display: inline-block;
+  width: 100%;
+}
+
+.hljs-inline-deletion {
+  background-color: #be4678;
+}
+
+.hljs-inline-addition {
+  background-color: #2a9292;
+}
+
+.hljs-inline { display: inline; }
+
+.hljs-inline > .hljs {
+  display: inline;
+  overflow-x: auto;
+  background: none;
+  color: #585260;
+  padding: 0;
+}
+
+.hljs-inline-emphasis {
+  font-style: italic;
+}
+
+.hljs-inline-strong {
+  font-weight: bold;
+}

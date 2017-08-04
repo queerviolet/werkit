@@ -1,0 +1,22 @@
+{
+  "name": "serialize-jsx",
+  "version": "0.0.1",
+  "description": "Serialize react nodes to a string",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ashi Krishnan <hi@ashi.io>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FullstackAcademy/werkit.git"
+  },
+  "dependencies": {
+    "esformatter": "^0.10.0",
+    "esformatter-jsx": "^8.0.1",
+    "react": "^15.6.1",
+    "react-display-name": "^0.2.0",
+    "remark-react": "^4.0.0"
+  }
+}
