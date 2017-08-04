@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Crimson+Text|Lora');
+@import url('https://fonts.googleapis.com/css?family=Crimson+Text|Varela+Round|Lato');
 
 html {
   font-family: 'Crimson Text';
@@ -40,15 +40,48 @@ pre.lowlight {
 }
 
 nav.workshop {
+  font-family: 'Varela Round';
   position: fixed;
   padding: 9px;
   padding-right: 18px;
   top: 0; left: 0; bottom: 0;
   overflow: auto;
   border-right: 1px solid #eee;
-} 
+}
 
-.active.action {
+nav.workshop h1 {
+  font-size: 16px;
+  margin: 16px;
+  margin-bottom: 2px;
+}
+
+nav.workshop ul {
+  margin-top: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+nav.workshop a {
+  color: #545;
+}
+
+a.nav-concept-link.visible {
+  color: #636;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+a.nav-action-link.visible {
+  color: #212;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);  
+}
+
+.nav-concept-header {
+  font-family: 'Varela Round'
+}
+
+li.nav-action.visible {
   list-style-type: disc;
 }
 
@@ -66,4 +99,8 @@ nav.workshop {
 .hint > h1 {
   font-size: 18px;
   margin: 0;
+}
+
+h1, h2, h3, h4, h5 { 
+  font-family: 'Lato';
 }

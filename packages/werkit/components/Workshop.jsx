@@ -4,9 +4,8 @@ require('./Workshop.css')
 
 const Concept = require('./Concept')
     , Action = require('./Action')
-    , slug = require('../slug'), {link} = slug
+    , slug = require('../slug'), {Link} = slug
 
-console.log('link=', slug)
 const tree = visible => ({type, props}, key) => {
   if (type === Concept)
     return <Nav.Concept {...props} visible={visible} key={key}><Nav visible={visible}>{props.children}</Nav></Nav.Concept>
@@ -18,14 +17,22 @@ const tree = visible => ({type, props}, key) => {
 const Nav = ({visible={}, children}) =>
   <ul>{React.Children.map(children, tree(visible))}</ul>
 
-Nav.Concept = ({name, children, visible}) =>
-  <div className={slug(name) in visible ? 'active concept' : 'concept'}>
-    <h2>{link(name)}</h2>
+Nav.Concept = ({name, children, visible, className=slug(name) in visible ? 'visible' : ''}) =>
+  <div className={`nav-concept ${className}`}>
+    <h1 className='nav-concept-header'>
+      <Link className={`nav-concept-link ${className}`} to={name}/>
+    </h1>
     {children}
   </div>
 
-Nav.Action = ({name, visible}) =>
-  <li className={slug(name) in visible ? 'active action' : 'action'}>{link(name)}</li>
+Nav.Action = ({
+  name,
+  visible,
+  className=slug(name) in visible ? 'visible' : ''
+}) =>
+  <li className={`nav-action ${className}`}>
+    <Link className={`nav-action-link ${className}`} to={name} />
+  </li>
 
 class Navigator extends React.Component {
   state = {visible: {}}
@@ -68,5 +75,4 @@ module.exports = ({name, children}) =>
   <div>
     <h1>{name}</h1>
     <Navigator>{children}</Navigator>
-    {children}
-  </div>
+    {children}</div>
