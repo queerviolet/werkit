@@ -16,12 +16,23 @@ pre {
 
 img {
   width: 125%;
-  left: 50%;
+
+  /* Center */
   position: relative;
+  left: 50%;
   transform: translate(-50%);
+
   margin-top: 9px;
   margin-bottom: 9px;
   text-align: center;
   display: block;  
   box-shadow: 2px 2px 8px gray;
+}
+
+pre.lowlight {
+  width: 125%;
+  /* Center */
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
 }

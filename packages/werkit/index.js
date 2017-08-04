@@ -90,7 +90,7 @@ const werk = output => rxquire()
     exclude: /node_modules/,
   }))
   .config(rule({
-    test: /\.(jpeg?|png|)$/,
+    test: /\.(jpeg|jpg|png|)$/,
     use: 'url-loader',
     exclude: /node_modules/,
   }))
