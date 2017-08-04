@@ -11,5 +11,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/FullstackAcademy/werkit.git"
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "inquirer": "^3.2.1"
   }
 }

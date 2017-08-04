@@ -43,7 +43,7 @@ function learnDotApi(config) {
 function savedTokenOrInteractive({
   url,
   tokenPath=join(homedir(), '.learn.token'),
-  interative=true,
+  interactive=true,
 }) {
   const auth = {
     get token() {
@@ -81,9 +81,15 @@ async function interactiveLogin(authUrl, tokenPath) {
         validate: exists,
       },
     ])
-    .then(data => axios.post('auth/local', {data}))
-    .then(({res: {token}}) => token)
-  
+    .then(data => axios({
+      url: authUrl,
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      data}))
+    .then(res => res.data.token)
+    
   await write(tokenPath, token)
   console.log('Learndot token saved to', tokenPath)
   return token

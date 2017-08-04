@@ -1,10 +1,11 @@
+'use strict'
+
 import path from 'path'
 
 import React from 'react'
-import remark from 'remark-parse'
-import unified from 'unified'
-import traverse from 'traverse'
 import axios from 'axios'
+
+import {RAW} from 'serialize-jsx'
 
 const Workshop = ({name, description, artworkUrl, concepts}) => {
   const artFile = path.basename(artworkUrl)
@@ -17,7 +18,6 @@ const Workshop = ({name, description, artworkUrl, concepts}) => {
           artwork={requireRelative(artFile)}>{
             concepts.map(Concept)
         }</Workshop>
-  console.log(artUrl)
   return workshop
 }
 
@@ -37,29 +37,16 @@ const Action = conceptKey => ({name, text}) => {
   return action
 }
 
-const RAW = () => {}
-export function isRaw(node) {
-  return React.isValidElement(node) && node.type === RAW
-}
-
-export function rawValue({props: {children}}) {
-  return React.Children.map(children, child => child.toString()).join('')
-}
-
 export const assets = node => node.props && Object.assign({},
   node.props.__assets,
   ...React.Children.map(node.props.children || [], assets))
-
-// export function assets(node) {
-//   React.Children.map(children, )
-// }
 
 const requireRelative = path =>
   <RAW>
     {'{'}require('./{path}'){'}'}
   </RAW>
 
-const key = name => name
+const key = (name='') => name
   .toLowerCase()
   .replace(/\s+/g, '-')
   .replace(/[^a-zA-Z0-9_\-]/g, '')

@@ -7,18 +7,6 @@
 // const esformatter = require('esformatter')
 // esformatter.register(require('esformatter-jsx'))
 
-export default jsx => jsxToSrc(jsx)(asString).state
-
-const RAW = () => {}
-export function isRaw(node) {
-  return node.type && node.type === RAW
-}
-
-export function rawValue({props: {children=[]}}) {
-  if (typeof children === 'string' ||
-      !children[Symbol.iterator]) children = [children]
-  return children.map(child => child.toString()).join('')
-}
 
 const {isValidElement, Children} = require('react')
     , {default: displayName} = require('react-display-name')
@@ -30,6 +18,8 @@ const {isValidElement, Children} = require('react')
     , eq = append('=')
     , spc = append(' ')
     , curly = {open: append('{'), close: append('}')}
+
+module.exports = jsx => jsxToSrc(jsx)(asString).state
 
 function jsxToSrc({type, props}, $=serializer()) {
   const {children} = props
@@ -98,6 +88,15 @@ function childToSrc(value, $) {
   return $
 }
 
-const backtickEscape = str => `\`${str.replace(/`/g, '\\`')}\``
+const backtickEscape = (str='') => `\`${str.replace(/`/g, '\\`')}\``
 
-if (module === require.main) main(process.argv).then(console.log, console.error)
+const RAW = () => {}
+Object.assign(module.exports, {RAW, isRaw, rawValue})
+
+function isRaw(node) {
+  return node.type && node.type === RAW
+}
+
+function rawValue({props: {children}}) {
+  return Children.map(children, child => child.toString()).join('')
+}
