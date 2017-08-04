@@ -13,7 +13,7 @@ npm i -g lerna
 Then setup this repo:
 
 ```sh
-lerna boostrap
+lerna bootstrap
 ```
 
 # Import a workshop from Learndot
