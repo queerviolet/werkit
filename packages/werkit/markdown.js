@@ -1,5 +1,21 @@
+module.exports = function(options) {
+  const compiler = remark({gfm: true})
+    .use(plugin, options)
+      ,  compile = md => compiler.processSync(md).contents
+  const component = ({children}) => <div>{
+    React.Children.map(children,
+      child => typeof child === 'string'
+        ? compile(child)
+        : child)
+  }</div>
+  component.displayName = 'Markdown'
+  return component
+}
+
+
 const remark = require('remark')
     , compile = require('./compile')
+    , html = require('./html')()
     
     // Syntax highlighting
     , Lowlight = require('react-lowlight')
@@ -9,23 +25,25 @@ require('highlight.js/styles/atelier-cave-dark.css')
 Lowlight.registerLanguage('js', js)
 Lowlight.registerLanguage('javascript', js)
 
-module.exports = options => {
-  const compiler = remark()
-    .use(plugin, options)
-  return md => compiler.processSync(md).contents
-}
-
-Object.assign(module.exports, {plugin, markdown})
-
 function plugin(options) {
   this.Compiler = compile(markdown(options))
 }
 
 const markdown =
-  ({renderers=markdown.block}={}) => node =>
+  ({renderers=block}={}) => node =>
     renderers[node.type] || debugRenderer
 
-markdown.block = {
+const mapTags = (map, prefix) => Object.assign(
+  ...Object.keys(map)
+    .map(type => {
+      const Tag = map[type]
+      const component = ({children}) => <Tag>{children}</Tag>
+      component.displayName = `${prefix}.${type}`
+      return {[type]: component}
+    })
+)
+
+const block = {
   inlineCode({value}) {
     return <code>{value}</code>
   },
@@ -34,18 +52,19 @@ markdown.block = {
     return <Lowlight language="js" value={value} />
   },
 
-  root: 'span',
-
   list: ({
     ordered,
     children,
     List = ordered ? 'ol' : 'ul'
   }) => <List>{children}</List>,
 
-  listItem: 'li',
-  strong: 'b',
-  paragraph: 'p',
-  emphasis: 'strong',
+  ...mapTags({
+    root: 'span',
+    listItem: 'li',
+    strong: 'b',
+    paragraph: 'p',
+    emphasis: 'strong',
+  }, 'markdown'),
 
   link: ({url, children}) =>
     <a href={url}>{children}</a>,
@@ -56,17 +75,13 @@ markdown.block = {
   html: ({type, value}) => 
     <div>
       <pre>{value}</pre>
-      {/*{renderHtml(value)}*/}
+      <div className='rendered-html'>
+        {html(value)}
+      </div>
     </div>,
 
   heading: ({depth, children, Component=`h${2 + depth}`}) =>
     <Component>{depth}: {children}</Component>,
-}
-
-markdown.inline = {
-  ...markdown.block,
-  root: 'span',
-  paragraph: 'span'
 }
 
 function debugRenderer(node) {
@@ -83,4 +98,3 @@ function debugRenderer(node) {
     {children}
   </div>
 }
-
