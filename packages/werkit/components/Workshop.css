@@ -35,9 +35,18 @@ pre.lowlight {
   position: relative;
   left: 50%;
   transform: translate(-50%);
+
+  box-shadow: 2px 2px 8px gray;  
 }
 
 nav.workshop {
   position: fixed;
-  top: 9px; left: 9px;
+  padding-top: 9px;
+  padding-left: 9px;
+  top: 0; left: 0; bottom: 0;
+  overflow: auto;
+} 
+
+.active.action {
+  list-style-type: disc;
 }
