@@ -15,8 +15,8 @@ module.exports = {
     toggle = () => this.setState({open: !this.open})
 
     render() {
-      return <div style={{margin: '9px', border: 'thin solid black'}}>
-        <h2 onClick={this.toggle}>{this.title}</h2>
+      return <div className='hint'>
+        <h1 onClick={this.toggle}>{this.title}</h1>
         {this.open && <div>{this.props.children}</div>}
       </div>
     }

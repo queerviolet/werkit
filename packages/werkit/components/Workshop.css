@@ -41,12 +41,29 @@ pre.lowlight {
 
 nav.workshop {
   position: fixed;
-  padding-top: 9px;
-  padding-left: 9px;
+  padding: 9px;
+  padding-right: 18px;
   top: 0; left: 0; bottom: 0;
   overflow: auto;
+  border-right: 1px solid #eee;
 } 
 
 .active.action {
   list-style-type: disc;
+}
+
+.hint {
+  margin: 18px;
+  background: #eee;
+  border-radius: 5px;
+  padding: 4px;
+}
+
+.hint > h1:before {
+  content: 'Hint: ';
+}
+
+.hint > h1 {
+  font-size: 18px;
+  margin: 0;
 }
