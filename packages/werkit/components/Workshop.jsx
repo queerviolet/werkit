@@ -41,6 +41,7 @@ class Navigator extends React.Component {
     this.query = document.querySelectorAll('[id]')
     window.addEventListener('scroll', this.scheduleUpdate)
     window.addEventListener('resize', this.scheduleUpdate)
+    this.scheduleUpdate()
   }
 
   scheduleUpdate = () => this.frameRequest ||
