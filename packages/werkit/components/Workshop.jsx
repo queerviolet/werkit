@@ -44,13 +44,18 @@ class Navigator extends React.Component {
     this.scheduleUpdate()
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.scheduleUpdate)
+    window.removeEventListener('resize', this.scheduleUpdate)
+  }
+
   scheduleUpdate = () => this.frameRequest ||
     (this.frameRequest = requestAnimationFrame(this.updateVisible))
   
   updateVisible = () => {
     this.frameRequest = null
     const height = window.innerHeight
-    const visible = Array.from(this.query)
+    const visibleElementBoxes = Array.from(this.query)
       .map(element => ({
         element,
         box: element.getBoundingClientRect()
@@ -59,9 +64,23 @@ class Navigator extends React.Component {
         top < 0 && bottom > 0 ||
         top > 0 && top < height ||
         bottom > 0 && bottom < height)
+      .sort(({box: {top: a}}, {box: {top: b}}) => a - b)
+
+    const visible = visibleElementBoxes
       .reduce((visible, elementBox) => Object.assign(visible, {
         [elementBox.element.id]: elementBox
       }, {}))
+    
+    const firstVisibleAction = visibleElementBoxes
+      .find(({element}) => element.dataset.name)
+    console.log(visibleElementBoxes, firstVisibleAction)
+    if (firstVisibleAction) {
+      const {id} = firstVisibleAction.element
+          , {name} = firstVisibleAction.element.dataset
+          , hash = `#${id}`
+      if (window.location.hash !== hash)
+        history.replaceState(null, name, hash)
+    }
     this.setState({visible})
   }
 
