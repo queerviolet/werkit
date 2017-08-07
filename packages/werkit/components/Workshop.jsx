@@ -56,15 +56,9 @@ class Navigator extends React.Component {
     this.frameRequest = null
     const height = window.innerHeight
     const visibleElementBoxes = Array.from(this.query)
-      .map(element => ({
-        element,
-        box: element.getBoundingClientRect()
-      }))
-      .filter(({element, box: {top, bottom}}) =>
-        top < 0 && bottom > 0 ||
-        top > 0 && top < height ||
-        bottom > 0 && bottom < height)
-      .sort(({box: {top: a}}, {box: {top: b}}) => a - b)
+      .map(getElementBoxes)
+      .filter(boxesInViewport)
+      .sort(topToBottom)
 
     const visible = visibleElementBoxes
       .reduce((visible, elementBox) => Object.assign(visible, {
@@ -73,7 +67,6 @@ class Navigator extends React.Component {
     
     const firstVisibleAction = visibleElementBoxes
       .find(({element}) => element.dataset.name)
-    console.log(visibleElementBoxes, firstVisibleAction)
     if (firstVisibleAction) {
       const {id} = firstVisibleAction.element
           , {name} = firstVisibleAction.element.dataset
@@ -90,6 +83,18 @@ class Navigator extends React.Component {
     </nav>
   }
 }
+
+const getElementBoxes = element => ({
+  element,
+  box: element.getBoundingClientRect()
+})
+
+const boxesInViewport = ({box: {top, bottom}}) =>
+  top < 0 && bottom > 0 ||
+  top > 0 && top < window.innerHeight ||
+  bottom > 0 && bottom < window.innerHeight
+
+const topToBottom = ({box: {top: a}}, {box: {top: b}}) => a - b
 
 module.exports = ({name, children}) => 
   <div>
