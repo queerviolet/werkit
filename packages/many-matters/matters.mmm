@@ -1,0 +1,39 @@
+xyz
+@[Workshop] Game of life
+
+  @[.] ./intro.md
+
+  @[Concept] Writing loops
+    @[Action] Write a loop
+
+    # We're going to start with 
+
+    Loop through ten things:
+
+      @[Code] js
+      for (let i = 0; i != 10; ++i) {      
+
+      }
+    
+    Oh my god, this is *beautiful*.
+
+      @[Hint] What about arrays?
+      You can use a for-of loop
+
+        @[Code] js
+        for (let x of [1, 2, 3]) {
+
+        }
+
+    
+
+# Planing the game
+
+Blah blah blahh
+
+  @hint solution
+  Don't do anything crazy here:
+
+    @js
+
+  
