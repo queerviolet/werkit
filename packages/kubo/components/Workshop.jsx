@@ -97,15 +97,41 @@ const boxesInViewport = ({box: {top, bottom}}) =>
 
 const topToBottom = ({box: {top: a}}, {box: {top: b}}) => a - b
 
-module.exports = ({name, children}) => 
-  <div className='workshop'>
-    <div className='workshop-left'>
-      <Navigator>{children}</Navigator>
+module.exports = class extends React.Component {
+  state = {scrollY: 0}
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.didScroll)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.didScroll)
+  }
+
+  didScroll = () => this.setState({scrollY: window.scrollY})
+
+  get watermarkStyle() {
+    const {scrollY} = this.state
+    return {
+      animationDelay: '-' + scrollY + 's',
+      animationPlayState: 'paused',
+      animationFillMode: 'both',
+    }
+  }
+
+  render() {
+    const {name, children, artwork} = this.props 
+    return <div className='workshop'>
+      <img src={artwork} className='workshop-watermark' style={this.watermarkStyle} />
+      <div className='workshop-left'>
+        <Navigator artwork={artwork}>{children}</Navigator>
+      </div>
+      <div className='workshop-content'>
+        <main>    
+          <h1>{name}</h1>
+          {children}
+        </main>
+      </div>
     </div>
-    <div className='workshop-content'>
-      <main>    
-        <h1>{name}</h1>
-        {children}
-      </main>
-    </div>
-  </div>
+  }
+}

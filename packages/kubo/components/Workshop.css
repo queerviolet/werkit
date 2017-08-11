@@ -12,6 +12,8 @@ code, .hljs-inline > code.hljs {
 
 div.workshop {
   display: flex;  
+  background-repeat: no-repeat;
+  background-blend-mode: additive;
 }
 
 .workshop-left {
@@ -32,7 +34,32 @@ div.workshop {
   margin: auto;
 }
 
+@keyframes blur-out {
+  from {
+    filter: grayscale(50%) contrast(200%) brightness(200%) blur(0);
+    opacity: 0.05;
+  }
 
+  to {
+    filter: grayscale(10%) contrast(200%) brightness(200%) blur(18px);
+    opacity: 0;
+  }
+}
+
+.workshop-watermark {
+  opacity: 0.1;
+  filter: grayscale(10%) contrast(200%) brightness(200%);
+  pointer-events: none;
+  position: fixed;
+  top: 0; left: 0;
+  z-index: -100000;
+  margin: 0;
+
+  /* This animates on scroll */
+  animation: blur-out ease 4s;
+  animation-duration: 1700s;
+  animation-play-state: paused;
+}
 
 img {
   width: 100%;
@@ -65,8 +92,9 @@ pre.lowlight {
 nav.workshop {
   position: fixed;
   font-family: 'Lato';
-  padding: 9px;
-  padding-right: 18px;
+   padding: 9px;
+  padding-right: 18px; 
+  
   top: 0; left: 0; bottom: 0;
   overflow: auto;
   border-right: 1px solid #eee;
