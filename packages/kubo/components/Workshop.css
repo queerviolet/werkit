@@ -36,12 +36,12 @@ div.workshop {
 
 @keyframes blur-out {
   from {
-    filter: grayscale(50%) contrast(200%) brightness(200%) blur(0);
-    opacity: 0.05;
+    filter: blur(0);
+    opacity: 0.5;
   }
 
   to {
-    filter: grayscale(10%) contrast(200%) brightness(200%) blur(18px);
+    filter: blur(18px);
     opacity: 0;
   }
 }
@@ -101,7 +101,6 @@ nav.workshop {
   
   top: 0; left: 0; bottom: 0;
   overflow: auto;
-  border-right: 1px solid #eee;
 
   font-size: 16px;
   max-width: 250px;

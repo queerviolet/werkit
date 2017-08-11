@@ -97,6 +97,9 @@ const boxesInViewport = ({box: {top, bottom}}) =>
 
 const topToBottom = ({box: {top: a}}, {box: {top: b}}) => a - b
 
+const gradient = `linear-gradient(to bottom,
+  rgba(255,255,255,0.75)   0%,
+  rgba(255,255,255,1) 100%)`
 module.exports = class extends React.Component {
   state = {scrollY: 0}
 
@@ -112,7 +115,13 @@ module.exports = class extends React.Component {
 
   get watermarkStyle() {
     const {scrollY} = this.state
+        , {artwork} = this.props
     return {
+      background: `${gradient}, url('${artwork}')`,
+      backgroundRepeat: 'no-repeat, no-repeat',
+      backgroundSize: 'cover',
+      width: '100%',
+      height: '100%',
       animationDelay: '-' + scrollY + 's',
       animationPlayState: 'paused',
       animationFillMode: 'both',
@@ -122,7 +131,8 @@ module.exports = class extends React.Component {
   render() {
     const {name, children, artwork} = this.props 
     return <div className='workshop'>
-      <img src={artwork} className='workshop-watermark' style={this.watermarkStyle} />
+      {/* <img src={artwork} className='workshop-watermark' style={this.watermarkStyle} /> */}
+      <div className='workshop-watermark' style={this.watermarkStyle} />
       <div className='workshop-left'>
         <Navigator artwork={artwork}>{children}</Navigator>
       </div>
