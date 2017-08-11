@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "add": "scripts/add.sh",
-    "kubo": "node packages/kubo"
+    "kubo": "node packages/kubo",
+    "learn.kubo": "scripts/learn.kubo.sh"
   },
   "author": "",
   "license": "ISC",

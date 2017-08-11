@@ -16,6 +16,15 @@ Then setup this repo:
 lerna bootstrap
 ```
 
+# Import and run a learndot workshop
+
+```sh
+npm run learn.kubo <workshop-id>
+```
+
+The workshop will be imported into `demos` and served on
+[port 9876](http://localhost:9876).
+
 # Import a workshop from Learndot
 
 ```sh
