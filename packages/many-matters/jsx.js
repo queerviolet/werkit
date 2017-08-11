@@ -5,7 +5,7 @@ function toJsxFile(matters) {
     ? `const Matter = () =>\n${toJsx(matters[0])}`
     : `const Matter = () => <div>\n${matters.map(toJsx)}\n</div>`
   const mmm = `Matter.mmm = ${JSON.stringify(matters, 0, 2)}`
-  const exports = `module.exports = Matter`  
+  const exports = `export default Matter`
   return [decl, mmm, exports].join('\n')
 }
 toJsxFile.toJsx = toJsx

@@ -34,7 +34,7 @@ function config(output={
     }
   })
 }
-Object.assign(config, {plugin, target, rule, resolve, resolveLoader, resolveAll})
+Object.assign(config, {plugin, target, rule, resolve, resolveExt, resolveLoader, resolveAll})
 
 function target(target) {
   return ({config}) => {
@@ -64,6 +64,16 @@ function resolve(dir) {
     config: flow(({resolve={}}) => ({
       resolve: flow(({modules=[]}) => ({
         modules: [dir, ...modules],
+      }))(resolve)
+    }))(config)
+  })  
+}
+
+function resolveExt(ext) {
+  return ({config}) => ({
+    config: flow(({resolve={}}) => ({
+      resolve: flow(({extensions=[]}) => ({
+        extensions: [ext, ...extensions],
       }))(resolve)
     }))(config)
   })  

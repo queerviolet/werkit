@@ -13,16 +13,26 @@ const path = require('path')
     , WebpackDevServer = require('webpack-dev-server')
     , rxquire = require('rxquire')    
     , {config} = require('rxquire/webpack')
-    , {plugin, rule, resolveAll, target} = config
+    , {plugin, rule, resolveExt, resolveAll, target} = config
     , flow = require('rxquire/flow')
 
 module.exports = {serve, exports}
 
-const entryPointSrc = entry => `
+
+const entryPointSrcRaw = entry => `
   import {render} from 'react-dom'
-  import Root from '${entry}'
-  render(<Root/>, main)
+  import App from ${entry}
+  
+  const run = Component =>
+    render(<Component/>, main)
+  
+  run(App)
+
+  if (module.hot)
+    module.hot.accept(${entry}, () => run(App))
 `
+
+const entryPointSrc = raw => entryPointSrcRaw(JSON.stringify(raw))
 
 async function entryPoint(entry) {
   const temp = await mktemp(path.join(tmpdir(), 'XXXXXXXXXX.js'))
@@ -65,11 +75,13 @@ const globals = flow(
     'Concept',
     'Action',
     'Hint',
-    'Code',
   ].map(name => ({
     [name]: my(`./components/${name}`)
   }))
-)({React: my('react')})
+)({
+  React: my('react'),
+  Code: my(`./components/Code/Code`),
+})
 
 const babel = {
       loader: 'babel-loader',
@@ -87,6 +99,7 @@ const babel = {
 
 const werk = output => rxquire()
   .config(config(output))
+  .config(resolveExt('.kubo'))
   .config(rule({
     test: /\.jsx?$/,
     use: babel,
