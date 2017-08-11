@@ -55,6 +55,7 @@ class Navigator extends React.Component {
   updateVisible = () => {
     this.frameRequest = null
     const height = window.innerHeight
+    
     const visibleElementBoxes = Array.from(this.query)
       .map(getElementBoxes)
       .filter(boxesInViewport)
@@ -97,7 +98,14 @@ const boxesInViewport = ({box: {top, bottom}}) =>
 const topToBottom = ({box: {top: a}}, {box: {top: b}}) => a - b
 
 module.exports = ({name, children}) => 
-  <div>
-    <h1>{name}</h1>
-    <Navigator>{children}</Navigator>
-    {children}</div>
+  <div className='workshop'>
+    <div className='workshop-left'>
+      <Navigator>{children}</Navigator>
+    </div>
+    <div className='workshop-content'>
+      <main>    
+        <h1>{name}</h1>
+        {children}
+      </main>
+    </div>
+  </div>
