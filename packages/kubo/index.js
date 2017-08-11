@@ -4,6 +4,11 @@ const path = require('path')
     , {promisify} = require('util')
     , write = promisify(fs.writeFile)
     , {createFile: mktemp} = require('mktemp')
+    , resolve = require('resolve')  
+    , my = module => resolve.sync(module, {
+        basedir: __dirname,
+        extensions: ['.js', '.json', '.jsx'],
+      })
     , webpack = require('webpack')
     , WebpackDevServer = require('webpack-dev-server')
     , rxquire = require('rxquire')    
@@ -16,8 +21,6 @@ module.exports = {serve, exports}
 const entryPointSrc = entry => `
   import {render} from 'react-dom'
   import Root from '${entry}'
-  console.log(Root, Workshop, Concept, Action)
-  console.log(Root())
   render(<Root/>, main)
 `
 
@@ -39,7 +42,8 @@ async function serve(entry) {
                                                              // console on HMR updates
     .config(plugin(new webpack.NoEmitOnErrorsPlugin))        // Don't emit on errors.
     ([
-      'react-hot-loader/patch',                          // activate HMR for React
+      // activate HMR for React
+      'react-hot-loader/patch',
       'webpack-dev-server/client?http://localhost:9876',
       'webpack/hot/dev-server',
       entryPointFile,
@@ -47,7 +51,7 @@ async function serve(entry) {
   const server = new WebpackDevServer(compiler, {    
     host: 'localhost',
     port: 9876,
-    stats: {colors: true},
+    stats: 'errors-only',
     historyApiFallback: true, // respond to 404s with index.html  
     hot: true, // enable HMR on the server
     contentBase: path.join(__dirname, 'static'),
@@ -55,30 +59,19 @@ async function serve(entry) {
   }).listen(9876, () => console.log(server.address()))
 }
 
-const components = (...components) => Object.assign(
-  ...components.map(name => ({
-    [name]: require.resolve(`./components/${name}.jsx`)
-  }))
-)
-
 const globals = flow(
-    {
-      React: 'react',
-      Code: require.resolve('./components/Code/index.jsx'),
-    },
-    components('Workshop',
-               'Concept',
-               'Action',
-               'Hint'))()
+  ...[
+    'Workshop',
+    'Concept',
+    'Action',
+    'Hint',
+    'Code',
+  ].map(name => ({
+    [name]: my(`./components/${name}`)
+  }))
+)({React: my('react')})
 
-const werkitModules = path.join(__dirname, 'node_modules')
-const my = module => path.join(werkitModules, module)
-
-const werk = output => rxquire()
-  .config(config(output))
-  .config(rule({
-    test: /\.jsx?$/,
-    use: {
+const babel = {
       loader: 'babel-loader',
       options: {
         "presets": [
@@ -90,7 +83,18 @@ const werk = output => rxquire()
           my('react-hot-loader/babel')
         ]
       },
-    },
+    }
+
+const werk = output => rxquire()
+  .config(config(output))
+  .config(rule({
+    test: /\.jsx?$/,
+    use: babel,
+    exclude: /node_modules/,
+  }))
+  .config(rule({
+    test: /\.(kubo|mmm)$/,
+    use: [babel, 'many-matters/loader'],
     exclude: /node_modules/,
   }))
   .config(rule({
@@ -100,15 +104,18 @@ const werk = output => rxquire()
   }))
   .config(rule({
     test: /\.css$/,
-    use: [ 'style-loader', 'css-loader' ]
+    use: ['style-loader', 'css-loader']
   }))
   .config(rule({
     test: /\.(txt|md|markdown)$/,
     use: 'raw-loader',
     exclude: /node_modules/,    
   }))
-  .config(resolveAll(werkitModules))
+  // Add our node modules to the search path  
+  .config(resolveAll(path.join(__dirname, 'node_modules')))
+  // Provide our globals
   .config(plugin(new webpack.ProvidePlugin(globals)))
+
 
 function main(_node, _index, entry) {
   // werk(entry).exports

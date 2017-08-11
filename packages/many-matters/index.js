@@ -1,5 +1,7 @@
 const debug = require('debug')('mmm')
 
+module.exports = parse
+
 const PlainText = '@line'
 
 const matter = ({type=null, props={}, children=[], indent=0}={}) => ({
@@ -148,6 +150,5 @@ if (module === require.main) {
   const fs = require('fs')
       , jsx = require('./jsx')
       , parsed = parse(fs.readFileSync(process.argv[2]))
-  console.log(JSON.stringify(parsed, 0, 2))
-  console.log(jsx(parse(fs.readFileSync(process.argv[2])), 0, 2))
+  console.log(jsx(parsed))
 }
