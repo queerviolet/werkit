@@ -62,10 +62,14 @@ const components = (...components) => Object.assign(
 )
 
 const globals = flow(
-    {React: 'react'},
+    {
+      React: 'react',
+      Code: require.resolve('./components/Code/index.jsx'),
+    },
     components('Workshop',
                'Concept',
-               'Action'))()
+               'Action',
+               'Hint'))()
 
 const werkitModules = path.join(__dirname, 'node_modules')
 const my = module => path.join(werkitModules, module)

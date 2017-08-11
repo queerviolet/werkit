@@ -2,10 +2,11 @@ const debug = require('debug')('mmm')
 
 const PlainText = '@line'
 
-const matter = ({type=null, props={}, children=[]}={}) => ({
+const matter = ({type=null, props={}, children=[], indent=0}={}) => ({
   type,
   props,
   children,
+  indent,
 })
 
 function parse(input) {
@@ -22,14 +23,11 @@ function parse(input) {
     line = lines[i]
     top = stack[stack.length - 1]
     indent = indentOf(line)
-    if (returning) {
-      top.current.children = [...top.current.children, ...returning]
-      returning = null
-    }
+    handleReturnValue()
     if (indent === line.length) {
       // If the line is entirely whitespace, consume it in the current
       // matter.
-      top.current.children.push(line.substr(top.indent))
+      consumeLine()
       continue
     }
     if (indent === top.indent) {
@@ -41,7 +39,8 @@ function parse(input) {
         endOfTheMatter()
         top.current = matter({
           type: tag.type,
-          props: {head: tag.head},
+          props: {name: tag.head},
+          indent
         })
         continue
       }
@@ -49,10 +48,11 @@ function parse(input) {
       const prop = parseProp(line, top.separator)
       if (prop) {
         top.current.props[prop.key] = prop.value
+        continue
       }
 
       // Otherwise, consume this line
-      top.current.children.push(line.substr(top.indent))
+      consumeLine()
       continue      
     }
     if (indent > top.indent) {
@@ -66,15 +66,16 @@ function parse(input) {
           indent,
           matters: [],
           separator: tag.separator,
-          current: matter({
+          current: matter({            
             type: tag.type,
-            props: {head: tag.head},
+            props: {name: tag.head},
+            indent
           })})
         continue
       }
 
       // Otherwise, consume the line.
-      top.current.children.push(line.substr(top.indent))
+      consumeLine()
       continue
     }
     if (indent < top.indent) {
@@ -84,6 +85,10 @@ function parse(input) {
       // Reparse this line.
       --i; continue
     }
+  }
+
+  function consumeLine() {
+    top.current.children.push(line.substr(top.indent) + '\n')
   }
 
   function endOfTheMatter() {
@@ -98,7 +103,18 @@ function parse(input) {
       stack.pop()
       top = stack[stack.length - 1]
   }
-  while (stack.length) pop()
+
+  function handleReturnValue() {
+    if (returning && top) {
+      top.current.children = [...top.current.children, ...returning]
+      returning = null
+    }
+  }
+
+  while (stack.length) {
+    pop()
+    handleReturnValue()
+  }
   
   return returning
 }
@@ -126,5 +142,8 @@ const parseProp = (line, sep) => {
 
 if (module === require.main) {
   const fs = require('fs')
-  console.log(JSON.stringify(parse(fs.readFileSync(process.argv[2])), 0, 2))
+      , jsx = require('./jsx')
+      , parsed = parse(fs.readFileSync(process.argv[2]))
+  console.log(JSON.stringify(parsed, 0, 2))
+  console.log(jsx(parse(fs.readFileSync(process.argv[2])), 0, 2))
 }

@@ -1,72 +1,60 @@
-@[Package] Many Minor Matters
+@[Workshop] Many Minor Matters
 @  author   Ashi Krishnan <hi@ashi.io>
 
+  @[Concept] Introduction
+  Many minor matters is a mechanism for maintainably managing many markups (or markdowns).
 
-  @[X]
-  @[Y]
+  MMM uses indentation and a very light syntax to distinguish between embedded
+  pieces of text in different languages. This is to solve the various escaping
+  problems that can happen when you try to, for example, write JS code or
+  Markdown inside JSX.
 
-Many minor matters is a mechanism for maintainably managing many markups (or markdowns).
+  This file starts with a matter header with a single prop.
 
-MMM uses indentation and a very light syntax to distinguish between embedded
-pieces of text in different languages. This is to solve the various escaping
-problems that can happen when you try to, for example, write JS code or
-Markdown inside JSX.
+  @[Concept] About matters
+    @[Action] Simple matters
+    This is what a matter looks like: indented, and with a head at the top.
+    Indented lines without tags are not considered new matters.
 
-This file starts with a matter header with a single prop.
+      @[Hint]
+      This matter is a Hint. It'll generate a <Hint> tag in the JSX output. That's
+      the extent of what MMM knows about what it's doing---it's a very thin wrapper
+      on top of JSX.
 
-  @[Hint] About matters
-  This is what a matter looks like: indented, and with a head at the top.
-  Indented lines without tags are not considered new matters.
+    @[Action] Separators and leaf blocks
 
-  This matter is a Hint. It'll generate a <Hint> tag in the JSX output.
+    MMM aims to get out of the way of whatever languages you want to write about:
 
-  @-[Code] js
-  @-  theme  Twilight
-  // This is a tag with a separator. The separator is the '-' before the
-  // [Code], and it tells MMM that this matter is a *leaf*. MMM will not
-  // try to parse deeper Matters.
-  
-  // MMM will still try to parse consecutive Matters, though. You must
-  // include the separator again, like this:  
-  
-  @-[Code] python
-  # The purpose of all this is to keep MMM from getting tripped up on 
-  # languages where '@[' is a reasonable way to start a line.
-
-This is an inclusion:
-
-  @[.] ./intro.mmm
-
-It includes all the matters from intro.mmm right here.
-
-Inclusions don't work yet.
-
-
-  @[Concept] Writing loops
-    @[Action] Write a loop
-
-    # We're going to start with 
-
-    Loop through ten things:
-
-      @-[Code]
-      // 
-      @[this will be interpreted as part of the code block]
+      @---[Code] mmm
+      @-[Code] js
+      @-  theme  Twilight
+      // This is a tag with a separator. The separator is the '-' before the
+      // [Code], and it tells MMM that this matter is a *leaf*. MMM will not
+      // try to parse deeper Matters.
+      /*
+        So,
+          @[This]
+          is not a new matter.
+      */
+      // MMM will still try to parse consecutive Matters, though. You must
+      // include the separator again, like this:  
       
-      for (let i = 0; i != 10; ++i) {      
+      @-[Code] python
+      # The purpose of all this is to keep MMM from getting tripped up on 
+      # languages where '@[' is a reasonable way to start a line.
 
-      }
-      @-[Code] jsx
-      <Foo>
-        <Bar prop={value} />
-      </Foo>
+      @-[Code] objc  
+      // So we can show an array literal in objective C, for instance:
+      @[@"Apples", @"Bananas", @"Cucumbers"];    
+
+  @[Concept] Things that don't work yet
+  
+    @[Action] Inclusions
+    This is an inclusion:
+
+      @-[Code] mmm
+      @[...] ./intro.mmm
     
-    Oh my god, this is *beautiful*.
-
-      @[Hint] What about arrays?
-      You can use a for-of loop
-
-        @[Code] js
-        for (let x of [1, 2, 3]) {
-
-        }
+    It includes all the matters from intro.mmm right here.
+    
+    Inclusions don't work yet.

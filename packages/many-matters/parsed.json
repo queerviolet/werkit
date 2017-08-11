@@ -8,13 +8,13 @@
     "children": [
       "@  author   Ashi Krishnan <hi@ashi.io>",
       "",
-      "",
       {
         "type": "X",
         "props": {
           "head": ""
         },
-        "children": []
+        "children": [],
+        "indent": 2
       },
       {
         "type": "Y",
@@ -23,7 +23,8 @@
         },
         "children": [
           ""
-        ]
+        ],
+        "indent": 2
       },
       "Many minor matters is a mechanism for maintainably managing many markups (or markdowns).",
       "",
@@ -45,7 +46,8 @@
           "",
           "This matter is a Hint. It'll generate a <Hint> tag in the JSX output.",
           ""
-        ]
+        ],
+        "indent": 2
       },
       {
         "type": "Code",
@@ -58,11 +60,16 @@
           "// This is a tag with a separator. The separator is the '-' before the",
           "// [Code], and it tells MMM that this matter is a *leaf*. MMM will not",
           "// try to parse deeper Matters.",
-          "",
+          "/*",
+          "  So,",
+          "     @[This]",
+          "     is not a new matter.",
+          "*/",
           "// MMM will still try to parse consecutive Matters, though. You must",
           "// include the separator again, like this:  ",
           ""
-        ]
+        ],
+        "indent": 2
       },
       {
         "type": "Code",
@@ -73,24 +80,38 @@
           "# The purpose of all this is to keep MMM from getting tripped up on ",
           "# languages where '@[' is a reasonable way to start a line.",
           ""
-        ]
+        ],
+        "indent": 2
+      },
+      {
+        "type": "Code",
+        "props": {
+          "head": "objc"
+        },
+        "children": [
+          "// So we can show an array literal in objective C, for instance:",
+          "@[@\"Apples\", @\"Bananas\", @\"Cucumbers\"];",
+          ""
+        ],
+        "indent": 2
       },
       "This is an inclusion:",
       "",
       {
-        "type": ".",
+        "type": "...",
         "props": {
           "head": "./intro.mmm"
         },
         "children": [
           ""
-        ]
+        ],
+        "indent": 2
       },
       "It includes all the matters from intro.mmm right here.",
       "",
       "Inclusions don't work yet.",
-      "",
       ""
-    ]
+    ],
+    "indent": 0
   }
 ]

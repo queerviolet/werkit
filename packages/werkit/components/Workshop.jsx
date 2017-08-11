@@ -11,7 +11,7 @@ const tree = visible => ({type, props}, key) => {
     return <Nav.Concept {...props} visible={visible} key={key}><Nav visible={visible}>{props.children}</Nav></Nav.Concept>
   if (type === Action)
     return <Nav.Action {...{...props, children: null}} visible={visible} key={key} />
-  return <span>fail</span>
+  return
 }
 
 const Nav = ({visible={}, children}) =>

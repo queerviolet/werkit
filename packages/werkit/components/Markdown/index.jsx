@@ -14,7 +14,7 @@ const Markdown = module.exports = function Markdown({
 const compile = tags => {
   const compiler = rehype().use(htmlToJsx, {tags})  
   return md => {
-    console.log(marked.lexer(md))
+    if (md.$$typeof) return md
     return compiler.processSync(marked(md)).contents
   }
 }
