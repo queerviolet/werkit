@@ -33,8 +33,9 @@ function parse(input) {
     }
     if (indent === top.indent) {
       // If we've found a tag, finalize this matter and start a new one
-      const tag = parseTag(line)
+      const tag = parseTag(line, top.separator)
       if (tag) {
+        top.separator = tag.separator
         debug('subsequent:', tag.type)
         if (top.current.tag || top.current.children.length)
           top.matters.push(top.current)
@@ -50,13 +51,16 @@ function parse(input) {
       continue      
     }
     if (indent > top.indent) {
-      // Push if we have a tag
-      const tag = parseTag(line)
-      if (tag) {
-        debug('push:', tag.type, tag.head)        
+      // If a separator has been defined, we consume as ours all lines
+      // with deeper indentation.
+      // Only try parsing a tag if a separator isn't defined.
+      let tag; if (!top.separator && (tag = parseTag(line))) {
+        // Push if we have a tag
+        debug('push:', tag.type, tag.head, tag.separator)
         stack.push({
           indent,
           matters: [],
+          separator: tag.separator,
           current: matter({
             type: tag.type,
             props: {head: tag.head},
@@ -85,12 +89,13 @@ function parse(input) {
 const indentRe = /^\s*/
 const indentOf = line => line.match(indentRe)[0].length
 
-const tagLineRe = /^(\s*)@\[([a-zA-Z0-9_\.]+)\](.*)$/
-const parseTag = line => {
+const tagLineRe = /^(\s*)@(-*)\[([a-zA-Z0-9_\.]+)\](.*)$/
+const parseTag = (line, sep) => {
   const match = line.match(tagLineRe)
   if (!match) return
-  const [_match, {length: indent}, type, head] = match
-  return {indent, type, head: head.trim()}
+  const [_match, {length: indent}, separator, type, head] = match
+  if (sep && separator !== sep) return    
+  return {indent, type, head: head.trim(), separator}
 }
 
 if (module === require.main) {

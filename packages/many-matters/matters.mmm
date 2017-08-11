@@ -1,14 +1,39 @@
-@[Workshop] Game of life
-//@  authors: ['Ashi Krishnan <hi@ashi.io>']
-//@  topics: ['react', 'redux', 'state machines']
+@[Package] Many Minor Matters
 
-Hi there, and let's talk about the game of life.
+Many minor matters is a mechanism for maintainably managing many markups (or markdowns).
 
-  @[Tests]
-  @  src: require('foo.js')
-  @  activation: something something something
+MMM uses indentation and a very light syntax to distinguish between embedded
+pieces of text in different languages. This is to solve the various escaping
+problems that can happen when you try to, for example, write JS code or
+Markdown inside JSX.
 
-  @[.] ./intro.md
+  @[Hint] About matters
+  This is what a matter looks like: indented, and with a head at the top.
+  Indented lines without tags are not considered new matters.
+
+  This matter is a Hint. It'll generate a <Hint> tag in the JSX output.
+
+  @-[Code] js
+  // This is a tag with a separator. The separator is the '-' before the
+  // [Code], and it tells MMM that this matter is a *leaf*. MMM will not
+  // try to parse deeper Matters.
+  
+  // MMM will still try to parse consecutive Matters, though. You must
+  // include the separator again, like this:  
+  
+  @-[Code] python
+  # The purpose of all this is to keep MMM from getting tripped up on 
+  # languages where '@[' is a reasonable way to start a line.
+
+This is an inclusion:
+
+@[.] ./intro.mmm
+
+It includes all the matters from intro.mmm right here.
+
+Inclusions don't work yet.
+
+
 
   @[Concept] Writing loops
     @[Action] Write a loop
@@ -17,10 +42,17 @@ Hi there, and let's talk about the game of life.
 
     Loop through ten things:
 
-      @[Code]
+      @-[Code]
+      // 
+      @[this will be interpreted as part of the code block]
+      
       for (let i = 0; i != 10; ++i) {      
 
       }
+      @-[Code] jsx
+      <Foo>
+        <Bar prop={value} />
+      </Foo>
     
     Oh my god, this is *beautiful*.
 
