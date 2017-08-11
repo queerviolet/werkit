@@ -1,4 +1,5 @@
 @[Package] Many Minor Matters
+@  author   Ashi Krishnan <hi@ashi.io>
 
 Many minor matters is a mechanism for maintainably managing many markups (or markdowns).
 
@@ -7,6 +8,8 @@ pieces of text in different languages. This is to solve the various escaping
 problems that can happen when you try to, for example, write JS code or
 Markdown inside JSX.
 
+This file starts with a matter header with a single prop.
+
   @[Hint] About matters
   This is what a matter looks like: indented, and with a head at the top.
   Indented lines without tags are not considered new matters.
@@ -14,6 +17,7 @@ Markdown inside JSX.
   This matter is a Hint. It'll generate a <Hint> tag in the JSX output.
 
   @-[Code] js
+  @-  theme  Twilight
   // This is a tag with a separator. The separator is the '-' before the
   // [Code], and it tells MMM that this matter is a *leaf*. MMM will not
   // try to parse deeper Matters.
@@ -32,7 +36,6 @@ This is an inclusion:
 It includes all the matters from intro.mmm right here.
 
 Inclusions don't work yet.
-
 
 
   @[Concept] Writing loops
@@ -62,17 +65,4 @@ Inclusions don't work yet.
         @[Code] js
         for (let x of [1, 2, 3]) {
 
-        }      
-
-    
-
-# Planing the game
-
-Blah blah blahh
-
-  @hint solution
-  Don't do anything crazy here:
-
-    @js
-
-  
+        }

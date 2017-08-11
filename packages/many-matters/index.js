@@ -46,6 +46,11 @@ function parse(input) {
         continue
       }
 
+      const prop = parseProp(line, top.separator)
+      if (prop) {
+        top.current.props[prop.key] = prop.value
+      }
+
       // Otherwise, consume this line
       top.current.children.push(line.substr(top.indent))
       continue      
@@ -96,6 +101,15 @@ const parseTag = (line, sep) => {
   const [_match, {length: indent}, separator, type, head] = match
   if (sep && separator !== sep) return    
   return {indent, type, head: head.trim(), separator}
+}
+
+const propLineRe = /^(\s*)@(-*)\s+([a-zA-Z0-9_\.]+)(.*)$/
+const parseProp = (line, sep) => {
+  const match = line.match(propLineRe)
+  if (!match) return
+  const [_match, {length: indent}, separator, key, value] = match
+  if (sep && separator !== sep) return    
+  return {indent, key, value: value.trim(), separator}
 }
 
 if (module === require.main) {
