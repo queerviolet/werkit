@@ -1,164 +1,96 @@
 [
   {
-    "indent": 0,
-    "matters": [
+    "type": "Package",
+    "props": {
+      "head": "Many Minor Matters",
+      "author": "Ashi Krishnan <hi@ashi.io>"
+    },
+    "children": [
+      "@  author   Ashi Krishnan <hi@ashi.io>",
+      "",
+      "",
       {
-        "type": "Package",
+        "type": "X",
         "props": {
-          "head": "Many Minor Matters"
+          "head": ""
+        },
+        "children": []
+      },
+      {
+        "type": "Y",
+        "props": {
+          "head": ""
         },
         "children": [
-          "",
-          "Many minor matters is a mechanism for maintainably managing many markups (or markdowns).",
-          "",
-          "MMM uses indentation and a very light syntax to distinguish between embedded",
-          "pieces of text in different languages. This is to solve the various escaping",
-          "problems that can happen when you try to, for example, write JS code or",
-          "Markdown inside JSX.",
-          "",
-          {
-            "type": "Hint",
-            "props": {
-              "head": "About matters"
-            },
-            "children": [
-              "This is what a matter looks like: indented, and with a head at the top.",
-              "Indented lines without tags are not considered new matters.",
-              "",
-              "This matter is a Hint. It'll generate a <Hint> tag in the JSX output.",
-              ""
-            ]
-          },
-          {
-            "type": "Code",
-            "props": {
-              "head": "js"
-            },
-            "children": [
-              "// This is a tag with a separator. The separator is the '-' before the",
-              "// [Code], and it tells MMM that this matter is a *leaf*. MMM will not",
-              "// try to parse deeper Matters.",
-              "",
-              "// MMM will still try to parse consecutive Matters, though. You must",
-              "// include the separator again, like this:  ",
-              ""
-            ]
-          },
-          {
-            "type": "Code",
-            "props": {
-              "head": "python"
-            },
-            "children": [
-              "# The purpose of all this is to keep MMM from getting tripped up on ",
-              "# languages where '@[' is a reasonable way to start a line.",
-              ""
-            ]
-          },
-          "This is an inclusion:",
           ""
         ]
-      }
-    ],
-    "current": {
-      "type": ".",
-      "props": {
-        "head": "./intro.mmm"
       },
-      "children": [
-        "",
-        "It includes all the matters from intro.mmm right here.",
-        "",
-        "Inclusions don't work yet.",
-        "",
-        "",
-        "",
-        {
-          "type": "Concept",
-          "props": {
-            "head": "Writing loops"
-          },
-          "children": [
-            {
-              "type": "Action",
-              "props": {
-                "head": "Write a loop"
-              },
-              "children": [
-                "",
-                "# We're going to start with ",
-                "",
-                "Loop through ten things:",
-                "",
-                {
-                  "type": "Code",
-                  "props": {
-                    "head": ""
-                  },
-                  "children": [
-                    "// ",
-                    "@[this will be interpreted as part of the code block]",
-                    "",
-                    "for (let i = 0; i != 10; ++i) {      ",
-                    "",
-                    "}"
-                  ]
-                },
-                {
-                  "type": "Code",
-                  "props": {
-                    "head": "jsx"
-                  },
-                  "children": [
-                    "<Foo>",
-                    "  <Bar prop={value} />",
-                    "</Foo>",
-                    ""
-                  ]
-                },
-                "Oh my god, this is *beautiful*.",
-                "",
-                {
-                  "type": "Hint",
-                  "props": {
-                    "head": "What about arrays?"
-                  },
-                  "children": [
-                    "You can use a for-of loop",
-                    "",
-                    {
-                      "type": "Code",
-                      "props": {
-                        "head": "js"
-                      },
-                      "children": [
-                        "for (let x of [1, 2, 3]) {",
-                        "",
-                        "}      ",
-                        "",
-                        "",
-                        ""
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+      "Many minor matters is a mechanism for maintainably managing many markups (or markdowns).",
+      "",
+      "MMM uses indentation and a very light syntax to distinguish between embedded",
+      "pieces of text in different languages. This is to solve the various escaping",
+      "problems that can happen when you try to, for example, write JS code or",
+      "Markdown inside JSX.",
+      "",
+      "This file starts with a matter header with a single prop.",
+      "",
+      {
+        "type": "Hint",
+        "props": {
+          "head": "About matters"
         },
-        "# Planing the game",
-        "",
-        "Blah blah blahh",
-        "",
-        "  @hint solution",
-        "  Don't do anything crazy here:",
-        "",
-        "    @js",
-        "",
-        "  ",
-        ""
-      ]
-    },
-    "separator": ""
+        "children": [
+          "This is what a matter looks like: indented, and with a head at the top.",
+          "Indented lines without tags are not considered new matters.",
+          "",
+          "This matter is a Hint. It'll generate a <Hint> tag in the JSX output.",
+          ""
+        ]
+      },
+      {
+        "type": "Code",
+        "props": {
+          "head": "js",
+          "theme": "Twilight"
+        },
+        "children": [
+          "@-  theme  Twilight",
+          "// This is a tag with a separator. The separator is the '-' before the",
+          "// [Code], and it tells MMM that this matter is a *leaf*. MMM will not",
+          "// try to parse deeper Matters.",
+          "",
+          "// MMM will still try to parse consecutive Matters, though. You must",
+          "// include the separator again, like this:  ",
+          ""
+        ]
+      },
+      {
+        "type": "Code",
+        "props": {
+          "head": "python"
+        },
+        "children": [
+          "# The purpose of all this is to keep MMM from getting tripped up on ",
+          "# languages where '@[' is a reasonable way to start a line.",
+          ""
+        ]
+      },
+      "This is an inclusion:",
+      "",
+      {
+        "type": ".",
+        "props": {
+          "head": "./intro.mmm"
+        },
+        "children": [
+          ""
+        ]
+      },
+      "It includes all the matters from intro.mmm right here.",
+      "",
+      "Inclusions don't work yet.",
+      "",
+      ""
+    ]
   }
 ]

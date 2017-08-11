@@ -1,6 +1,10 @@
 @[Package] Many Minor Matters
 @  author   Ashi Krishnan <hi@ashi.io>
 
+
+  @[X]
+  @[Y]
+
 Many minor matters is a mechanism for maintainably managing many markups (or markdowns).
 
 MMM uses indentation and a very light syntax to distinguish between embedded
@@ -31,7 +35,7 @@ This file starts with a matter header with a single prop.
 
 This is an inclusion:
 
-@[.] ./intro.mmm
+  @[.] ./intro.mmm
 
 It includes all the matters from intro.mmm right here.
 

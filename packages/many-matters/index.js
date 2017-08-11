@@ -16,11 +16,12 @@ function parse(input) {
         matters: [],
         current: matter() }]
   let returning = null
+    , line, top, indent
   
   for (let i = 0; i != count; ++i) {
-    const line = lines[i]
-        , top = stack[stack.length - 1]
-        , indent = indentOf(line)
+    line = lines[i]
+    top = stack[stack.length - 1]
+    indent = indentOf(line)
     if (returning) {
       top.current.children = [...top.current.children, ...returning]
       returning = null
@@ -37,8 +38,7 @@ function parse(input) {
       if (tag) {
         top.separator = tag.separator
         debug('subsequent:', tag.type)
-        if (top.current.tag || top.current.children.length)
-          top.matters.push(top.current)
+        endOfTheMatter()
         top.current = matter({
           type: tag.type,
           props: {head: tag.head},
@@ -78,17 +78,29 @@ function parse(input) {
       continue
     }
     if (indent < top.indent) {
-      // Pop if we've de-indented
-      top.matters.push(top.current)
-      returning = top.matters
-      debug('pop, returning:', top.matters.map(matter => matter.type))
-      stack.pop()
+      // When we de-indent, finish the current matter and pop the stack.
+      pop()
 
       // Reparse this line.
       --i; continue
     }
   }
-  return stack
+
+  function endOfTheMatter() {
+    if (top.current.type || top.current.children.length)
+      top.matters.push(top.current)
+  }
+
+  function pop() {
+      endOfTheMatter()
+      returning = top.matters
+      debug('pop, returning:', top.matters.map(matter => matter.type))
+      stack.pop()
+      top = stack[stack.length - 1]
+  }
+  while (stack.length) pop()
+  
+  return returning
 }
 
 const indentRe = /^\s*/
