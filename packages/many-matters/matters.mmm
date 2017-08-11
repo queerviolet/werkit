@@ -1,5 +1,12 @@
-xyz
 @[Workshop] Game of life
+@  authors: ['Ashi Krishnan <hi@ashi.io>']
+@  topics: ['react', 'redux', 'state machines']
+
+Hi there, and let's talk about the game of life.
+
+  @[Tests]
+  @  src: require('foo.js')
+  @  activation: something something something
 
   @[.] ./intro.md
 
@@ -10,7 +17,7 @@ xyz
 
     Loop through ten things:
 
-      @[Code] js
+      @--[Code]
       for (let i = 0; i != 10; ++i) {      
 
       }
