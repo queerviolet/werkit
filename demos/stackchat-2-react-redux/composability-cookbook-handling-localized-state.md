@@ -1,0 +1,11 @@
+There are several form components in Juke (for example, the `input` to filter artists, or the `select` used to add songs to playlists.
+
+We learned about the distinction that some developers make between `local state` and `application state` in [Juke Part 3: Forms](https://learn.fullstackacademy.com/workshop/581352f6b659df00039f5189/content/5820a141c9884c0003daac3a/text). When we throw the `redux` store into the fray, this distinction can become much more acute. While the `redux` store, at its strictest, is meant to be the single source of truth for **all** of the state in your application (from the identity of the logged in user, down to the lowliest `input` element), some developers don't like the idea of "polluting" their redux store with something as localized as form data. 
+
+There are two schools of thought here:
+
+1. We might choose to keep all of our `application state` in our Redux store, and write components that need local state as stateful React components (and use `setState` to update them). The upside of this approach is that it feels nice to not have to "clutter" our Redux store with state that feels ephemeral. The downside is that, strictly speaking, we no longer have a single source of truth for **all** the state in our app - we must be careful to make sure that our local state really is just local!
+
+2. We might choose to be strict about keeping everything in our Redux store, and try to take advantage of the composability of reducers to work out a system that puts all of our local state in one place. For example, we might make a slice of state called "forms", and nest the local state for each form in our app there. The upside of this approach is that we don't lose any of the advantages that Redux has given us. The downside is that it requires more forethought and coordination. This is where libraries like [`redux-form`](http://redux-form.com/6.0.5/) come in - it introduces a reducer and several higher order components that tuck the state of our forms away in their own place.
+
+Either one of these is a perfectly fine choice. All that I would suggest you do is that you be **consistent** with which approach you choose. It would be far more confusing if only *some* of your form data was handled in your `redux` store and *some* was handled by local state in a React class.

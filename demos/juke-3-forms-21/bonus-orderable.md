@@ -1,0 +1,1 @@
+Allow users to re-order songs in their playlist. Start by updating the backend model so that each song in a playlist also has a field corresponding to its order in the list. Make sure the songs render in the proper order in the view. Then try using a library like [react-sortable](https://github.com/danielstocks/react-sortable) so that users can easily edit this order.

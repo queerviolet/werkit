@@ -1,0 +1,3 @@
+There are the modules that are built into node (like `fs`); there are the modules we create (like all of our implemented commands); then there are the modules we find on [npm](https://www.npmjs.com/).
+
+**npm** is a package repository that gives access to interesting, creative and powerful programs built in node, made by people all over the world. It is now officially the largest repository of programming modules *ever*; the Node open source community is amazing!

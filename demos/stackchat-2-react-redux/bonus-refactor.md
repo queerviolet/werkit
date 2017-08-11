@@ -1,0 +1,1 @@
+Get some more practice using connect - refactor the other components that currently import the store directly, and make them use connect instead.

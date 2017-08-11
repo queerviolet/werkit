@@ -1,0 +1,1 @@
+You've come so far! Try to accomplish the bonus goal of syncing up the channel name in the navbar. This could actually be a bit tricky! Consider this an extra challenge!

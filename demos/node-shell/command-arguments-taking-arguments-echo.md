@@ -1,0 +1,10 @@
+So far, all of our commands have only been run by themselves, they haven't taken any arguments. Let's change our command interpreter (the handler for `stdin`'s `data` event) to extract a space-delimited arguments string and pass it to our command functions.  Those functions can then decide how they want to use the arguments.
+
+Test this functionality with at least one command: `echo`. The simplest thing `echo` does is print back the string passed to it:
+
+```sh
+prompt > echo hello world
+hello world
+```
+
+If you can, also emulate its more useful behavior of printing *environment variables* (such as `$PATH`). A little Google-fu might help here.

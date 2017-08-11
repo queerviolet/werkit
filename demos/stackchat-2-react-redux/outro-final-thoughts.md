@@ -1,0 +1,5 @@
+Engineering front-ends for applications in a way that's stable, scalable and maintainable is an extremely difficult task. This is because user interfaces, unlike (for example) RESTful web services, are inherently `stateful`, and managing state is hard.
+
+`react` can be intimidating at first because it implements features of the functional programming paradigm (like `immutability` and `pure functions`) that allow you to reason about your UI as easily as you reason about functions: `render(state) => view`. That's all there is to it.
+
+The tools you've learned to use throughout `StackChat` and `Juke` will help you write killer web applications, but you've also learned something bigger: the fundamentals of functional programming, and how to manage state to be predictable. You'll encounter many programs and even programming languages throughout your career that are stuck relying on procedural, imperative and object-oriented ways of thinking. The functional paradigm is powerful, and will serve you well for your entire career.

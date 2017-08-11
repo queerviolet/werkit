@@ -1,0 +1,3 @@
+Interactive software has user input. As the web has become more interactive, such inputs have become increasingly powerful. jQuery, for example, provided much-needed normalization for dealing with many types of inputs across many different user environments. At the time, this sufficed, but user input has grown to such proportions that it demands a greater level of organization and modularity.
+
+At the heart of the issue is data synchronization. How does data that users provide synchronize with backend, or even other parts of the application? No less difficult is the task of validating and managing the state of forms. Is this field invalid? Has it yet been edited? If so, should we display such concerns to the user?

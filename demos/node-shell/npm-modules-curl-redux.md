@@ -1,0 +1,1 @@
+Now that you have `request` available to `require`, implement the `curl` command. It should make an HTTP GET request to a given URL, and print out the HTTP response body.
