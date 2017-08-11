@@ -1,12 +1,12 @@
-const PlainText = Symbol()
+const debug = require('debug')('mmm')
 
-const matter = ({tag=null, props={}, children=[]}={}) => ({
-  children,
-  tag,
+const PlainText = '@line'
+
+const matter = ({type=null, props={}, children=[]}={}) => ({
+  type,
   props,
+  children,
 })
-
-const text = text => ({tag: PlainText, text})
 
 function parse(input) {
   const lines = input.toString().split('\n')
@@ -21,7 +21,6 @@ function parse(input) {
     const line = lines[i]
         , top = stack[stack.length - 1]
         , indent = indentOf(line)
-    console.log(line, JSON.stringify(stack, 0, 2))
     if (returning) {
       top.current.children = [...top.current.children, ...returning]
       returning = null
@@ -29,53 +28,58 @@ function parse(input) {
     if (indent === line.length) {
       // If the line is entirely whitespace, consume it in the current
       // matter.
-      top.current.children.push(text(line.substr(top.indent)))
+      top.current.children.push(line.substr(top.indent))
       continue
     }
     if (indent === top.indent) {
-      // If we have a tag, finalize this matter and start a new one
+      // If we've found a tag, finalize this matter and start a new one
       const tag = parseTag(line)
       if (tag) {
+        debug('subsequent:', tag.type)
         if (top.current.tag || top.current.children.length)
           top.matters.push(top.current)
         top.current = matter({
-          tag: tag.tag,
+          type: tag.type,
           props: {head: tag.head},
         })
         continue
       }
 
       // Otherwise, consume this line
-      top.current.children.push(text(line.substr(top.indent)))
+      top.current.children.push(line.substr(top.indent))
       continue      
     }
     if (indent > top.indent) {
       // Push if we have a tag
       const tag = parseTag(line)
       if (tag) {
+        debug('push:', tag.type, tag.head)        
         stack.push({
           indent,
           matters: [],
           current: matter({
-            tag: tag.tag,
+            type: tag.type,
             props: {head: tag.head},
           })})
         continue
       }
 
       // Otherwise, consume the line.
-      top.current.children.push(text(line.substr(top.indent)))
+      top.current.children.push(line.substr(top.indent))
       continue
     }
     if (indent < top.indent) {
       // Pop if we've de-indented
       top.matters.push(top.current)
       returning = top.matters
+      debug('pop, returning:', top.matters.map(matter => matter.type))
+      stack.pop()
 
       // Reparse this line.
       --i; continue
     }
   }
+  return stack
 }
 
 const indentRe = /^\s*/
@@ -85,8 +89,8 @@ const tagLineRe = /^(\s*)@\[([a-zA-Z0-9_\.]+)\](.*)$/
 const parseTag = line => {
   const match = line.match(tagLineRe)
   if (!match) return
-  const [_match, {length: indent}, tag, head] = match
-  return {indent, tag, head: JSON.stringify(head)}
+  const [_match, {length: indent}, type, head] = match
+  return {indent, type, head: head.trim()}
 }
 
 if (module === require.main) {

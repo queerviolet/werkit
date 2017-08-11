@@ -1,6 +1,6 @@
 @[Workshop] Game of life
-@  authors: ['Ashi Krishnan <hi@ashi.io>']
-@  topics: ['react', 'redux', 'state machines']
+//@  authors: ['Ashi Krishnan <hi@ashi.io>']
+//@  topics: ['react', 'redux', 'state machines']
 
 Hi there, and let's talk about the game of life.
 
@@ -17,7 +17,7 @@ Hi there, and let's talk about the game of life.
 
     Loop through ten things:
 
-      @--[Code]
+      @[Code]
       for (let i = 0; i != 10; ++i) {      
 
       }
@@ -30,7 +30,7 @@ Hi there, and let's talk about the game of life.
         @[Code] js
         for (let x of [1, 2, 3]) {
 
-        }
+        }      
 
     
 
