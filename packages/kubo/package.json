@@ -1,7 +1,7 @@
 {
-  "name": "werkit",
+  "name": "kubo",
   "version": "0.0.1",
-  "description": "Tooling for building interactive code workshops with JSX.",
+  "description": "Tooling for building interactive code workshops",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
