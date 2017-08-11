@@ -1,3 +1,5 @@
+const Markdown = require('./Markdown')
+
 module.exports = class Hint extends React.Component {
     state = {open: false}
 
@@ -9,7 +11,7 @@ module.exports = class Hint extends React.Component {
     render() {
       return <div className='hint'>
         <h1 onClick={this.toggle}>{this.title}</h1>
-        {this.open && <div>{this.props.children}</div>}
+        {this.open && <Markdown>{this.props.children}</Markdown>}
       </div>
     }
   }

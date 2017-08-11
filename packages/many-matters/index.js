@@ -92,6 +92,10 @@ function parse(input) {
   }
 
   function endOfTheMatter() {
+    const kids = top.current.children
+    while (kids[kids.length - 1] === '\n')
+      // Pop empty lines at the end of matters.
+      kids.pop()
     if (top.current.type || top.current.children.length)
       top.matters.push(top.current)
   }

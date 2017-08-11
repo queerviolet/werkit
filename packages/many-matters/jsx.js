@@ -22,8 +22,16 @@ function toJsx(matter, {createElement='React.createElement'}={}) {
             }
           }))
       , propsSrc = JSON.stringify(props, 0, 2)
-      , childrenSrc = children.map(toJsx).join(',\n')
+      , childrenSrc = children.reduce(mergeLines, [])
+          .map(toJsx).join(',\n')
       , childSrc = childrenSrc ? `, ${childrenSrc}` : ''
       , indent = new Array(matter.indent).fill(' ').join('')
   return `${indent}${createElement}(${type}, ${propsSrc} ${childSrc})`
+}
+
+function mergeLines(children, child) {
+  const lastChild = children[children.length - 1]
+  if (typeof lastChild === 'string' && typeof child === 'string')
+    return [...children.slice(0, -1), lastChild + child]
+  return [...children, child]
 }

@@ -2,14 +2,16 @@
 @  author   Ashi Krishnan <hi@ashi.io>
 
   @[Concept] Introduction
-  Many minor matters is a mechanism for maintainably managing many markups (or markdowns).
+  Many minor matters is a mechanism for maintainably managing many markups
+  (or downs).
 
-  MMM uses indentation and a very light syntax to distinguish between embedded
-  pieces of text in different languages. This is to solve the various escaping
-  problems that can happen when you try to, for example, write JS code or
-  Markdown inside JSX.
+    @[Action] Say again?
+    MMM uses indentation and a very light syntax to distinguish between embedded
+    pieces of text in different languages. This is to solve the various escaping
+    problems that can happen when you try to, for example, write `JS` code or
+    *Markdown* inside JSX.
 
-  This file starts with a matter header with a single prop.
+    This file starts with a matter header with a single prop.
 
   @[Concept] About matters
     @[Action] Simple matters
@@ -17,7 +19,7 @@
     Indented lines without tags are not considered new matters.
 
       @[Hint]
-      This matter is a Hint. It'll generate a <Hint> tag in the JSX output. That's
+      This matter is a Hint. It'll generate a `<Hint>` tag in the JSX output. That's
       the extent of what MMM knows about what it's doing---it's a very thin wrapper
       on top of JSX.
 
@@ -25,9 +27,8 @@
 
     MMM aims to get out of the way of whatever languages you want to write about:
 
-      @---[Code] mmm
+      @---[Code.Block] mmm
       @-[Code] js
-      @-  theme  Twilight
       // This is a tag with a separator. The separator is the '-' before the
       // [Code], and it tells MMM that this matter is a *leaf*. MMM will not
       // try to parse deeper Matters.
@@ -47,6 +48,28 @@
       // So we can show an array literal in objective C, for instance:
       @[@"Apples", @"Bananas", @"Cucumbers"];    
 
+  When displayed, the above matters look like:
+
+      @-[Code.Block] js
+      // This is a tag with a separator. The separator is the '-' before the
+      // [Code], and it tells MMM that this matter is a *leaf*. MMM will not
+      // try to parse deeper Matters.
+      /*
+        So,
+          @[This]
+          is not a new matter.
+      */
+      // MMM will still try to parse consecutive Matters, though. You must
+      // include the separator again, like this:  
+      
+      @-[Code.Block] python
+      # The purpose of all this is to keep MMM from getting tripped up on 
+      # languages where '@[' is a reasonable way to start a line.
+
+      @-[Code.Block] objc  
+      // So we can show an array literal in objective C, for instance:
+      @[@"Apples", @"Bananas", @"Cucumbers"];    
+
   @[Concept] Things that don't work yet
   
     @[Action] Inclusions
@@ -54,7 +77,7 @@
 
       @-[Code] mmm
       @[...] ./intro.mmm
-    
+  
     It includes all the matters from intro.mmm right here.
     
     Inclusions don't work yet.

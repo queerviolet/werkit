@@ -3,17 +3,23 @@ const Code = module.exports = ({language, children}) =>
 
 Code.Inline = Code
 
-Code.Block = ({language, children}) =>
+Code.Block = ({name, language=name, children}) =>
   <Lowlight language={language} value={src(children)} />
 
 const Lowlight = require('react-lowlight')
     , js = require('highlight.js/lib/languages/javascript')
+    , python = require('highlight.js/lib/languages/python')
+    , objc = require('highlight.js/lib/languages/objectivec')
 
 require('./atelier-cave-dark.css')
 require('./atelier-cave-light.css')
 
 Lowlight.registerLanguage('js', js)
 Lowlight.registerLanguage('javascript', js)
+Lowlight.registerLanguage('python', python)
+Lowlight.registerLanguage('objc', objc)
+Lowlight.registerLanguage('objective-c', objc)
+Lowlight.registerLanguage('mmm', objc)
 
 const source = Symbol()
 const src = children =>
