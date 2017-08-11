@@ -22,10 +22,7 @@ function toJsx(matter, {createElement='React.createElement'}={}) {
   if (matter.type === '...') return JSON.stringify(`<<< ${matter.head} >>>`)
   const {type, props: rawProps, children} = matter
 
-  const props = Object.assign(
-                  ...Object.keys(rawProps)
-                    .map(prop => ({[prop]: jsValue(rawProps[prop])})))
-      , propsSrc = formatProps(props)
+  const propsSrc = formatProps(rawProps)
       , childrenSrc = children.reduce(mergeLines, [])
           .map(toJsx).join(',\n')
       , childSrc = childrenSrc ? `, ${childrenSrc}` : ''
@@ -41,25 +38,11 @@ function mergeLines(children, child) {
   return [...children, child]
 }
 
-function jsValue(value) {
-  try {    
-    return eval(`(function() { return ${value} })()`)
-  } catch (x) {
-    return value
-  }
-}
-
 function formatProps(props) {
   if (!props) return 'null'  
-  if (typeof props === 'string') return JSON.stringify(props)
-  if (typeof props === 'array') return `[${props.map(formatProps).join(', ')}]`
-  if (typeof props === 'object')
-    return '{' +
-      Object.keys(props)
-        .map(key => `${JSON.stringify(key)}: ${formatProps(props[key])}`)
-        .join(', ') +
-    '}'
-  return props.toString()
+  return '{' +
+    Object.keys(props)
+      .map(key => `${JSON.stringify(key)}: ${props[key].toString()}`)
+      .join(', ') +
+  '}'
 }
-
-module.exports.jsValue = jsValue

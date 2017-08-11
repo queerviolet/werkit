@@ -41,7 +41,7 @@ function parse(input) {
         endOfTheMatter()
         top.current = matter({
           type: tag.type,
-          props: {name: tag.head},
+          props: {name: JSON.stringify(tag.head)},
           indent
         })
         continue
@@ -70,7 +70,7 @@ function parse(input) {
           separator: tag.separator,
           current: matter({            
             type: tag.type,
-            props: {name: tag.head},
+            props: {name: JSON.stringify(tag.head)},
             indent
           })})
         continue

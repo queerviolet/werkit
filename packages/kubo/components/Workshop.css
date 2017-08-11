@@ -5,7 +5,7 @@ html {
 }
 
 code, .hljs-inline > code.hljs {
-  font-size: 16px;
+  font-size: 14px;
   font-family: Menlo;
 }
 
@@ -15,12 +15,12 @@ code, .hljs-inline > code.hljs {
 }
 
 img {
-  width: 125%;
+  width: 100%;
 
   /* Center */
-  position: relative;
+  /* position: relative;
   left: 50%;
-  transform: translate(-50%);
+  transform: translate(-50%); */
 
   margin-top: 9px;
   margin-bottom: 9px;
@@ -30,12 +30,11 @@ img {
 }
 
 pre.lowlight {
-  width: 125%;
+  width: 100%;
   /* Center */
-  position: relative;
+  /* position: relative;
   left: 50%;
-  transform: translate(-50%);
-
+  transform: translate(-50%); */
   box-shadow: 2px 2px 8px gray;  
 }
 

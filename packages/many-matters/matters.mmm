@@ -1,5 +1,5 @@
 @[Workshop] Many Minor Matters
-@  author   Ashi Krishnan <hi@ashi.io>
+@  author   `Ashi Krishnan <hi@ashi.io>`
 
   @[Concept] Introduction
   Many minor matters is a mechanism for maintainably managing many markups
@@ -13,7 +13,7 @@
     *Markdown* inside JSX.
 
     This file starts with a matter header with a single prop.
-
+    
   @[Concept] About matters
     @[Action] Simple matters
     This is what a matter looks like: indented, and with a head at the top.
@@ -79,8 +79,10 @@
       @-[Code.Block] mmm
       @[pre]
       Hello.
+    
+    Looks like this:
 
-      @-[pre]
+      @[pre]
       Hello.
 
     @[Action] Props
@@ -91,7 +93,8 @@
     more spaces, then the prop's value. The whitespace between the `@` and the prop is
     non-optional (this disambiguates it from other MMM directives, like `@import`).
 
-    If the value is a valid JS expression, we'll use it directly:
+    Prop values must be valid JS expressions; they are inserted directly into the
+    generated JSX output:
 
       @-[Code.Block] mmm 
       @[strong]
@@ -104,24 +107,22 @@
       @  style {backgroundColor: 'lightblue'}
       Boo!
     
-    Otherwise, you'll get it as a string.
-
-    When I say "any JS expression," I mean it. You can even use functions.
+    You can even use functions.
 
     All together then, here's the Matter for a working button:
 
       @-[Code.Block] mmm
       @[button]
-      @  style        {backgroundColor: 'fuchsia', padding: '9px', color: 'white'}
-      @  data-message Hi there.
-      @  onClick      evt => window.alert(evt.target.dataset.message)
+      @  style         {backgroundColor: 'fuchsia', padding: '9px', color: 'white'}
+      @  data-message  `Hi there.`
+      @  onClick       evt => window.alert(evt.target.dataset.message)
       Click me, please!
 
     It renders as this:
 
       @[button]
       @  style        {backgroundColor: 'fuchsia', padding: '9px', color: 'white'}
-      @  data-message Hi there.
+      @  data-message `Hi there.`
       @  onClick      evt => window.alert(evt.target.dataset.message)
       Click me, please!
     
