@@ -68,7 +68,49 @@
 
       @-[Code.Block] objc  
       // So we can show an array literal in objective C, for instance:
-      @[@"Apples", @"Bananas", @"Cucumbers"];    
+      @[@"Apples", @"Bananas", @"Cucumbers"];
+
+    @[Action] Providing props
+
+    Thing one, you can write in HTML tags by using strings in the tag:
+
+      @['pre']
+      Hello.
+    
+    Thing two, you can specify props. Props are specified by '@' followed by
+    spaces, then the name of the prop, then the prop's value.
+
+    If the value is a valid JS expression, we'll use it directly:
+
+      @-[Code.Block] mmm 
+      @['strong']
+      @  style {backgroundColor: 'blue'}
+      Boo!
+
+    Renders this:
+
+      @['strong']
+      @  style {backgroundColor: 'blue'}
+      Boo!
+    
+    Otherwise, you'll get it as a string.
+
+    When I say "any JS expression," I mean it:
+
+      @-[Code.Block] mmm
+      @['button']
+      @  style  {backgroundColor: 'fuchsia', padding: '9px', color: 'white'}
+      @  onClick () => window.alert('you clicked me!')    
+      Click me, I dare you.
+
+    Renders as this:
+
+      @['button']
+      @  style  {backgroundColor: 'fuchsia', padding: '9px', color: 'white'}
+      @  onClick () => window.alert('you clicked me!')    
+      Click me, I dare you.
+
+      
 
   @[Concept] Things that don't work yet
   

@@ -13,15 +13,10 @@ function toJsx(matter, {createElement='React.createElement'}={}) {
   if (matter.type === '...') return JSON.stringify(`<<< ${matter.head} >>>`)
   const {type, props: rawProps, children} = matter
 
-  const props = Object.assign(...Object.keys(rawProps)
-          .map(prop => {
-            try {
-              return {[prop]: JSON.parse(rawProps[prop])}
-            } catch (_x) {
-              return {[prop]: rawProps[prop]}
-            }
-          }))
-      , propsSrc = JSON.stringify(props, 0, 2)
+  const props = Object.assign(
+                  ...Object.keys(rawProps)
+                    .map(prop => ({[prop]: jsValue(rawProps[prop])})))
+      , propsSrc = formatProps(props)
       , childrenSrc = children.reduce(mergeLines, [])
           .map(toJsx).join(',\n')
       , childSrc = childrenSrc ? `, ${childrenSrc}` : ''
@@ -35,3 +30,36 @@ function mergeLines(children, child) {
     return [...children.slice(0, -1), lastChild + child]
   return [...children, child]
 }
+
+function jsValue(value) {
+  try {    
+    return eval(`(function() { return ${value} })()`)
+  } catch (x) {
+    return value
+  }
+}
+
+function formatProps(props) {
+  if (!props) return 'null'  
+  if (typeof props === 'string') return JSON.stringify(props)
+  if (typeof props === 'array') return `[${props.map(formatProps).join(', ')}]`
+  if (typeof props === 'object')
+    return '{' +
+      Object.keys(props)
+        .map(key => `${key}: ${formatProps(props[key])}`)
+        .join(', ') +
+    '}'
+  return props.toString()
+}
+
+function propReplacer(key, value) {
+  console.error('key=', key, 'value=', value)
+  if (typeof value === 'function') {
+
+    console.error('asdfadfasdfasdf', value.toString())
+    process.exit(1)
+  }
+  return value
+}
+
+module.exports.jsValue = jsValue

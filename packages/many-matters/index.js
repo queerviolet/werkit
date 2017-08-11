@@ -126,7 +126,7 @@ function parse(input) {
 const indentRe = /^\s*/
 const indentOf = line => line.match(indentRe)[0].length
 
-const tagLineRe = /^(\s*)@(-*)\[([a-zA-Z0-9_\.]+)\](.*)$/
+const tagLineRe = /^(\s*)@(-*)\[(['a-zA-Z0-9_\.]+)\](.*)$/
 const parseTag = (line, sep) => {
   const match = line.match(tagLineRe)
   if (!match) return
