@@ -3,7 +3,7 @@ const Markdown = require('./Markdown')
 module.exports = class Hint extends React.Component {
     state = {open: false}
 
-    get title() { return this.props.attrs ? this.props.attrs.title : this.props.title }
+    get title() { return this.props.attrs ? this.props.attrs.title : this.props.title || this.props.name }
     get open() { return this.state.open }
 
     toggle = () => this.setState({open: !this.open})

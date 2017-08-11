@@ -85,6 +85,10 @@ pre.lowlight {
   box-shadow: 2px 2px 8px gray;  
 }
 
+pre.hljs-inline {
+  display: inline;
+}
+
 .nav-concept-header {
   font-family: 'Lato';
 }
