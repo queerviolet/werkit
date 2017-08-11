@@ -4,7 +4,7 @@ Its current status is foetal.
 
 # Setup
 
-This is a monorepo managed by lerna. Install it if you don't have it:
+This is a monorepo managed by lerna. Install lerna if you don't have it:
 
 ```sh
 npm i -g lerna
@@ -19,7 +19,7 @@ lerna bootstrap
 # Import a workshop from Learndot
 
 ```sh
-node packages/learn.werkit <workshop-id>
+node packages/learn.kubo <workshop-id>
 ```
 
 This will convert the workshop to JSX and dump its files into a directory named
@@ -28,10 +28,8 @@ after it (`game-of-life`, for instance).
 # Run the workshop
 
 ```sh
-node packages/werkit my-workshop/index.jsx
+npm run kubo my-workshop
 ```
-
-Werkit currently only accepts a JSX file on the command line (this will change).
 
 Once started, you can view the workshop on [port 9876](http://localhost:9876).
 
