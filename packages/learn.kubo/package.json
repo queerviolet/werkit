@@ -1,7 +1,7 @@
 {
-  "name": "learn.werkit",
+  "name": "learn.kubo",
   "version": "0.0.1",
-  "description": "Import learndot workshops as Werkit JSX.",
+  "description": "Import learndot workshops in kubo",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
