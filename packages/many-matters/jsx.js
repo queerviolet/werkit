@@ -21,7 +21,8 @@ function toJsx(matter, {createElement='React.createElement'}={}) {
           .map(toJsx).join(',\n')
       , childSrc = childrenSrc ? `, ${childrenSrc}` : ''
       , indent = new Array(matter.indent).fill(' ').join('')
-  return `${indent}${createElement}(${type}, ${propsSrc} ${childSrc})`
+      , typeSrc = type && type[0] === type[0].toUpperCase() ? type : JSON.stringify(type)
+  return `${indent}${createElement}(${typeSrc}, ${propsSrc} ${childSrc})`
 }
 
 function mergeLines(children, child) {
@@ -46,20 +47,10 @@ function formatProps(props) {
   if (typeof props === 'object')
     return '{' +
       Object.keys(props)
-        .map(key => `${key}: ${formatProps(props[key])}`)
+        .map(key => `${JSON.stringify(key)}: ${formatProps(props[key])}`)
         .join(', ') +
     '}'
   return props.toString()
-}
-
-function propReplacer(key, value) {
-  console.error('key=', key, 'value=', value)
-  if (typeof value === 'function') {
-
-    console.error('asdfadfasdfasdf', value.toString())
-    process.exit(1)
-  }
-  return value
 }
 
 module.exports.jsValue = jsValue

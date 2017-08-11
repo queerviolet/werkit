@@ -70,56 +70,99 @@
       // So we can show an array literal in objective C, for instance:
       @[@"Apples", @"Bananas", @"Cucumbers"];
 
-    @[Action] Providing props
+    @[Action] Using HTML tags
 
-    Thing one, you can write in HTML tags by using strings in the tag:
+    MMM compiles to JSX. You can use HTML tags just like you would in JSX---just
+    reference by using a lower case tag.
 
-      @['pre']
+      @-[Code.Block] mmm
+      @[pre]
       Hello.
+
+      @-[pre]
+      Hello.
+
+    @[Action] Props
+
+    You can specify props to give to a component (or tag).
     
-    Thing two, you can specify props. Props are specified by '@' followed by
-    spaces, then the name of the prop, then the prop's value.
+    Props are specified by a `@`, *followed by whitespace*, then the name of the prop,
+    more spaces, then the prop's value. The whitespace between the `@` and the prop is
+    non-optional (this disambiguates it from other MMM directives, like `@import`).
 
     If the value is a valid JS expression, we'll use it directly:
 
       @-[Code.Block] mmm 
-      @['strong']
-      @  style {backgroundColor: 'blue'}
+      @[strong]
+      @  style {backgroundColor: 'lightblue'}
       Boo!
 
     Renders this:
 
-      @['strong']
-      @  style {backgroundColor: 'blue'}
+      @[strong]
+      @  style {backgroundColor: 'lightblue'}
       Boo!
     
     Otherwise, you'll get it as a string.
 
-    When I say "any JS expression," I mean it:
+    When I say "any JS expression," I mean it. You can even use functions.
+
+    All together then, here's the Matter for a working button:
 
       @-[Code.Block] mmm
-      @['button']
-      @  style  {backgroundColor: 'fuchsia', padding: '9px', color: 'white'}
-      @  onClick () => window.alert('you clicked me!')    
-      Click me, I dare you.
+      @[button]
+      @  style        {backgroundColor: 'fuchsia', padding: '9px', color: 'white'}
+      @  data-message Hi there.
+      @  onClick      evt => window.alert(evt.target.dataset.message)
+      Click me, please!
 
-    Renders as this:
+    It renders as this:
 
-      @['button']
-      @  style  {backgroundColor: 'fuchsia', padding: '9px', color: 'white'}
-      @  onClick () => window.alert('you clicked me!')    
-      Click me, I dare you.
-
-      
+      @[button]
+      @  style        {backgroundColor: 'fuchsia', padding: '9px', color: 'white'}
+      @  data-message Hi there.
+      @  onClick      evt => window.alert(evt.target.dataset.message)
+      Click me, please!
+    
+    I don't know if that's useful, exactly. MMM is explicitly not designed to be
+    a good way to express programmic structures. For that, you'll probably want
+    to use JSX.
 
   @[Concept] Things that don't work yet
   
     @[Action] Inclusions
     This is an inclusion:
 
-      @-[Code] mmm
+      @-[Code.Block] mmm
       @[...] ./intro.mmm
   
     It includes all the matters from intro.mmm right here.
     
     Inclusions don't work yet.
+
+    @[Action] Child blocks
+    This is a child block:
+
+      @-[Code.Block] mmm
+      @{}
+      const data = require('./data')
+          , mapper = require('./mapper')
+      return data.map(mapper)
+    
+    It lets you insert JS code, which will be evaluated in an IFFE.
+  
+    Child blocks don't work yet.
+
+    @[Action] @import directives  
+    Right now, MMM prays that everything it needs is global. This is true,
+    because werkit uses the webpack ProvidePlugin to inject some global-ish names,
+    like Workshop, Concept, Action, and so on.
+
+    In general, it would be nice to be able to insert `import` statements in the
+    top of the generated file. Maybe any kind of statement? I think the syntax
+    will look like this:
+
+      @-[Code.Block] mmm
+      @import {Workshop} from 'kubo/components'
+    
+    These don't work yet either.
