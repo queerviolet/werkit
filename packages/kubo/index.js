@@ -2,7 +2,9 @@ const path = require('path')
     , fs = require('fs')    
     , {tmpdir} = require('os')    
     , {promisify} = require('util')
+    , read = promisify(fs.readFile)
     , write = promisify(fs.writeFile)
+    , stat = promisify(fs.stat)
     , {createFile: mktemp} = require('mktemp')
     , resolve = require('resolve')  
     , my = module => resolve.sync(module, {
@@ -40,10 +42,8 @@ async function entryPoint(entry) {
   return temp
 }
 
-async function serve(entry) {
-  const resolvedEntryPoint = path.resolve(entry)
-  const entryPointFile = await entryPoint(resolvedEntryPoint)
-  console.log(entryPointFile)
+async function serve(entry, port=9876) {
+  const entryPointFile = await entryPoint(entry)
 
   const {compiler} = werk({filename: 'index.js'})
     .config(target('web'))
@@ -54,19 +54,20 @@ async function serve(entry) {
     ([
       // activate HMR for React
       'react-hot-loader/patch',
-      'webpack-dev-server/client?http://localhost:9876',
+      `webpack-dev-server/client?http://localhost:${port}`,
       'webpack/hot/dev-server',
       entryPointFile,
     ])
   const server = new WebpackDevServer(compiler, {    
     host: 'localhost',
-    port: 9876,
+    port,
     stats: 'errors-only',
     historyApiFallback: true, // respond to 404s with index.html  
     hot: true, // enable HMR on the server
     contentBase: path.join(__dirname, 'static'),
     watchContentBase: true,
-  }).listen(9876, () => console.log(server.address()))
+    log: x => x,
+  }).listen(port, () => console.log(`http://localhost:${port}`))
 }
 
 const globals = flow(
@@ -129,12 +130,60 @@ const werk = output => rxquire()
   // Provide our globals
   .config(plugin(new webpack.ProvidePlugin(globals)))
 
+const lookup = (file, parser=JSON.parse) =>
+  async function(entry=process.cwd()) {
+    let p = path.join(entry, file)
+    do {
+      try {
+        const dir = path.dirname(p)
+        return {
+          file: p,
+          dir,
+          data: parser(await read(p)),
+          resolve: (...paths) => path.resolve(dir, ...paths)
+        }
+      } catch(x) {
+        console.log(p, x)
+        if (p !== path.join('/', file))
+          p = path.join(path.dirname(path.dirname(p)), file)
+        else
+          p = null
+      }
+    } while (p)
+  }
 
-function main(_node, _index, entry) {
-  // werk(entry).exports
-  //   .map(index => JSON.stringify(index, 0, 2))
-  //   .subscribe(console.log, console.error)
-  serve(entry)
+const package = lookup('package.json')
+
+async function findKubo(entry) {
+  if (!entry) {
+    const pkg = await package()
+    if (typeof pkg.data.kubo === 'string') {
+      return pkg.resolve(pkg.data.kubo)
+    }
+    try {
+      const dotKubo = pkg.resolve('.kubo')
+      await stat(dotKubo)
+      return dotKubo
+    } catch (x) {
+      /* drat */
+      return null
+    }    
+  }
+  return entry
 }
 
-if (module === require.main) main(...process.argv)
+async function main(_node, _index, kubo) {
+  kubo = kubo || await findKubo(kubo)
+  if (!kubo) {
+    throw `kubo: no materials found in ${process.cwd()}`
+  }  
+  
+  serve(path.resolve(kubo))
+}
+
+if (module === require.main)
+  main(...process.argv)
+    .catch(err => {
+      console.error(err)
+      process.exit(1)
+    })
