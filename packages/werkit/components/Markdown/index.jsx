@@ -2,7 +2,6 @@ const marked = require('marked')
     , rehype = require('rehype')
     , Default = require('./Default')
 
-const {default: serialize} = require('serialize-jsx')
 const Markdown = module.exports = function Markdown({
   tags=require('./tags'),  
   Root='div',
