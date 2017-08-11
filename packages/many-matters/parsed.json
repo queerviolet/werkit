@@ -1,0 +1,109 @@
+[
+  {
+    "indent": 0,
+    "matters": [],
+    "current": {
+      "type": "Workshop",
+      "props": {
+        "head": "Game of life"
+      },
+      "children": [
+        "//@  authors: ['Ashi Krishnan <hi@ashi.io>']",
+        "//@  topics: ['react', 'redux', 'state machines']",
+        "",
+        "Hi there, and let's talk about the game of life.",
+        "",
+        {
+          "type": "Tests",
+          "props": {
+            "head": ""
+          },
+          "children": [
+            "@  src: require('foo.js')",
+            "@  activation: something something something",
+            ""
+          ]
+        },
+        {
+          "type": ".",
+          "props": {
+            "head": "./intro.md"
+          },
+          "children": [
+            ""
+          ]
+        },
+        {
+          "type": "Concept",
+          "props": {
+            "head": "Writing loops"
+          },
+          "children": [
+            {
+              "type": "Action",
+              "props": {
+                "head": "Write a loop"
+              },
+              "children": [
+                "",
+                "# We're going to start with ",
+                "",
+                "Loop through ten things:",
+                "",
+                {
+                  "type": "Code",
+                  "props": {
+                    "head": ""
+                  },
+                  "children": [
+                    "for (let i = 0; i != 10; ++i) {      ",
+                    "",
+                    "}",
+                    ""
+                  ]
+                },
+                "Oh my god, this is *beautiful*.",
+                "",
+                {
+                  "type": "Hint",
+                  "props": {
+                    "head": "What about arrays?"
+                  },
+                  "children": [
+                    "You can use a for-of loop",
+                    "",
+                    {
+                      "type": "Code",
+                      "props": {
+                        "head": "js"
+                      },
+                      "children": [
+                        "for (let x of [1, 2, 3]) {",
+                        "",
+                        "}      ",
+                        "",
+                        "",
+                        ""
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "# Planing the game",
+        "",
+        "Blah blah blahh",
+        "",
+        "  @hint solution",
+        "  Don't do anything crazy here:",
+        "",
+        "    @js",
+        "",
+        "  ",
+        ""
+      ]
+    }
+  }
+]

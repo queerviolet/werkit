@@ -1,0 +1,46 @@
+@[Workshop] Game of life
+//@  authors: ['Ashi Krishnan <hi@ashi.io>']
+//@  topics: ['react', 'redux', 'state machines']
+
+Hi there, and let's talk about the game of life.
+
+  @[Tests]
+  @  src: require('foo.js')
+  @  activation: something something something
+
+  @[.] ./intro.md
+
+  @[Concept] Writing loops
+    @[Action] Write a loop
+
+    # We're going to start with 
+
+    Loop through ten things:
+
+      @[Code]
+      for (let i = 0; i != 10; ++i) {      
+
+      }
+    
+    Oh my god, this is *beautiful*.
+
+      @[Hint] What about arrays?
+      You can use a for-of loop
+
+        @[Code] js
+        for (let x of [1, 2, 3]) {
+
+        }      
+
+    
+
+# Planing the game
+
+Blah blah blahh
+
+  @hint solution
+  Don't do anything crazy here:
+
+    @js
+
+  
