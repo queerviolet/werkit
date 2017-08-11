@@ -5,7 +5,8 @@
   "main": "packages/werkit",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "add": "scripts/add.sh"
+    "add": "scripts/add.sh",
+    "kubo": "node packages/kubo"
   },
   "author": "",
   "license": "ISC",
