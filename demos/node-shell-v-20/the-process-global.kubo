@@ -1,0 +1,105 @@
+@[Concept] The Process Global 
+  @[Action] Simulating The Bash Shell 
+  We'd like to build a system that works like this:
+
+  <terminal>
+  $ node bash.js
+  my_prompt: ls
+  .git
+  bash.js
+  </terminal>
+
+  When we type `$ node bash.js` we enter a program that outputs `my_prompt:`. Then our program will be able to listen for various commands and respond! How are we outputting the prompt and getting information back? Let's explore the `process` global that exists in all `node` programs.
+
+  @[Action] The 'process' global variable 
+  When we run `node [filename]` in the terminal, we are instantiating a *process* on a computer. This is a process just like the one running your Chrome window and the list of processes you can see in **Activity Monitor** tool on OSX or **Task Manager** on Windows. Meta-information about this process accessible to you by using the `process` global in a Node program.
+
+  Try it out: in our `bash.js`, let's `console.log` out the variable named `process`. This variable is a *global* variable, meaning it's available anywhere in our Node program and does not have to be instantiated. Scan through the different properties and even try logging `Object.keys(process)` to see a list of all proprties.
+
+  ---
+
+  ### Side Note
+
+  A program is the set of instructions necessary to run a *process*. Processes comprise one or more *threads* — series of execution steps that the Operating System (OS) can tell the CPU to perform.
+
+  A single-threaded CPU core can only do one step at a time. To simulate processes running simultaneously, the computer actually jumps between threads very quickly. The OS *schedules* these jumps via a fair algorithm.
+
+  Even better, modern CPUs often have multiple *logic cores*, usually two or four. They therefore can execute multiple threads truly simultaneously — "multi-threading". Amazingly, cores themselves can be "hyper-threaded", able to handle two threads each. Writing code to coordinate many threads (parallelization) is a challenge, however. Examples of parallel tasks include video encoding (multiple parts of the video can be encoded simultaneously) or sending many emails.
+
+  JavaScript is single-threaded. Some asynchronous APIs such as [Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) let you spawn new threads. But the language itself only accounts for one.
+
+  @[Action] Stream communication 
+  In Unix environments, programs can communicate with streams called `STDIN`, `STDOUT`, and `STDERR` (Standard Input, Output, and Error). As the names imply, Standard Input is data flowing into the program and Standard Output is a channel for data coming out from the program. For a process started in the terminal, STDIN might be keyboard input, and STDOUT is displayed in the terminal as text.
+
+  Node.js gives us access to these streams in the form of [`process.stdin` and `process.stdout` objects](https://nodejs.org/api/process.html#process_process_stdout). In fact, Node's `console.log` is actually just a [thin wrapper around `stdout`](https://github.com/nodejs/node/blob/master/lib/console.js). You may not know much about streams, but for this workshop we only need to know how to read and write as shown below.
+
+
+  ```js
+  // Output a prompt
+  process.stdout.write('prompt > ');
+
+  // The stdin 'data' event fires after a user types in a line
+  process.stdin.on('data', function (data) {
+    var cmd = data.toString().trim(); // remove the newline
+
+    process.stdout.write('You typed: ' + cmd);
+    process.stdout.write('\nprompt > ');
+
+  });
+  ```
+
+  Type this out into your `bash.js` file and run `node bash.js` from the command line.  You should see something like this:
+
+  <terminal>
+  $ node bash.js
+  prompt > hello world
+  You typed: hello world
+  prompt >
+  </terminal>
+
+  Note that our process doesn't immediately end this time. That's because we've registered a *listener* to `stdin`, so Node won't kill the process automatically, as it assumes you may want to keep waiting for more user input. If you want to quit your Node prompt, use `^C` (CTRL+C is the Unix polite interrupt signal).
+
+  ## Side Note: Command-Line Arguments
+
+  You may have found it already, but available on the `process` global is an array of arguments given to the starting of the process (in other words, the command entered in the terminal). This is `process.argv`.
+
+  Using `process.argv` we could in theory pass commands in straight from the bash prompt. For example, with `node bash.js pwd`, our file could get `pwd` from the correct index of `process.argv`, and produce the correct output. However, we will focus on getting our own "bash.js" prompt working.
+
+  @[Action] `pwd` and `date` 
+  The first two bash commands we'll implement in our *node-shell* program are `pwd` and `date`. 
+
+  Try running these commands in your terminal:
+
+  - [`pwd`](https://en.wikipedia.org/wiki/Pwd)
+  - `date`
+
+  Let's now make running `node bash.js` mimic this functionality. Whenever the user types one of those two commands, execute the code necessary to generate the data and output it to the terminal.  When the command is done running, output the prompt again.
+
+  <terminal>
+  $ node bash.js
+  prompt > pwd
+  /Users/you/dev/node-shell
+  prompt > date
+  Mon Aug 01 2015 05:50:13 GMT-0400 (EDT)
+  prompt >
+
+  </terminal>
+
+  <hint title="Getting the working directory">
+  The process's *current working directory* (hint hint) should be available using some *method* on the `process` global. See if you can find it in the [Node docs](https://nodejs.org/api/process.html)!
+  </hint>
+
+  <hint title="JavaScript Date objects">
+  JavaScript has a built-in [Date object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) you can use to find the current date. Unfortunately, Date's are extremely tricky to work with! There is a toString() method on the Date.prototype that may be of use to you...
+  </hint>
+
+  @[Action] Prompt: How STDIN/STDOUT work in bash? 
+  Try these three commands in a terminal window with your current `bash.js` file.
+
+  <terminal>
+  $ cat bash.js
+  $ head bash.js
+  $ cat bash.js | head
+  </terminal>
+
+  Visit explainshell.com if you want to learn more about `cat` and `head`.  Explain the difference between the first two lines and the third.  What is `STDIN` and `STDOUT` in each case?

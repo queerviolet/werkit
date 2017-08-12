@@ -1,0 +1,10 @@
+@[Workshop] Pledge
+@  description  "Implement your own A+ style Promise library from scratch, gaining deep understanding of both use-case behavior and underlying mechanics."
+@  learnDotWorkshopId "54aed6c88ef6f60b0064259d"
+@  artwork      require("./1461624698236.jpeg")
+
+    @[...] ./introduction
+
+    @[...] ./instructions
+
+    @[...] ./resources

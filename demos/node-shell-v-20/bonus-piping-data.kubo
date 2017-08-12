@@ -1,0 +1,99 @@
+@[Concept] Bonus: Piping Data 
+  @[Action] UNIX Pipes 
+  **This page is 100% theory (no actions required).**
+
+  Earlier, you answered a prompt about STDIN/STDOUT. In that prompt, we examined the difference between:
+
+  <terminal>
+  $ cat bash.js
+  $ head bash.js
+  $ cat bash.js | head
+
+  </terminal>
+
+  The key difference is that in line 3, the `cat bash.js` STDOUT stream becomes the STDIN stream of the `head` program and so `head` doesn't need to have a file argument. In other words, UNIX programs like `cat` and `wc` get their STDIN data from *one of two typical sources*: arguments and/or piping.
+
+  <terminal>
+  $ wc bash.js
+  number of lines / words / characters in bash.js appear here
+  $ echo 'hello world' | wc
+  number of lines / words / characters in 'hello world' appear here
+  </terminal>
+
+  You might wonder, what happens if a UNIX command is both given an argument AND has data piped to it — which "wins"? Let's try it out for `wc`:
+
+  <terminal>
+  $ echo 'hello world' | wc bash.js
+  number of lines / words / characters in bash.js, NOT 'hello world', appear here
+  </terminal>
+
+  It seems that explicit arguments are used over piped data for many (but not all!) commands. For implementing the commands in this workshop (next step), you can research what behavior their UNIX counterparts exhibit and/or decide on what makes the most sense to you.
+
+  @[Action] Implementing Piping 
+  We've come to the hardest step in this workshop, communicating between commands using piping.
+
+  ## Step 1: Improve our command parser
+
+  We have to now handle commands like `cat bash.js | head`.  That means we need to split our `cmdString` into multiple command-argument groups separated by the `|` operator.
+
+  Here's a regular expression for `split` that will do that for you:
+
+  ``` javascript
+  var cmdString = d.toString().trim();
+  var cmdList = cmdString.split(/\s*\|\s*/g) // any amount of whitespace, pipe, any amount of whitespace
+  ```
+
+  Now `cmdList` is an array of command-argument strings that we want to parse and run.
+
+  ## Step 2: Add a third argument to all your commands
+
+  Add a parameter named `stdin` as the first argument to all your commands: `ls: function(stdin, file, done)`. (To be clear: this isn't the real `process.stdin`, we are simulating the idea of process I/O using pipes.)  For commands that can take `stdin` (so far, that's `head` and `tail`), you'll need to check if the `stdin` and/or `file` arguments are defined, and use one of them.
+
+  ## Step 3: Modify your `done` function
+
+  Now your `done` function should check if there are any remaining commands & arguments in `cmdList`.  If there are, run that command (and argument, if there is one) and pass its output (analogous to `stdout`) as the `stdin` parameter for the next command. This will definitely test your ability with functional programming, string parsing, asynchronous callbacks, etc. Good luck!
+
+  ## Step 4: Test your program
+
+  See if these work:
+
+  <terminal>
+  $ node bash.js
+  prompt > cat bash.js | head
+  var stdin = process.stdin;
+  var stdout = process.stdout;
+  var fs = require('fs');
+
+  commands = {
+  prompt > cat bash.js | head | wc
+  5
+
+  </terminal>
+
+  @[Action] grep matchString 
+  Now you're ready to implement `grep`, arguably one of the most useful commands in bash. The "real" `grep` implements regular expression searches; our `grep` will search the `STDIN` stream for lines that contain `matchString` and sends those lines to `STDOUT`.  This means that the grep function needs both `stdin` *and* `file` (although in this case, `file` is really `matchString`).
+
+  Implement the `grep` function to search for all the lines of `stdin` for the `matchString`. Then see if something like this will work:
+
+  <terminal>
+  $ node bash.js
+  prompt > cat bash.js | grep function
+  ...
+  prompt > cat bash.js | grep function | wc
+  ... (this is the number of times the word `function` shows up in bash.js)
+  </terminal>
+
+  As a special final icing, use the `chalk` module to highlight the instances of your grep search token in each line.
+
+  ---
+
+  Congratulations, you've implemented a basic but functional shell program.  Although you will admittedly not actually use `node-shell` in the future, now you know the power and capability of the `bash` shell that's been sitting underneath your fingertips the whole time.
+
+  Some commands that we did not implement but you should know exist:
+
+  - `touch filename`: create a 0-byte file
+  - `mkdir dirname`: create a directory
+  - `cp source target`: copy source file to target
+  - `mv source target`: move source file to target
+  - `rm file`: delete file
+  - `rm -rf file/dir`: only in cases of emergency! remove all files recursively and force if errors

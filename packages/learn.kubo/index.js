@@ -39,13 +39,15 @@ const fetchConcepts = async workshop =>
     concepts: await learn.get(`api/workshops/${workshop._id}/concepts`)
   })
 
-function convertWorkshop({name, description, photo_url, artworkUrl=photo_url, concepts}) {
+function convertWorkshop(workshop) {
+  const {_id, name, description, photo_url, artworkUrl=photo_url, concepts} = workshop
   const artFile = artworkUrl && path.basename(artworkUrl)
       , artUrl = artworkUrl && `https://s3.amazonaws.com/learndotresources/${artworkUrl}`
       
   return Object.assign({
-    'index.kubo': workshopMatter({name, description, concepts, artFile})
-    , [artFile]: axios.get(artUrl, {responseType: 'arraybuffer'})
+    'index.kubo': workshopMatter(workshop),
+    'learn.id': _id,
+    [artFile]: artFile && axios.get(artUrl, {responseType: 'arraybuffer'})
         .then(res => res.data)
   }, ...concepts.map(convertConcept))
 }
@@ -60,9 +62,10 @@ const conceptFile = ({name}) => key(name)
 
 const include = (indent='  ') => ({name}) => `${indent}@[...] ./${key(name)}`
 
-const workshopMatter = ({name, description, concepts, artFile}) =>
+const workshopMatter = ({_id, name, description, concepts, artFile}) =>
 `@[Workshop] ${name}
 @  description  ${str(description)}
+@  learnDotWorkshopId ${str(_id)}
 ${artFile ? `@  artwork      require(${str(`./${artFile}`)})\n` : ''}
 ${indent(concepts.map(include()).join('\n\n'))}
 `  
@@ -89,7 +92,7 @@ const key = (name='') => name
 
 const write = (outputDir, assets) => Promise.all(
   Object.keys(assets)
-    .map(async path =>
+    .map(async path => assets[path] &&
       writeFile(join(outputDir, path), await assets[path])
         .then(() => path))
 )

@@ -1,0 +1,104 @@
+@[Concept] Resources 
+  @[Action] Epilogue 
+  Pledge has been one of our most esoteric exercises. Given the native ES6 Promise plus libraries like $q / Bluebird, you will probably never need to write your own implementation. It was our intention that by first *using* promises, you would gain an approximate understanding of them. The motivation for Pledge was that subsequently *building* promises — seeing how they "tick" — would correct that understanding, dispelling any apparent "magic." That being said, ongoing practice and experimentation are necessary to become truly fluent with promises.
+
+  # Progress Rubric
+
+  Historically this has been a challenging workshop with a wide spread of completion rates. A majority of students do not complete every single spec, and that is not in and of itself worrying. We intend for most pairs to make it through Chapter 3, and (we hope) some of Chapter 4. Depending on what you did complete, you may want to prioritize your studying and/or schedule office hours. You may assess your progress according to the following chapter breakdown:
+
+  Chapter | Progress | Assessment
+  ---|---
+  Ch. 1 | any | This suggests you are struggling with reading tests, using JavaScript objects / inheritance, and/or dealing with higher-order functions. Please contact your instructor for advice, as these will continue to be key requirements.
+  Ch. 2 | partway | Significantly behind target pace, and indicates uncertainty about how promises work. Please schedule office hours with a teaching fellow or instructor, as basic promise use will be important in future workshops.
+  Ch. 2 | completed | Behind target pace, but might be acceptable as you have presumably figured out how success handlers work — the minimum use pattern. Chapter 3 (error handlers) was largely the same as Chapter 2, so most students make at least some progress in Ch. 3; if you did not, be sure to review how success vs. error handlers work. Since you did not attempt Chapter 4, carefully study *chaining* — the real power of promises, why they are used over callbacks. You will likely want to speak with a fellow to clear up some of these points.
+  Ch. 3 | any | On pace. You probably have discovered how success and error handlers are practically identical, except for the promise state. Since you did not make progress in Chapter 4, carefully study *chaining* — the real power of promises, why they are used over callbacks. Most students will need ongoing practice in chaining regardless, so it is not too concerning if you didn't get to attempt Chapter 4 during class time.
+  Ch. 4 | partway | Good pace. Chapter 4 is all about promise chaining. This suite is difficult and requires a genuine grasp of what promise chaining is, plus some nontrivial insights / leaps to solve the specs. Good work getting here; you may not be a master of promises yet, but you are definitely on track.
+  Ch. 4 | completed | Excellent. Very few people solve the assimilation specs without help (historically, about ~1 student in 20). We imagine you are feeling confident, but be warned it is still easy to make mistakes especially in complex promise chains. You should research promise anti-patterns and extended library methods.
+  Ch. 5 | any | The hardest part was Chapter 4. This optional spec covers two important general library methods — `Promise.resolve` and `Promise.all`. It's a great idea to attempt these specs if you get to them, but as they require a working Ch. 4, it's totally fine if you didn't reach this chapter. Understanding how to use the methods is more important than knowing precisely how they are implemented.
+
+  # Main Takeaways
+
+  * Promises have two characteristics
+  	* State (pending, fulfilled, or rejected; "settled" means fulfilled or rejected)
+  	* Value (any valid JS value, including `undefined`, `null`, etc.)
+  * Constructing promises requires passing in an "executor" function
+  	* The executor gives the user of the new promise access to "resolver" and "rejector" functions
+  	* The resolver causes the promise to resolve with a value
+  	* The rejector causes the promise to reject with a reason
+
+  ```js
+  // minimal example:
+  var promise = new Promise(function (resolve, reject) { // the "executor"
+    resolve('hello'); // calling the "resolver" causes `promise` to be fulfilled with 'hello'
+  });
+  // slightly more realistic example:
+  var promise = new Promise(function executor(resolve, reject) {
+    fs.readFile('text.txt', function vanillaCallback (err, data) {
+      if (err) reject(err);
+      else resolve(data);
+    });
+  });
+  ```
+
+  * Promises have one main API: `.then(optionalSuccessHandlerFn, optionalErrorHandlerFn)`
+  	* `.then` can be called before *or* after a promise settles
+  		* if `.then` is called before the promise is settled…
+  			* it collects handlers in an internal queue
+  			* when the promise settles, it calls the appropriate handlers with the promise value
+  		* if `.then` is called after the promise is settled…
+  			* it immediately runs a passed-in handler function if appropriate
+  	* handlers are only ever called once, then discarded
+  	* from the perspective of someone *using* a promise (the "consumer"), they have no idea when a promise will fulfill or reject, or even if it is already settled; they are simply using `.then` to say "here is what to do when that happens."
+  * Promises can chain — `pA.then` returns a new promise `pB`, whose fate depends on the previous `.then`:
+  	* if `pA.then` doesn't have the correct handler type, `pB` deals with it ("bubbling")
+  	* if `pA.then`'s handler returns a value, `pB` fulfills with that value
+  	* if `pA.then`'s handler returns a promise for a value, `pB` fulfills with that value
+  	* if `pA.then`'s handler throws a value, `pB` rejects with that value
+  	* promise chaining / post-processing / returning is what makes promises easier to *compose* and *transform* than pure callback functions, even though promises are just an abstraction on top of callbacks
+
+  @[Action] Pledge, A+, and Potential 
+  Below is optional reading outlining how `pledge.js` differs from standard promises. In terms of usage and capabilities, the library we built is largely correct, so the following is not necessary to understand the fundamentals of what promises are or how to use them.
+
+  # Pledge.js vs. A+
+
+  Our `pledge.js` library is intended to be a learning exercise. Some of the [Promises/A+](https://promisesaplus.com) standards and general [OOP](http://en.wikipedia.org/wiki/Object-oriented_programming) principles that `pledge.js` will not cover include:
+
+  * Handler functions should always be called in an async wrapper (e.g. `setImmediate`). This makes their behavior more deterministic as they invariably execute after a following synchronous code line.
+  * The `.then()` function should handle assimilation of promises from other libraries ("thenables"). That makes promises interoperable.
+  * For simplicity's sake, `pledge.js` does not follow strict standards terminology. For example, it considers a pledge's `value` as meaning either its fulfilled `data` or rejected `reason`.
+  * Ideally, a promise's state, value, internal resolver, and internal rejector should not be public, only influenced or accessed through the executor arguments and `.then()`. This is difficult to implement in practice.
+
+  These and other technical details are important, but for someone just beginning to learn they distract from the core behavior and use patterns.
+
+  # Potential.js
+
+  If you are interested in seeing a fully A+ compliant promise library, [Potential](https://github.com/glebec/potential) is based on Pledge and [passes the official spec](https://promisesaplus.com/implementations). Note that the majority of additional complexity comes from enforcing asynchronous calling of handlers, and properly assimilating *thenables* (third-party objects which may or may not be valid A+ style promises).
+
+  @[Action] External Links 
+  ## Specs
+
+  * [MDN: ES6 Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) (native language construct, in V8 already)
+  * [The Promises/A+ Standard](https://www.promisejs.org) (with use patterns and an example implementation)
+
+  ## Libraries
+
+  * [Bluebird](https://github.com/petkaantonov/bluebird) (probably the best promise library out now, used in Sequelize)
+  * [Kris Kowal & Domenic Denicola: Q](https://github.com/kriskowal/q) (the library $q mimics; great examples & resources)
+
+  ## Articles / Books
+
+  * [Strongloop: Promises in Node.js: an Alternative to Callbacks](https://strongloop.com/strongblog/promises-in-node-js-an-alternative-to-callbacks/)
+  * [We Have a Problem with Promises](http://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html) (excellent breakdown of anti-patterns)
+  * [You Don't Know JS: Async and Performance](https://github.com/getify/You-Dont-Know-JS/blob/master/async%20%26%20performance/README.md) (free online book, goes very in-depth into general JS async)
+  * [HTML5 Rocks: Promises](http://www.html5rocks.com/en/tutorials/es6/promises/) (deep walkthrough with use patterns)
+  * [DailyJS: Javascript Promises in Wicked Detail](http://dailyjs.com/2014/02/20/promises-in-detail/) (build an ES6-style implementation)
+  * [Promise Nuggets](http://spion.github.io/promise-nuggets/) (use patterns)
+  * [Promise Anti-Patterns](http://taoofcode.net/promise-anti-patterns/) (understanding what NOT to do is a great way to grok promises!)
+  * [Tasks, microtasks, queues and schedules](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/) (understand how the asynchronicity of promises differs from the asynchronicity of a setTimeout)
+
+  ## Angular
+
+  * [AngularJS documentation for $q](https://docs.angularjs.org/api/ng/service/$q) (Angular's built-in library driving many of its own methods)
+  * [AngularJS Corner: Using promises and $q to handle asynchronous calls](http://chariotsolutions.com/blog/post/angularjs-corner-using-promises-q-handle-asynchronous-calls/)
+  * [Xebia: Promises and Design Patterns in AngularJS](http://blog.xebia.com/2014/02/23/promises-and-design-patterns-in-angularjs/)
+  * [AngularJS / UI Router / Resolve](http://www.jvandemo.com/how-to-resolve-angularjs-resources-with-ui-router/) (some fancy use cases in Angular applications)

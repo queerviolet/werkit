@@ -1,0 +1,25 @@
+@[Concept] NPM Modules 
+  @[Action] Third-party modules 
+  There are the modules that are built into node (like `fs`); there are the modules we create (like all of our implemented commands); then there are the modules we find on [npm](https://www.npmjs.com/).
+
+  **npm** is a package repository that gives access to interesting, creative and powerful programs built in node, made by people all over the world. It is now officially the largest repository of programming modules *ever*; the Node open source community is amazing!
+
+  @[Action] npm install chalk 
+  Our terminal output is looking a little bland... let's spice it up with some color!
+
+  [`chalk`](https://www.npmjs.com/package/chalk) is a cool, simple package that allows us to color our terminal output!  Read the [Github README](https://github.com/chalk/chalk) to get a flavor of how it's used.
+
+  To install `chalk` into your project, you'll have to do a few things in your terminal:
+
+  - run `npm init`. This will take you through a quick step-by-step that will create a `package.json` file. Read a bit about what this file is [here](https://docs.npmjs.com/files/package.json).
+
+  - run `npm install chalk --save`. This will contact npm and download the `chalk` library. A new directory in your project will be created called `node_modules`, this is where npm places all third-party modules to be used in your program. The `--save` is a **command option** that states that npm should save `chalk` at a specific version as a dependency to your project. This allows you to reinstall it again whenever you need to! Check out your `package.json` after your install has completed.
+
+  - In your `commands.js` and `bash.js` files, you can now use the statement `require('chalk')` to gain access to the `chalk` library. Sweet!
+
+  @[Action] Let's Color!! 
+  Now that you have `chalk` available to `require`, color your terminal outputs. 
+
+  Color the prompt yellow and any output green.
+
+  Later in the workshop, you will need to handle any error message that you receive--these should be colored red!

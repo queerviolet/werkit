@@ -1,0 +1,1101 @@
+@[Concept] Senior phase 
+  @[Action] WEEK 1: Schedule office hours with the Career Success team 
+  Now that you're in the Senior Phase, it's time to meet with the Career Success team! 
+
+  To prepare for these office hours start thinking about the answer to the following questions: 
+
+  - What kind of role do I see myself in? (e.g. back end or front end) 
+  - What kind of industries am I interested in? 
+  - Am I planning to stay in NYC/Chicago for the job hunt? If not, where do I want to go? 
+
+  Your dedicated Career Success Associate will post office hours on LearnDot, so you can schedule your first one-on-one meeting.
+
+  During the meeting, we'll ask you a few questions, to get an understanding of what you want to do after you graduate. Then we'll  start providing advice and guidance that is relevant to your situation. 
+
+  So go ahead and schedule office hours, so we can get started on your Career Success Program!
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 1: Start practicing for technical interviews with "REACTO" coding challenges 
+  During the Senior Phase, you'll begin each morning by working with another student in your cohort, solving a coding challenge on a whiteboard.  
+
+  Think of it like "running drills" to build the skills you'll need to ace technical interviews after you graduate.  
+
+  Each 30 minute REACTO session begins with an explanation of the challenge by one of your teaching fellows, then you break out into pairs to solve it.  The class is then pulled back together to see the solution.
+
+  You can read more about REACTO problems -- and the philosophy behind this (pretty intense) training method -- in a blog post that David wrote: 
+
+  http://www.fullstackacademy.com/blog/the-reacto-pattern-for-acing-technical-interviews
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 1: Tech Talks start on Thursday 
+  On Thursday of this week, the first group of students will give their Tech Talks.
+
+  If you're presenting today, then mark this task Complete once you receive the link to your video.
+
+  If not, you can go ahead and mark it Complete now.
+
+  And remember...you must [submit your metadata](http://www.fullstackacademy.com/guest-entry/tech-talks) before you'll be allowed to do your taping!
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEKEND AFTER WK 1: Write your "Developer Story" on Stack Overflow 
+  This weekend, you'll write your "Developer Story" on Stack Overflow, which will be a powerful "career growth hack" for years to come.
+
+  To see how Developer Stories work, let's return to Pieter DePree from Stack Overflow:
+
+  <center>
+  https://www.youtube.com/embed/ex1VSIO14mU?start=990&end=1255
+  </center>
+
+
+  <br>
+  So go ahead and spend some time this weekend creating _your_ Developer Story and timeline.
+
+  And remember those blog posts that we've been talking about? Well now it's time to use them...make sure to put each one in your timeline!
+
+  SPOILER ALERT: Right after you graduate, we'll circle back to your Developer Story timeline, and add the 4 projects you built during Senior Phase.  It's going to look awesome!
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 2: Attend a workshop about optimizing your LinkedIn profile 
+  This week, you'll attend a workshop (during class hours) where we'll show you how to optimize your LinkedIn profile (to showcase your skills as a developer).
+
+  After the talk, you and your fellow students will spend some time working on your respective profiles.  Then you'll harness the power of your cohort, and endorse and recommend each other! 
+
+  Once you have completed the workshop, go ahead and mark this task as complete.
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 2: Tapings of Tech Talks continue 
+  The last Tech Talks for your cohort will take place on Tuesday (and possibly Thursday) of this week.
+
+  Remember to submit your metadata before you present!
+
+  http://www.fullstackacademy.com/guest-entry/tech-talks
+
+  Once you have given your talk and received the link to your video, go ahead and mark this task as complete.
+
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 3: Attend a workshop about writing a technical resume 
+  It's time for another career prep workshop!
+
+  This time, we'll show you how to write a great technical resume from scratch.
+
+  After the workshop (which will be during class hours), we will post office hours for one-on-one meetings, where we'll review the first draft of your resume with you (and offer suggestions for any edits). 
+
+  <hint title= "Check out a tool called Cake Resume">
+  **During the workshop, you'll write the content for your resume.  When it comes to _formatting_ it, you might want to check out an app called Cake Resume (www.cakeresume.com), which is popular with our students.**
+  </hint>
+
+  <br>
+  Once you've created your resume and it has been approved by your Career Success Associate, then go ahead and drop your final draft into your individual resume folder on the Google Drive, and mark this task as complete.
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 3: Tapings of Tech Talks finish 
+  If there are any more students who still haven't presented their Tech Talk, then they will do that this week.
+
+  Once all the Tech Talks are done, mark this task as complete.
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 3: Give a demo of your Stackathon project 
+  You will give your Stackathon demo on Monday or Tuesday of this week.
+
+  Votes will be cast (by your fellow students, and your instructors and fellows) about who built the coolest project.  After all demos are done, three winners will be crowned, with all the commensurate glory and bragging rights that entails ;)
+
+  Remember that you'll need to [submit your metadata](http://www.fullstackacademy.com/guest-entry/hackathon-presentations) before you can demo your project! This will be used for the video that we record.
+
+  Once you've given your demo and received the link to the video, go ahead and mark this task as complete.
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 3: Finish writing your LinkedIn profile 
+  Now it's time to finish writing your LinkedIn profile, using the tips that we provided in the workshop.  
+
+  Your optimized LinkedIn profile is due by Wednesday at 11:00 PM.
+
+  When it's done, mark this task as complete!
+
+  *NOTE: After you graduate, you'll update your LinkedIn profile again, to include your Capstone project and videos from Fullstack. *
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 3: Write your profile and interest statements for Hiring Day 
+  You need to submit your student profile and interest statements into the Hiring Day app by Thursday at 5:00 PM.  
+
+  The good news is that you'll be able to use much of the same content from your Stack Overflow and LinkedIn profiles in your Hiring Day profile, which will definitely speed up the process.
+
+  If you need to refresh your memory about how the Hiring Day app works, here's the demo video one more time:
+
+  <center>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/l9mUHv3-0-Y" frameborder="0" allowfullscreen></iframe>
+  </center>
+  <br>
+
+  Here are some examples of interest statements (in this case, written for Dropbox):
+
+  `Before studying and then teaching web development at Fullstack Academy, I managed e-commerce operations for a start-up. When we transferred all company documents from Google Drive to DropBox, I fell in love with the product for its intuitive functionality, cross-device and offline accessibility, and beautiful design. I would be thrilled to join an engineering team working on a product I use every day. Thank you for your consideration!`
+
+  `Hi Dropbox. I’m a full stack web developer with a particular interest in back-end and mobile development. I’m impressed by Dropbox Paper, and I think that making collaborative editing even better could pose some interesting challenges (Related feature request: the ability to draw in Paper). In addition to the full stack JavaScript skills I’ve learned at Grace Hopper Academy, I have experience developing Android applications, with a few side projects up in the Play store, and I’d love to speak with you more about how I might be able to contribute to either the Paper web or mobile apps!`
+
+  `Prior to Fullstack Academy I was as an application / mechanical engineer in the engineered pump power market. After ~3 years in this position, it was time for me to pursue my interest in computer programming. I would be of value to DropBox because of my computer programming and problem solving skills. My time at Fullstack has laid the groundwork -- now I am eager to get back to work. I am confident I can add value to DropBox, especially considering the challenging environment that DropBox operates in.`
+
+  `Dropbox has always been on the front lines of establishing collaboration and cutting edge technologies. When cloud computing was still young, Dropbox was one of the first to reveal the power of the cloud and how to expand horizons of collaboration with their technology. Even to this day, that message is still firmly shown by what Dropbox offers users. As a user of Dropbox, I would love to be part of the team that pushes this technology as well as new and advancing tech. I am excited at the idea of changing the way people collaborate while simplifying technology so people can get more done.`
+
+  __So go ahead and write your profile and interest statements, and submit them by Thursday at 5:00 PM!__  
+
+  Then mark this task as complete.
+
+  The Career Success team will send all interest statements and profiles to employers the following morning.
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 5: Schedule a mock interview 
+  It's time to begin practicing for your job interviews!
+
+  We'll post Office Hours for both Mock Behavioral and Technical Interviews. Your Career Success Associate will conduct the Behavioral Interviews, and your senior phase instructor will conduct the technical ones. 
+
+  For Mock technical interviews, instructors will ask you questions on your core knowledge of Javascript. For these  interviews, also think about how you're going to answer these questions. 
+
+  - "How did you get into development?" 
+  - "What is your Capstone project and what problem does it solve?" 
+  - "What technical challenges did you face when creating your Capstone project?" 
+  - "Was there ever a conflict within your group and if so how did you resolve it?" 
+
+  Once you've done both interviews, go ahead mark this task as complete.
+
+  <br><br>
+
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 5: Practice your pitch! 
+  Now that you've done your mock interviews (and gotten feedback from the Career Success Team and your instructor) it's time to practice your "pitch"...including that one, monumental question:
+
+  ```
+  "So, tell me about yourself."
+  ``` 
+
+  This is really important. It will come up in just about every interview, and often times in networking conversations.  
+
+  Your Career Success Associate will post office hours on LearnDot this week, and will meet with you one-on-one.  You'll practice giving your pitch, and will receive feedback.  You'll also be able to talk through any other job related questions that you might have. 
+
+  So go ahead and schedule office hours, so we can continue getting you "interview ready"!
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 5: Attend a training session about presenting your Capstone project at Demo Day 
+  This week, your instructor will give you a training session about presenting your Capstone project next week at Demo Day.
+
+  Your instructor will give you tips and advice about how to give the best presentation and demo, and will give you instructions on how to create a screencast of your app (that you'll need in your presentation).
+
+  Once you've attended this session, go ahead and mark this task as complete.
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 5: Practice presenting your Capstone project 
+  This week, you'll do a couple practice runs presenting your Capstone project, in front of your fellow students.  
+
+  You'll receive tips from your instructors and fellows about any improvements you can make.
+
+  Once you've completed your last practice session, go ahead and mark this task as complete.
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 6: Crush it at Demo Day Live! 
+  On Monday morning, all of your hard work over the last 17 weeks will come to fruition.  
+
+  This is when you and your team mates present your Capstone projects at Demo Day Live!
+
+  To refresh your memory about how Demo Day Live works, go ahead and read [this page](https://learn.fullstackacademy.com/workshop/5827753d444aff0004b5147c/content/58e55d90a7037c0004f44f16/text) again.
+
+  After you have presented at Demo Day Live, mark this task as complete.  Woo hoo!
+
+  <br><br>
+
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 6: Follow and star each other's GitHub projects 
+  It's a good thing career-wise to have people follow and star your GitHub projects.  
+
+  It's kind of like LinkedIn endorsements...the more followers and stars you have, the better it looks to potential employers.
+
+  So it's time to (once again) harness the power of your cohort, and ask each other to star and follow your respective projects on GitHub.  
+
+  We'll let you guys figure out the best way to do this...for example, each of you could slack out a list of links to your GitHub projects (including the projects you've built during Senior Phase!) and ask for stars and follows.  Or maybe you all create a master spreadsheet to manage this process...whatever works best for your cohort.
+
+  Once you have completed this task, go ahead and mark it as complete.
+
+  <br><br>
+
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 6: Attend a workshop about writing great cover letters, and following up on them 
+  In this workshop, we'll give you  some advice on writing great cover letters, and the best way to follow up on them via email.
+
+  Here is some of the material you'll cover:
+  ```
+  To write a great cover letter, ask yourself these questions:
+  - Why am I interested in this company?
+  - What excites me about the product/ mission?
+  - Why could I see myself working there?
+  - Why am I a unique fit for this role?
+  - What excites me about their tech stack?
+
+  Here's a nice, simple order for a cover letter:
+  - Introduce yourself
+  - Why I'm interested in your company / what excites me about the product
+  - What makes me a unique fit for the role
+  - Reiterate why I'm interested (use company name again & the name of the role)
+  - Close out (tell them how they can find you)
+  ```
+
+  We'll also talk about other things related to your job search, including how to manage your time, and some tools you can use to keep organized.
+
+  After you have attended the workshop (which will be during class hours), mark this task as complete.
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 6: Attend a training session about interviewing 
+  This week you'll attend another workshop during class hours, called "Interviewing 101".
+
+  During the workshop, we'll give you some more insights about technical and behavioral interviews for developers, and some tips for navigating them both.
+
+  Once you've completed the workshop, go ahead and mark this task as complete.
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 6: Participate in Hiring Day 
+  You will hearing from the Career Success Team shortly, with some final advice for preparing for the big event.
+
+
+  __Here are some ways you can prepare for Hiring Day:__ 
+
+  1) Make sure your screencast is done! Send it to your instructor the night before, so that he or she can make a playlist. 
+
+  2) Research the companies that are attending! Use the information in the Hiring Day app, and look up companies on:
+  - Crunchbase 
+  - Linkedin 
+  - Glassdoor
+
+  3) Come up with a list of the top 5 companies that you want to talk to during the networking hour. These are the companies that you're super excited about, and that you'll make an effort to speak with first. 
+
+  4) Prepare questions for your top 5 companies. Research will help with these, but you can also have a couple of set questions that you can ask every company.  Here are some examples:
+
+  - What interesting challenges are you/your team/the company facing?
+  - What is your favorite part about working at the company?
+  - Can you talk a bit about communication within the team? Across teams?
+  - What types of support would I receive as a new hire?
+  - What are some of the challenges that the team is facing today?
+  - What gets you excited to come to work everyday?
+
+  You can find some more here: https://www.themuse.com/advice/any-questions-what-to-ask-in-an-interview
+
+  5) Practice your personal pitch! Write it down and read it out loud.  Then practice it in a mirror, and/or on a team member. 
+
+  6) Review the Questions Asked at Hiring Day Interviews list below:
+
+  Non-technical Questions: 
+  - Why did you decide to become a programmer? Do you prefer front-end or back-end programming?
+  - What language do you prefer?
+  - Would you learn other languages?
+  - What are your salary requirements? Remember, we talked about how giving a number is never in your best interest. It’s unusual for a company to ask this in a first interview, but your reply can range from, “I’m not sure, would like to learn more about the opportunity before considering”
+  - Why do you use angular? 
+  - What are the advantages of using angular? 
+  - Why did you come to Fullstack? 
+  - Did you choose us (company) or did you get assigned to us? 
+  When you are learning something new what do you do first
+
+
+  Technical Questions: 
+
+  - Identify a function that takes a number n and returns the nth number in the fibonacci sequence; discuss code that uses nested for loops to print out a multiplication table; discuss a time while working on your project when everything broke
+  - How do you modularize your CSS files? 
+  - What’s the hardest issue you had to resolve recently, specifically in code. 
+
+  Questions about projects: 
+  - What challenges did you face?
+  - What were some of the things you worked on?
+  - What other features would you like to add?
+  - What were some bugs you had and how did you fix it?
+  - Why did you use a certain type of technology for your project? 
+
+
+
+  __Here are some things you should do the night before Hiring Day: __
+
+  - Pick out your outfit ahead of time! 
+  - Eat a good meal
+  - Get a good night’s sleep 
+
+
+  After you have completed Hiring Day, go ahead and mark this task as complete.
+
+  <br><br>
+
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 6: Attend a training session about salary negotiation 
+  During your job interviews, you will almost certainly be asked this question:
+
+  ```
+  "So, what kind of salary are you looking for?"
+  ```
+
+  You want to do your homework in advance, and make sure you're ready to give a strong answer to this question.  
+
+  To get started, here's a blog post we wrote recently about salary ranges for full-stack developers:
+
+  - [Full-Stack Developer Salary: What can you expect to make?](https://www.fullstackacademy.com/blog/full-stack-developer-salary-what-can-you-expect-to-make?)
+
+  You should do some research on your own, and figure out what's a "decent" salary for a developer in your area. So spend some time on the sites below to get a better understanding of what people are getting paid for the roles that you're interested in.  
+
+  - [Comparably](https://www.comparably.com)
+  - [Salary.com](http://www.salary.com)
+  - [Glass Door](https://www.glassdoor.com)
+  - [Payscale](https://www.payscale.com)
+
+  Here's an article about developer salaries, with respect to the city you live in:
+
+  - [San Francisco is actually one of the worst-paying places in the US for software engineers](https://flipboard.com/@flipboard/flip.it%2FpZpfpz-san-francisco-is-actually-one-of-the-wo/f-d66548cbac%2Fqz.com)
+
+  Here's a video describing how stock options work:
+
+  - [UNCUBED: How Stock Options Work: 4 Concepts You Need to Know](https://uncubed.com/learn/class/how-stock-options-work)
+
+  Based on what you read (and watch), determine a target salary range that you think makes sense.
+
+  Later this week, the Career Success Team will give you some tips and tricks about negotiating the best salary.  
+
+  After that workshop, mark this task as complete!
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 6: Follow up with the companies from Hiring Day 
+  If you participated in Hiring Day, then you need to follow up with the companies you've made connections with. This week, the Career Success Team will give you some tips on doing just that.
+
+  You can check the cheat sheet of Hiring Day companies to get the contact info you'll need.
+
+  You can also send your draft emails to the Career Success team, if you'd like to get a second opinion! 
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>

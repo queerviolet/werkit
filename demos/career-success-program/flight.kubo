@@ -1,0 +1,1361 @@
+@[Concept] Flight 
+  @[Action] WEEK 1: Welcome to Flight! 
+  Wow.  You did it.  Amazing.
+
+  You have just completed the immersive program at Fullstack Academy, the top-ranked coding school in the country.  Let's just take a moment and put that into perspective.
+
+  First of all, you got *accepted* into the program.  That alone is an impressive feat.  Our admission rate is less than 10%, which makes Fullstack Academy harder to get into than many Ivy League schools. 
+
+  Then you survived the *grueling* Junior Phase.  If you're like most of our graduates, you felt pretty overwhelmed through most of it.  But you hung in there, and made it into the Senior Phase.
+
+  That's when you went into "maker mode" and used your hard-earned coding skills to build four cool projects.  
+
+  And now you have graduated, as a __for real__ fullstack web developer. 
+
+  Many of our graduates say two things after they complete the program:
+
+   - That was the quite possibly the hardest thing I've ever done 
+
+   - I made so many new friends, and feel like we'll be friends for life
+
+  Do you agree?
+
+  Well done : ) 
+
+  ----
+
+  But now is not the time to take our foot off the gas.  It's time to begin the Flight program, where you'll capitalize on all your hard work over the last 17 weeks and land your first job as a software engineer.  
+
+  The rest of the workshop will walk you through this process, step-by-step each week.  
+
+  So let's get started!
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 1: Make sure all previous tasks have been marked as complete 
+  You may recall from the beginning of this workshop that we mentioned this:
+
+  ```Treat this workshop as your career prep checklist.  Mark the pages as complete as you work through them, because they all need to be completed before you can begin the Flight program.```
+
+  So go back in the workshop and make sure all the pages are marked as complete.  
+
+  If any are not, then finish any required work and then check them off.
+
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 1: Start using your Flight Checklist 
+  At this point, go ahead and open up your Flight Checklist (which was sent to you by the Career Success team) and **bookmark the page. ** 
+
+  This is a checklist of the tasks you'll complete as you work through the Flight program, beginning with the next page:
+
+  ![](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/e18cda45-deb6-4c56-988e-9b4380c76c62/2017-07-10_08-10-38.png)
+
+  Make sure to keep your checklist current, and check off tasks as you complete them! 
+
+  	The Career Success team has a dashboard that monitors all students' checklists while they're in Flight, and will reach out 	
+  	if it looks like some help may be needed.
+
+  @[Action] WEEK 1: Add your Senior Phase videos to LinkedIn 
+  Let's get started with an easy task.  And one that will feel hugely rewarding.
+
+  Go into your LinkedIn profile, and add your three Senior Phase videos.
+
+  Then sit back, stare at your profile for a bit, and feel super proud of what you have accomplished.
+
+  (then mark this task as complete!)
+
+  <br><br>
+
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 1: Add your Senior Phase videos to Stack Overflow 
+  Now let's repeat what we did in the last task, but this time on Stack Overflow.
+
+  Go into your Developer Story on Stack Overflow, then add the 3 projects that you built during Senior Phase to your timeline (Grace Shopper, Stackathon and Capstone) as well as your Tech Talk. 
+
+  Make sure to add your 3 videos as well.
+
+  And make sure to add any blog posts that you may have written recently.
+
+  (then mark this task as complete!)
+
+  <br><br>
+
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 1: Write a blog post about your experience in an elite coding bootcamp, then post it to your Developer Story 
+  Now that you have successfully made it through an elite coding bootcamp, it's the perfect time to write a technical blog post about your experience.  
+
+  If you'd like a reminder on why technical blogging is so important for engineers, [here's that video clip from Pieter DePree again.](https://www.youtube.com/embed/ex1VSIO14mU?start=1393&end=1463)
+
+  So go ahead and write this blog post, then post it on the timeline on your Developer Story on Stack Overflow.
+
+  This will be a great piece of content that highlights the rigorous program you have just been through, and the advanced coding skills you learned (that differentiate you as a strong developer).
+
+  Want some writing inspiration?  Here you go!
+
+  http://bethqiang.com/blog/2017/02/23/every-new-beginning-comes-from-some-other-beginnings-end/
+
+  <br><br>
+
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 1: Set up your Job Search Dashboard 
+  Over the next few weeks, we're going to work through a series of steps that will help you land your dream job.  
+
+  To make things easier, we have created a simple app called the "Job Search Dashboard", which you'll use to organize your work, and your thoughts.
+
+  The app runs on the Asana platform, which you may be familiar with.  If not, it's a productivity app that is very popular these days.  Along with Trello, it's one of the two fastest-growing productivity apps (millions of users each) and there's a pretty good chance that the next company you work for will use Asana (for example, we use it pretty heavily at Fullstack).
+
+  ![screenshot](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/aeb84be4-dbf8-4033-9e8c-d58441486121/2016-12-07_11-33-52.png)
+
+  This week, the Career Success team will invite you to the app, and will create a Job Search Dashboard for you.  At this stage, your dashboard will look like this:
+
+  ![screenshot](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/39587369-9751-49a6-b252-e11670966368/2016-12-07_11-49-00.png)
+
+  Now let's watch another (very short) video from Mark, where he gives you a tour of the app and shows you how it works:
+
+  <center>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/mdZQ0DtDTFw" frameborder="0" allowfullscreen></iframe>
+  </center>
+  <br>
+  Not only will the Job Search Dashboard help you organize your work, but it will also make it easier to get support from the Career Success team whenever you need it...and fast!  You can submit questions to the Career Success Team by @ mentioning them in the relevant task, and they will get back to you as quickly as possible.
+
+  So that's how the Job Search Dashboard works.  Pretty simple, eh?  
+
+  Now let's start working on it...
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 1: Confirm the primary goal for your job search 
+  Now that you have graduated from Fullstack, it's time to make some decisions about what you want to do next career-wise.
+
+  To begin that process, go ahead and re-visit the page you read during review week, [Think about what you want to do after Fullstack](https://learn.fullstackacademy.com/workshop/585179c6a2b61e00044d8627/content/58517ae373818000048c86e3/text)
+
+  ----
+
+  OK, now that those options are fresh in your mind again, let's look at each one in more detail
+
+  __If you are becoming a fellow__
+
+  If you're becoming a fellow, then by this point you would have already applied, interviewed and been accepted to the fellowship program.  Congratulations!  You'll be starting next week as a junior fellow, then the following semester you will become a senior fellow.  In week 4 of your senior fellowship you will begin Flight...so there's nothing to do on the job search front right now.  We'll see you again on this page in about 10 weeks!
+
+  __If you're applying to Fullstack Fund__
+
+  If you want to launch a startup and apply to Fullstack Fund, then now is the time!  
+
+  Go ahead and submit the [application on this page](http://www.fullstackacademy.com/fullstack-fund)...and good luck!
+
+  __If you want to get hired as a software engineer__
+
+  If you fall into this category (which most of our graduates do), then take some time to think about the following options, and decide which one is your *primary* goal:
+  ```
+  1) Get hired as a developer in New York City or Chicago
+  2) Get hired as a developer in another location
+  3) Get hired as a remote developer
+  4) Get hired as a remote developer, traveling the world as a "digital nomad"
+  ```
+
+  Now let's add the first entry onto your dashboard.  
+
+  Add the primary goal of your job search (from the list above, or something else if applicable) here:
+
+  ![screenshot](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/326a5958-9db8-4cc0-a7ba-ac8af65c449f/2016-12-07_12-17-20.png)
+
+  So for example, if you want to get hired as a developer in Austin, then your dashboard should look like this:
+
+  ![screenshot](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/0c00450f-6692-4b4a-9445-c012cb6b9998/2016-12-07_15-51-18.png)
+
+  OK, now that we have confirmed the primary goal for your job search, let's start working through the Flight program!
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 1: Figure out what you want to get out of the next job you take 
+  At this point, you should spend a few minutes thinking about the things that are most important to you in life -- and what kind of company you want to go work for.
+
+  For example, maybe you're looking for a company that is a place where you can see yourself __really__ making an impact, in a way that's important to you.  
+
+  Maybe you're looking for a company that:
+
+  - has a great culture
+  - has smart people 
+  - has a collaborative environment 
+  - uses new technologies 
+  - is growing quickly
+  - is a good commute away from you
+  - has great benefits 
+  - has a good work/life balance
+  - is solving challenging problem(s) that interest you
+  - has a product you believe in
+  - is making a social impact
+  - has a mentorship or training program
+  - is dog friendly!
+
+  Take a few minutes to think about __the three things that are most important to you__, and select them in this part of the dashboard:
+
+  ![screenshot](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/871be5e8-2977-4b41-aaab-ab8c7bdc4b21/2016-12-07_12-24-45.png)
+
+  Now drag your 3 choices to the top of the list, with the most important one at the top.  When you're done, your top 3 choices should look like this:
+
+  ![screenshot](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/978b5530-3f4c-4187-a87c-a14f0cd55810/2016-12-07_12-26-27.png)
+
+  Doing this now will help you in the long run, and will ensure you're at the right company 3-6 months from now. 
+
+  When you've selected your top 3 priorities, mark this task as complete.
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 1: Figure out your list of "dream companies" 
+  The next thing you should do is make a list of 40 companies that you're interested in working for.  
+
+  These could be companies that you have wished to work for in the past. Or you could just start Googling for awesome places to work in your area.  
+
+  At this point, don't look for job openings! This is an open search, just to see what companies you are interested in. 
+
+  Here are some suggestions on where to find cool companies to work for:
+
+  - Built in (city of your choice) - e.g. [www.builtinnyc.com](http://www.builtinnyc.com) - this is a great list to look for local start-ups, ranging from seed to Series D
+  - [The Muse](https://www.themuse.com) - they feature a lot of great companies in major cities
+  - [BizJournals](http://www.bizjournals.com) - this is nationwide, and they might have a list of awesome companies around you.
+
+  __A note about virtual reality__
+
+  As you think about your dream companies, we want to give you some food for thought. 
+
+  The fields of AR (augmented reality) and VR (virtual reality) are about to go through a period of explosive growth:  
+
+  <center>
+  ![screenshot](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/c6f95ce3-f34e-42c6-b722-9247a5ffdc9c/2016-12-07_16-40-51.png)
+
+  [(Read the article)](https://techcrunch.com/2015/04/06/augmented-and-virtual-reality-to-hit-150-billion-by-2020)
+  </center>
+  <br>
+
+  Here's a deeper dive into those numbers, showing where the biggest growth areas will be:
+
+  <center>
+  ![(Read the article)](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/a2953f0d-4868-46c9-a301-07bf869f989c/2016-12-08_08-57-45.png)
+  </center>
+  <br>
+
+  Allow us to put this into historical context, with a simple infographic that represents Fullstack's view of the potential of VR/AR:
+
+  <center>
+  ![screenshot](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/764faa5e-9cd3-4bd6-b7af-c7b58906402f/2016-12-08_09-00-20.png)
+  </center>
+  <br>
+  We think that the future for VR and AR is bright and that -- for our graduates -- there will be opportunities in this space for many years ahead.
+  <br>
+  <center>
+  ![screenshot](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/77016963-28b8-487c-8df8-3ea086a7a5b7/2016-12-08_09-07-45.png)
+  </center>
+  <br>
+  If your interest in VR/AR has been piqued at all, then you might want to think about working for a company that's doing work in this field.  Keep this in mind as you think about your dream companies and, if relevant to you, add any VR-related companies to your list.
+
+  `
+  FUN FACT: We have a VR Lab at Fullstack in NYC.  If you want to get some time on a Vive, and check out the latest VR experiences, then Slack the Career Success Team for access and instructions.
+  `
+
+  ----
+
+  So go ahead and do some thinking, and some research, and come up with a list of 40 companies that look like interesting places to work.  As you work, add the name of each company here:
+
+  ![screenshot](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/18e31c0b-2f62-4d0c-a3bd-67912df5f9e5/2016-12-07_12-30-28.png)
+
+  Once you have the names of 40 companies listed, drag the ones that look the most interesting to the top of the "Companies I'm interested in" section.  That's all you need to do for now!
+
+  Then mark this task as complete, and we can move on to the next step.
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 1: Start managing your time for your job search 
+  You're almost ready to begin the job search process.  But before you get started, we want to provide some general advice to keep in mind.  
+
+  Some of this is material we've already covered, but this is a good time to review it and make sure it's fresh in your memory!
+
+  __Motivation__
+
+  Motivation is said to have three components:
+
+  - ACTIVATION: The decision to do something (e.g. deciding to change your career and applying to Fullstack)
+  - INTENSITY: The amount of effort that goes into doing it (e.g. getting into Fullstack, and making it through the immersive program!)
+  - PERSEVERANCE: How long you can keep up the effort
+
+  You are at the *perseverance* stage right now...so keep that in mind over the next few weeks!
+
+  __Don’t get stuck!__ 
+  - Don’t apply to too many companies...you’ll get swept up in a time warp
+  - Make attainable goals for yourself (e.g. apply to 3-5 companies per day)
+  - Over applying? Take a break.
+  - If you're getting stressed about a particular cover letter or an application, just walk away for a little while and take a 20 minute break, or maybe work on something else
+
+  __Don’t hold yourself back__
+  - You never *really* know if you're going to like a company until you speak with them
+  - So don't limit yourself by not speaking to a company because they don't seem interesting
+   - Use it as practice, and an opportunity to meet new people
+   - Once you get an offer, *then* you can be picky — but for now take every opportunity that comes at you!
+
+  __If you start feeling burnt out with your job search, then take a break and work on something else for a little bit__
+  - Work on a side project to add to your resume
+  - Build a new feature on your Capstone (more commits!)
+  - Practice some more coding challenges! (more on this on a later page)
+  - Go to Meetups to network and learn about new technology (more on this on a later page)
+
+  __Remember to follow up with people!__
+  - Haven’t heard from a company you have been in contact with in three days or more? Follow up!
+  - Try some other avenues (e.g. connect with an engineer there on LinkedIn, tweet something interesting to them, or add their recruiter on LinkedIn)
+  - Haven’t heard from an alumni or engineer that you reached out to? Then follow up! 
+  - In general, get more comfortable with being "aggressive" (well, not literally) and following up
+
+
+  __Create a weekly and daily schedule__
+
+  Set a schedule for yourself each week, and achieve it!
+  - First step: Set your primary goals for the week (e.g. apply to 15 companies + email 5 alumni + email 5 engineers I don't know)
+  - Second step: Set the related tasks for each day
+
+  __Example of a daily schedule:__
+
+  9:30 AM<br>
+  Wake up, eat breakfast, exercise 
+
+  10:30 AM<br> 
+  Check email, follow up with companies 
+
+  11:30 AM<br>
+  Reach out to 3 people (e.g. engineers, alumni, tech recruiters, second connections or people that you know) that work at companies you are interested in. Email or send Linkedin messages. If they're a Fullstack alum, then slack or email them! 
+
+  12:00 PM<br>
+  Apply to 3-5 jobs. Try to reach out to someone that works at the company before sending your resume in through a normal application. 
+
+  (lunch break)
+
+  Now it's time to do some interview prep! For example:
+
+  2:30 PM<br>
+  Practice coding problems 
+
+
+  __Prioritize your schedule!__ 
+
+  For example, if you have an interview in the afternoon, then you should spend the morning gearing up for it.
+
+  Generally speaking, we recommend that you prioritize in this order: 
+
+  - Onsite interviews
+  - Technical phone screens 
+  - Phone screens
+  - Coffee chats/Meetups
+  - Coding challenges
+  - Applying
+  - Projects
+
+  __Great article to read__
+
+  As the last task on this page, go ahead and read the following article, which reinforces some of the concepts we've already covered, and provides a nice primer for the things you'll work through in the next few weeks:
+
+  - [Begin Your Search: Getting Your 1st Job out of a Coding Bootcamp](https://clutchtalent.github.io/beginning-job-search)
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 1: Start going to meetups in your area 
+  You've probably heard this before, but just in case let us repeat it here:
+
+  Going to technical Meetups in your area is a *great* way to land a job as a developer.  Here's a [post on Quora](https://www.quora.com/Is-networking-at-startup-meetups-a-good-way-to-get-a-developer-job) that explains why.
+
+  Find Meetups in your area that interest you...maybe about Node, or JS, or React, or VR...whatever sounds cool. 
+
+  Then start going and actively participating with other developers there.  
+
+  You were waaaaay too busy to go to many Meetups during the Junior and Senior Phases, but now is the time to get started!
+
+  Find meetups, networking events and hackathons in your area using these sites: 
+
+  - [Meetup.com](https://www.meetup.com)
+  - [Eventbrite](https://www.eventbrite.com)
+  - [Gary's Guide](http://garysguide.com/events) 
+
+  Once you have found some Meetups you'll go to in your area, put some dates in your calendar, and add them into your dashboard here:
+
+  ![screenshot](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/7cd41095-911a-404c-a48c-6fa6ff561a50/2016-12-07_12-43-13.png)
+
+  For each Meetup, add the date and a link to the event.  Once you've added three of them, it should look something like this:
+
+  ![screenshot](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/a4ba6093-6367-45ed-be12-d12e87973f9d/2016-12-07_12-50-13.png)
+
+  We suggest that you arrange the meetups by date, as shown above.
+
+  After you attend each meetup, drag the related task down to the Archived section, and add another one to replace it.  You should always have (at least) 3 upcoming meetups in your dashboard!
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 1: Learn how you can leverage the Fullstack Alumni Network 
+  As we've mentioned before, now that you're an alumni of Fullstack, you can network with other members of the Fullstack alumni network.  
+
+  Our alumni are spread all over the world (as you can see [here](https://www.linkedin.com/school/15098574/alumni)) and *often* help each other land engineering jobs at great companies.
+
+  Here are the ways that you can keep in touch with Alumni: 
+
+  - Contact them on the Slack Alumni channel (that you were just connected to)
+  - Contact them through the Fullstack Alumni Network on LinkedIn (which you were just invited to)
+
+  You can also reach out to all the alumni at once by email, by posting to the Fullstack Alumni Google Group (which you were just invited to).  For example, this is how David and Nimit usually reach out to alumni.  
+
+  Here are some ways that you can use these channels to your advantage:
+
+  __Alumni Slack channel__
+
+  - Reach out to alumni on Slack to pick their brains about a company you are interested in 
+  - Stay on top of the jobs channel to hear about new openings (alumni and the Career Success team post openings on here!) 
+  - Keep an eye on your cohort's channel
+   - Ask people about interview questions they have had 
+   - Ask people to review your code in exchange for reviewing theirs  
+   - Keep an eye out for posts from the Career Success Team as well
+
+  __Linkedin Alumni Network__
+
+  - See who's working where 
+  - Send LinkedIn messages 
+  - Connect! 
+
+  __Get an intro from Career Success__
+
+  Want to be connected to another alumni via email? 
+
+  Simply ask the Career Success team for that person's email, or for an introduction!
+
+  __TOP TIP: Participate in hackathons!__
+
+  At this point, you have a good understanding of how hackathons work, and how fun they can be...especially when you're a full stack developer!  
+
+  We *strongly* encourage you to keep participating in hackathons, e.g. 3-4 times a year.  They are an incredible way to network with (and have fun with) your fellow alumni.  
+
+  So keep your eye out for cool hackathons in your area.  Post about them in the alumni slack channel, and join other alums who are asking for team members for particular hackathons.  Whether the hackathons are in your home town or online, find a way to participate!  
+
+  PS...here's a secret that you might not know:  
+
+  *Lots* of companies send their technical recruiters to hackathons, and try to hire there very aggressively.  What better place to scout out developer talent, and see what they can do?  __Use this to your advantage.__ When you're doing your job search, do as many hackathons as possible!
+
+  At this point, find one upcoming hackathon in your area, and add it to your calendar.  Here are some good sites for finding hackathons:
+
+  - [Major League Hacking](https://mlh.io/) 
+  - [Hackathon.io](http://www.hackathon.io/events) 
+  - [HackEvents](http://hackevents.co/hackathons) 
+
+  If you're looking for hackathons in New York City, then you can checkout
+
+  - [Eventbrite](https://www.eventbrite.com/d/ny--new-york/hackathon/) (you can find similar pages on Eventbrite for hackathons in other cities as well)
+
+  Also add the upcoming hackathon to your dashboard (including the date), like this:
+
+  ![screenshot](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/4415a3f2-07be-4311-944a-da3f3bbaab91/2016-12-07_14-16-00.png)
+
+  After you have done the hackathon, move its Task to Archived, and replace it with another upcoming hackathon!  You should always have (at least) one upcoming hackathon in your dashboard.
+
+
+  ----
+
+  So now you know the various ways to leverage the Fullstack alumni network.  We'll start using these methods in the next couple pages, and you'll continue using them in the months and years ahead!
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 1: Create a networking plan to get introduced to each of your dream companies 
+  Earlier this week, you made your list of 40 "dream companies."  
+
+  Now we're ready to start creating a networking plan, to help you get an introduction to each one.
+
+  This is a pretty big task, and it could take a couple days or more.  That's OK...take your time on this!
+
+  Let's take it one step at a time...
+
+  ----
+
+  __STEP 1: Use LinkedIn to try and find a possible contact at each company__ 
+
+  For example, let's say one of those companies is Amazon. 
+  - First, go into LinkedIn and search for Amazon and only look at your first degree connections. Most companies give referral bonuses, which means the person can make some money if you get hired.  Talk about an incentive to speak with you!  
+  - Then check if there are any Fullstack or Grace Hopper alumni that work there.  To do this, just go to the LinkedIn search box and type in *Amazon* and *Fullstack Academy* (or you could check the Fullstack Academy box under "schools"). 
+  - Now look at your *second* degree connections.  These are people that you know who can refer you over to someone that works at Amazon. 
+  - Lastly, if all above fails, look for engineers that are like you.  For example, find someone that you have something in common with. Maybe they went to the same school (high school or college), they graduated from a bootcamp, or maybe it's obvious that they're working their first engineering job. You can also look for similar activities, hobbies, volunteering, or that you speak the same foreign language. 
+
+  For each person that you find, add them to your dashboard.  Add their name as a Tag for that company, and add a Comment describing your connection to that person.  
+
+  For example, if you find someone named Jenny Smith, who is an engineer at Amazon who went to the same college as you, then you should add her to your dashboard like this:
+
+  ![screenshot](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/bd9fd516-8a49-42bc-a429-8e157d2d407c/2016-12-07_14-32-48.png)
+
+  Now repeat this process for all your dream companies.  If you can find a possible contact(s) at a given company, then add them to your dashboard, and move that company's Task up to the Leads section. 
+
+
+  __STEP 2: Reach out to those people__
+
+  Once you have identified your possible networking contacts, it's time to start reaching out to them.  
+
+  Before you reach out to each person though, search their company's job postings and see if you can find one that may be a good fit for you.
+
+  - IF THERE IS A RELEVANT JOB POSTING: mention that listing in your email to the person, and include the link
+  - IF THERE ISN'T: keep your outreach more general in nature, expressing your interest in working there
+
+
+  Here are some sample "reach outs" for different types of people on your list:
+
+  Reaching out to a Fullstack or Grace Hopper alum:
+
+  `
+  Dear ( ), My name is ( ), and I recently graduated from (Fullstack/Grace Hopper). I was looking through the Alumni network and noticed that you work at ( ). I have been interested in this company for quite some time, and would love to get your insight on how I can stand out as a candidate.  Also, I would love to hear if you have any advice on what worked for you during the job search! I am available to chat (give time) next week, or even meet for coffee. Look forward to hearing from you! (name)
+  `
+
+  Reaching out to a 2nd degree connection: 
+
+  `
+  Dear (), Hope all is well! I wanted to reach out because I have recently started my job search as a software developer and I noticed that you were connected to (name at company).  I am extremely interested in the work that they are doing over there, and I was wondering if you could make an intro for me to their hiring manager or technical recruiter.  Thanks so much!
+  `
+
+  Reaching to an engineer that you met at a Meetup:
+
+  `Dear ( ), We met at the most recent Javascript meetup at (location). I noticed that there is an opening at your company for (title).  I am extremely interested in what (company) is doing right now and really love (something about the company’s mission or product). I would love to chat with you further about your experience at the company, engineering culture and what (company) might be looking for in a candidate before applying online.  Please let me know if you have some time to chat over the phone (give dates).  Thank you so much! 
+  `
+
+
+  __STEP 3: Follow up with people!__
+
+  Don't just reach out to one contact and then give up if you haven't heard back.  Wait about 48 hours and then reach out to the next person on your list for that company. If you get more than one person to reply, that's even better, just make sure that you tell the second person to reply that you're also speaking with the first person!
+
+  __STEP 4: Speak with the person, and get their advice for getting hired at their company__
+
+  The goal is to get some time with the person, either on the phone or (even better) via video chat or (better still!) to meet up for a cup of coffee.  
+
+  When you meet up, here are some good questions that you can ask:
+
+  - What are some things that you did in your job search that helped you? For example, job boards, resources, companies to target...
+  - What do you look for in a (junior) developer?
+  - What kind of questions do you ask (junior) developers in interviews?
+  - Where do you see (junior) developers falling short in interviews?
+  - What can I do to make myself stand out?
+  - I’m fairly new to the market and industry, what are some technical community programs or Meetups that you think I should join?
+  - What do you do to keep up with new technologies?
+  - Do you know any companies or opportunities that I should target?
+  - After looking at my resume, is there anything that I should update?
+  - I am very interested in (company), what got you excited to work here?
+  - What are some challenges that the team is facing?
+  - What is the ideal engineer candidate for (candidate)?
+  - What type of methodologies does the team practice? For example, agile? Lean?
+  - What does the interview process for (role) look like?
+  - Is there anything you think I should brush up on?
+
+  - I am very interested in (role), could you pass my resume along to the hiring manager or the recruiter? 
+
+  ```Notice how the last one is, well, last. Get to know them before asking for a referral!
+  ```
+
+  ----
+
+  This might all sound a little scary and/or overwhelming, but we promise -- it works!  
+
+  Just take it one step at a time, and start reaching out to people.  You might be surprised at how quickly this approach starts to work!
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 1: Begin studying daily for your on-site interviews and technical challenges 
+  This week, we're going to do some more preparation for your upcoming job interviews.
+
+  Let's first summarize how interviews usually go:
+
+  __Phone screen__
+
+  A recruiter will usually start by telling you a little bit about their company, their culture, and the particular role.  He or she will ask about your background, and why you're interested in this role and their company. [Here's a list](https://docs.google.com/document/d/1KC4weMKRfgvBTaPQxUodqOqSdJ1ZSjqwEuTmA_3ANmQ/edit?usp=sharing) of other questions that are commonly asked during phone screens.
+
+  The recruiter will probably ask you some basic technical questions, like "what's your favorite Javascript library, and why"? 
+
+  At the end of the conversation, he or she will ask you if you have any questions.  Make sure you have already prepared at least three questions!  [Here's a list](https://docs.google.com/document/d/1jzPhFDTlzuujYuwhZpqcrPH_mXzAiqx9t6K3vLDl9e8/edit?usp=sharing) of possible questions that you could ask.
+
+  __Take-home coding challenges__
+
+  The next step is often a set of coding challenges. They might be timed (e.g. complete them by the end of the week).  If they are timed, make sure to ask for the company to send them when you've got an open day to work on them.
+
+  __On-site interview__
+
+  You can have any where from 3-7 hours of interviewing for a particular role.  The interviews could include technical challenges like:
+
+  - solving coding challenges on a white board
+  - solving basic mathematical questions
+  - solving theoretical questions
+  - answering technology-related questions
+
+  Make sure you are not caught off guard by these questions!  __At this point, you should start carving out at least one hour per day to study for technical challenges.__  Here are some great resources for doing just that:
+
+  VIDEOS:
+
+  - [Ashi Mysore (instructor at Fullstack) gives some tips on mastering the technical interview](https://youtu.be/qAOkVRGPo9k)
+  - [Fullstack alum John Gruska talks about the process he went through to get hired at Google](https://www.youtube.com/watch?v=Ke-Hmq74Ryw)
+  - [How to Get a Job at the Big 4 - Amazon, Facebook, Google & Microsoft](https://www.youtube.com/watch?v=YJZCUhxNCv8)
+  - [How we hire at Google](https://www.youtube.com/watch?v=k-baHBzWe4k&t=0s)
+  - [How to: Work at Google — Example Coding/Engineering Interview](https://www.youtube.com/watch?v=XKu_SEDAykw) 
+  - We also recommend that you brush up on the lectures that the Career Success team did during senior phase, by watching these video replays:
+    - [How to negotiate the best salary for developer positions ](https://www.youtube.com/watch?v=DKxtzj-tfo4)
+    - [10 easy steps to nail your interview for a developer position ](https://www.youtube.com/watch?v=TK7JwlPCMr4)
+    - [GUEST SPEAKER: Peiter DePree, Technical Recruiting Lead at Stack Overflow](https://youtu.be/Sq1PY5BxrPk)
+    - [LinkedIn for software engineers](https://www.youtube.com/watch?v=rYONfJruQ5w&feature=youtu.be)
+
+  APPS:
+
+  - [An app on Hacker Rank that has questions from the book _Cracking the Coding Interview_](https://www.hackerrank.com/domains/tutorials/cracking-the-coding-interview)
+  - [A free app called Pramp, which you can use to practice for interviews with other developers](https://www.pramp.com/)
+  ![screenshot](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/e8ef4e5a-c10d-435c-b9db-6548826f4980/2017-04-05_14-41-05.png)
+
+
+  ARTICLES:
+
+  - [Fullstack's cheat sheet of commonly-asked technical interview questions](https://docs.google.com/spreadsheets/d/1itJeKay-e0AEdL-G_Wz9CmYT8diJzd2jCwxxQvL1wfI/edit?usp=sharing)
+  - [SKILLED UP: 35 Helpful HTML & HTML5 Interview Questions & Answers](http://www.skilledup.com/articles/html-html5-interview-questions-answers)
+  - [SKILLED UP: 25 Helpful CSS Interview Questions and Answers](http://www.skilledup.com/articles/25-css-interview-questions-answers)
+  - [JAVA T POINT: CSS Interview Questions](http://www.javatpoint.com/css-interview-questions)
+  - [JAVA T POINT: JavaScript Interview Questions](http://www.javatpoint.com/javascript-interview-questions)
+  - [TOPTAL: 25 Essential JavaScript Interview Questions](https://www.toptal.com/javascript/interview-questions)
+  - [FROMDEV: 20 Software Scalability Questions & Answers for Architect Interview](http://www.fromdev.com/2013/07/architect-interview-questions-and-answers.html)
+  - [FAST COMPANY: Here's how we hire engineers at Google](http://www.fastcompany.com/3062713/how-to-be-a-success-at-everything/i-hire-engineers-at-google-heres-what-i-look-for-and-why)
+  - [GOOGLE: Google Interview University](https://github.com/jwasham/google-interview-university)
+
+
+  For now, add an appointment to your calendar for at least one hour per day of studying.
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+  `
+  You have just completed the first week of Flight! You now have your Job Search Dashboard up and running, and all your job search resources (e.g. Stack Overflow, LinkedIn, project videos) are in place. Next week, we'll start reaching out to people!
+  `
+
+  @[Action] WEEK 2: Make initial contact with your dream companies 
+  At this point, you will have found possible networking contacts at some of your dream companies.  Go ahead and reach out to those people, and add them to your dashboard as tags.
+
+  ----
+
+  Once you've done that, let's look at the companies where you *can't* find a possible networking contact. For these companies, you'll need to do a cold outreach.  That's what you'll do on the rest of this page.
+
+  ----
+
+  For each company where you couldn't find a networking contact, do some research and see if they have any developer jobs that look interesting to you.  
+
+  - If they do, then apply!
+  - If they don't, then reach out to their HR department, or to someone else like the CTO or an engineering manager.  Express your interest in working there as an engineer, and see if they know of any relevant positions that you might want to apply for.
+
+  __A note about your dashboard__
+
+  For every company that you're reaching out to, you should keep detailed notes in your dashboard, including:
+
+  - who you contacted
+  - link to job posting (if any)
+  - date of contact
+  - message you sent
+  - date to follow up
+
+  If/when you are no longer pursuing a job at a particular company (e.g. you find out that they don't have any openings currently) then move its Task down to the bottom of your dashboard, into the *Archived* section.
+
+  Once you have made initial outreach to each company (or ruled it out based on further research) then mark this task as complete and move on to the next one.
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 2: Apply to startups on Angel List 
+  The workload so far in Flight has been pretty intense, that's for sure.  
+
+  But if you've completed all the tasks so far, then you have *already* gotten off to a great start in your job search.  
+
+  Up next, we're going to start working with some major job boards, and start applying to some larger companies. 
+
+  But before we do that, let's talk about the idea of going to work at a startup.
+
+  __Is it a good idea to go work at a startup when you leave Fullstack?__
+
+  Many of our graduates choose to work as engineers at promising startups.  This gives them an opportunity to work in a fast-paced environment, usually across a broad range of technologies, and have a real impact on building out an early product.
+
+  One of the key things about working at a startup is finding one that has a mission or product that you find interesting. The great thing about startups is that they usually target a niche market. 
+
+  So think about your hobbies and passions.  Things like music, animals, health, wellness...whatever you're into.  Write a few of them down.  Could you envision working for a startup in that field?
+
+  If the answer is yes, then head over to [Angel List](https://angel.co).  Do a keyword search to see if there are any startups working in the field(s) you're most interested in. If you find any that look interesting to you, then add them to your dashboard as a Lead, and reach out to them!  
+
+  You might also want to search Angel List for startups in your target geographical area that work in other fields...there are lots of cool startups out there!
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 2: If you're applying for remote developer jobs, then review the top remote job boards and get started 
+  If you're *not* applying for remote developer jobs, then you can skip this task and mark it as complete.
+
+  If you *are*, then read on!
+
+  One great thing about being a developer (especially one who can work across the full stack, like you) is that __your skills are in demand, and highly portable.__  You can travel the world as a digital nomad and work from just about anywhere.  Or you can stay in your hometown and work for companies around the world.
+
+  Before we get started, read this article to get a good overview of the market for remote developer jobs:
+
+  - [HACKER NEWS WHO'S HIRING: Remote and Locations](https://blog.whoishiring.io/hacker-news-who-is-hiring-thread-part-2-remote-and-locations/)
+
+  Here are some articles that showcase the most popular sites for remote job postings.  Go ahead and check them out, and find 2-3 sites that you like.  
+
+  - [GITHUB:Awesome Remote Job Boards](https://github.com/lukasz-madon/awesome-remote-job#job-boards) 
+  - [PRODUCT HUNT: Find A Remote Job ](https://www.producthunt.com/e/find-a-remote-job)
+  - [SKILLCRUSH: The 25+ Best Sites For Finding Remote Work](https://skillcrush.com/2014/10/10/sites-finding-remote-work)
+  - [CREATIVE LIVE: 25 Sites for Finding the Best Remote Job](http://blog.creativelive.com/best-sites-finding-remote-jobs)
+  - [NODESK: Remote Job Boards](http://nodesk.co/remote-work)
+
+  Then start looking for interesting positions, adding the companies to your dashboard as Leads, and reaching out!
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEK 3: Start applying to more companies using the top job boards 
+  OK now it's time to begin week 3 of Flight.
+
+  By this point, you've made contact with a pretty large number of companies, and soon you should start getting some irons in the fire.  Let's keep our foot on the gas (hey, another metaphor!), and start getting even more opportunities in your pipeline.
+
+  We'll do that by expanding our search to the major boards. We'll look for jobs that are relevant to us, in our area, and start applying.
+
+  Go ahead and start your search on these job boards, which we think are among the best:
+
+  - [WhoIsHiring.io](https://whoishiring.io/) *<--we love this app...it aggregates job postings from sources like Hacker News' monthly Who Is Hiring posts, like [this one](https://news.ycombinator.com/item?id=12846216), and puts them on a map*
+  - [Stack Overflow Jobs](https://stackoverflow.com/jobs)
+  - [LinkedIn Software Developer Jobs](https://www.linkedin.com/jobs/software-developer-jobs)
+  - [Dice](http://www.dice.com)
+  - [Indeed.com](http://www.indeed.com)
+  - [Crunchboard](https://www.crunchboard.com)
+
+  Then you might want to check out these job boards:
+
+  - [ZipRecruiter](https://www.ziprecruiter.com)
+  - [Mashable Job Board](http://jobs.mashable.com)
+  - [Slack Job Board](https://slackatwork.com/)
+  - [Simplyhired](http://www.simplyhired.com)
+  - [The Muse](https://www.themuse.com/jobs)
+
+  If you're looking for a job as a front-end developer, then check out:
+
+  - [Behance ](https://www.behance.net/joblist)
+  - [Dribble](https://dribbble.com/jobs)
+
+  If you're in the New York City area, then you should check these ones out:
+
+  - [Made in NYC Jobs](http://www.digital.nyc/jobs)
+  - [Built in NYC Jobs](https://www.builtinnyc.com/jobs)
+  - [Crain's Top Places to work in NYC](https://www.crainsnewyork.com/features/best-places-to-work)
+  - [Gary’s Guide Jobs](http://www.garysguide.com/jobs)
+
+  Once you've reviewed the boards, and figured out the ones you're going to work with (e.g. 3-4 of them), then set up an account with each one.  You should prioritize boards where you can subscribe to get daily email alerts about jobs that fit your search criteria, so you can apply to them quickly.
+
+  Once you are set up with 3-4 boards, go ahead and mark this task as complete.
+
+  ```
+  Start getting those applications in...you should be submitting 3-5 applications per day at this point!
+  ```
+
+  And of course remember to track progress for each lead on your dashboard.
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] WEEKS 3+: Keep your job search going, and stay in touch with the Career Success team! 
+  At this point, your job search "machine" is properly up and running.
+
+  Remember what we said about "perseverance" at the beginning of Flight?  Keep that in mind!  
+
+  Stay focused and diligent, getting in 3-5 applications per day, and preparing for your interviews. 
+
+  And above all, stay confident!  __You have in-demand coding skills that employers need, and want.__
+
+  And if you get turned down for a job, don't get too bummed out about it.  [It happens to everyone...even some of the best developers in the world!](http://rejected.us/)
+
+  Whenever you need any support, just Slack the Career Success team, @ mention us in your dashboard, or send us an email.  We are always here and ready to help. 
+
+  We will try and reach out to you at least once a week, but if you have news, don't keep us in the dark. Stay in touch!
+
+  @[Action] When you get hired 
+  When you get hired, we just ask one simple favor. Fill out your offer survey! 
+
+  https://fullstackacademy.wufoo.com/forms/offer-survey-fullstack-grads/
+
+  This information won't be shared with anyone, it's just the way that the Career Success team measures student success. 
+
+  Then we'll update your file in the Career Success Program, and we'll count you among the 97% of our graduates who get hired as a software engineer : ) 
+
+  ![goodluck](http://s2.quickmeme.com/img/ca/caeca14caf425c6de80bd94f29f63f0a1c5197fecabd50b1b1d916a79d9b8685.jpg)

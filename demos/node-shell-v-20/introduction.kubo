@@ -1,0 +1,70 @@
+@[Concept] Introduction 
+  @[Action] Introductory Material 
+  Please review the following materials before starting the workshop:
+
+  * [Video: Philip Roberts: What the heck is the event loop anyway?](https://youtu.be/8aGhZQkoFbQ?t=676) (whole video recommended, but from ~11 minutes in required)
+  * [Video: CommonJS Basics](https://egghead.io/lessons/nodejs-commonjs-basics-introduction)
+  * [Article: Understanding module.exports in Node.js](http://www.sitepoint.com/understanding-module-exports-exports-node-js/)
+
+  # Extra: asynchronicity
+  If you're curious to dig even deeper, you could look into asynchronous control flow. Here's a solid series: [part one](http://howtonode.org/control-flow), [part two](http://howtonode.org/control-flow-part-ii), [part three](http://howtonode.org/control-flow-part-iii).
+
+  @[Action] The Unix Philosophy 
+  Excerpted from http://www.catb.org/esr/writings/taoup/html/ch01s06.html
+
+  > The ‘Unix philosophy’ originated with Ken Thompson's early meditations on how to design a small but capable operating system with a clean service interface. It grew as the Unix culture learned things about how to get maximum leverage out of Thompson's design. It absorbed lessons from many sources along the way.
+
+  > The Unix philosophy is not a formal design method. It wasn't handed down from the high fastnesses of theoretical computer science as a way to produce theoretically perfect software. Nor is it that perennial executive's mirage, some way to magically extract innovative but reliable software on too short a deadline from unmotivated, badly managed, and underpaid programmers.
+
+  > The Unix philosophy (like successful folk traditions in other engineering disciplines) is bottom-up, not top-down. It is pragmatic and grounded in experience. It is not to be found in official methods and standards, but rather in the implicit half-reflexive knowledge, the expertise that the Unix culture transmits. It encourages a sense of proportion and skepticism — and shows both by having a sense of (often subversive) humor.
+
+  > Doug McIlroy, the inventor of Unix pipes and one of the founders of the Unix tradition, had this to say at the time [McIlroy78]:
+
+  > - Make each program do one thing well. To do a new job, build afresh rather than complicate old programs by adding new features.
+  - Expect the output of every program to become the input to another, as yet unknown, program. Don't clutter output with extraneous information. Avoid stringently columnar or binary input formats. Don't insist on interactive input.
+  - Design and build software, even operating systems, to be tried early, ideally within weeks. Don't hesitate to throw away the clumsy parts and rebuild them.
+  - Use tools in preference to unskilled help to lighten a programming task, even if you have to detour to build the tools and expect to throw some of them out after you've finished using them.
+
+  > He later summarized it this way (quoted in A Quarter Century of Unix [Salus]):
+
+  > This is the Unix philosophy: Write programs that do one thing and do it well. Write programs to work together. Write programs to handle text streams, because that is a universal interface.
+
+  Here's another awesome resource about Unix. Its a video from Bell Labs from the 70s! Its a little long, but we recommend you watch it.
+
+  <iframe width="640" height="480" src="https://www.youtube.com/embed/tc4ROCJYbm0" frameborder="0" allowfullscreen></iframe>
+
+  @[Action] Intro to node-shell 
+  This workshop will have you implement common [`bash`](http://bit.ly/1ikp2Hl) (a.k.a. terminal) commands using Node.js. Due to Node's ability to access low-level system information and utility, we can mimic many terminal operations — totally impossible to do in the browser!
+
+  You will learn basic Node concepts like the built-in globals, [Node.js module system](https://nodejs.org/api/modules.html#modules_modules), how to use built-in modules, creating your own modules and using [`npm`](https://www.npmjs.com/) for third-party modules.
+
+  Also, in the process of writing your own shell, you'll discover two things, that your terminal Bash shell is a programming environment and it's powered by _The Unix Philosophy_, the idea that you should create small programs that can interoperate with each other.
+
+  You will also learn the blessings and tribulations of an asynchronous platform and how to compose and manage parallel operations that could complete at any time!
+
+  ## Power Tools
+
+  Two powertools you'll need during this are:
+
+  1.  `man` - bash's `man`ual pages.  In your terminal, if you're ever confused by what a command `cmd` means, type `man cmd`.  
+  2.  [explainshell.com](http://explainshell.com/) - a very nice wrapper around `man` pages, just type in a command and it'll explain to you all the steps in that command.
+
+  @[Action] Introduction to Node 
+  Node.js is a tool that allows us to execute **machine processes** in Javascript. 
+
+  Before Node's release, Javascript had been confined mostly to the browser, only able to execute programs and logic in a browser environment that has many restrictions and limited capabilities for interacting with a client machine.
+
+  With Node, we are able to run programs written in Javascript that interact with a machine. Node has access to low-level components, such as file systems, operating system properties, and the network.
+
+  @[Action] Setup 
+  This workshop will be built completely from an empty directory, no git forking or cloning needed! However, you do want to make your directory a git project. Let's go through the steps:
+
+  ```sh
+  mkdir node-shell # create a new directory named `node-shell`
+  cd node-shell # switch into this directory
+  touch bash.js # create a new file
+  git init # creates a .git file in the current directory
+  git add bash.js
+  git commit -m "added bash.js file"
+  git log # shows the commit you just made
+  ```

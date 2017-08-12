@@ -1,0 +1,24 @@
+@[Concept] Introduction 
+  @[Action] Pre-reading 
+  Article | Estimated or Recommended Time | Priority Level | Intended Takeaway
+  --------|-------------------------------|----------------|------------------
+  [We Have a Problem with Promises](http://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html) | 20-30 minutes | High | What is wrong with callbacks? What is a promise? How do we use promises?
+  [Promises/A+ specification](https://promisesaplus.com) | 5 minutes | Low | Skim through this. You are not expected to fully understand it; just get as far as you can.
+
+  @[Action] Context & Goals 
+  > *A promise represents the eventual result of an asynchronous operation.* — [Promises/A+](https://promisesaplus.com)
+
+  > *The point of promises is to give us back functional composition and error bubbling in the async world.* — [Domenic Denicola](https://blog.domenic.me/youre-missing-the-point-of-promises/)
+
+  **JavaScript promises** are versatile tools for managing asynchronous results. They are portable and can attach handler functions to an eventual value, in multiple places. Compared to the dead end of standard "continuation-passing" async callbacks, they restore normal control flow — letting you chain sequential results, `return` new values, and `catch` errors where most convenient.
+
+  One way to understand a thing is to build it yourself. In this workshop we will build a constructor-style promise library similar to the [ECMAScript Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), which we will call `pledge.js`.
+
+  @[Action] State of the Art 
+  # Bluebird and Promises/A+
+
+  Following multiple proposed [CommonJS promise standards](http://wiki.commonjs.org/wiki/Promises), one leading standard [Promises/A+](https://www.promisejs.org) has won out to become the de facto standard, underpinning even the official [ES6 Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise). Several browsers have implemented them natively (including the V8 engine which powers Chrome and Node), and [Bluebird](https://github.com/petkaantonov/bluebird) is also used as a highly-performant and powerful library.
+
+  ---
+
+  **WARNING**: users of legacy jQuery code beware! While jQuery 2 had a version of promises through `$.Deferred`, that implementation differs from current standards and is considered flawed. See [Kris Kowal’s guide.](https://github.com/kriskowal/q/wiki/Coming-from-jQuery) However, modern jQuery users rejoice! jQuery 3 now has P/A+ compliant promises included.

@@ -1,0 +1,39 @@
+@[Concept] Instructions 
+  @[Action] Setup 
+  This workshop is based on a [Jasmine 2](https://jasmine.github.io/2.5/introduction) test spec (split into thematic chapters). Our promises will be named `$Promise` to avoid triggering browser code. To focus on concepts, `pledge.js` will use public variables and not be standards-compliant (for more information on this, you can refer to the technical note at the end of the workshop).
+
+  ## Clone or Fork the Repo
+
+  Get [this repo](https://github.com/fullstackacademy/pledge.git) onto your local machine and `cd` into it:
+
+  <terminal>
+  $ git clone https://github.com/fullstackacademy/pledge.git
+  ...
+  $ cd pledge
+  </terminal>
+
+  ## Environment
+
+  You'll need [Node.js](http://nodejs.org) and its package manager `npm` installed. Assuming that is true, you can install the repo dependencies with:
+
+  <terminal>
+  $ npm install # will open the documentation too
+  </terminal>
+
+  @[Action] Workshop 
+  To execute the spec, simply enter the terminal command
+
+  <terminal>
+  $ npm test
+  </terminal>
+
+  in the *make-promise* directory, and open the link displayed in your terminal. You will see all the upcoming tests as <span style="color:orange">"pending"</span>. Start writing your own code in the `pledge.js` file. When you <span style="color:green">pass a test</span>, change the next pending test from `xit` to `it` and save.
+
+  This spec is iterative and opinionated; you should do the tests in order. Start with `pledge.spec.ch1.js`, and when complete move on to Chapter 2 (and so on). Do not remove old chapters from your test output — the tests are cumulative, so if you fail to notice an earlier test breaking you can dig yourself into a hole.
+
+  ## Included Resources
+
+  The repo doesn't just contain the test spec. Note that the `Promises Flowchart.pdf` is also included for your reference. You will most likely need to review the promises flowchart during Chapter 4 of the spec; it does not apply to chapters 1–3.
+
+  @[Action] Extra Credit 
+  Chapter 5 of the spec is an optional section on two important library methods, `Promise.resolve` (not quite the same thing as the "resolver" function, e.g. an executor's `resolve`) and `Promise.all`. This chapter is recommended if you have time, but consider it extra credit.

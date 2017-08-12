@@ -1,0 +1,14 @@
+@[Concept] Child Processes 
+@  draftMode true
+  @[Action] What about all the other Bash commands?! 
+  @  draftMode true
+  1. What about all the other bash commands? We can't write all of them
+  2. Node is a process that runs on our machine... could it be able to run the native bash commands for us?
+  3. We want to be able to create a new process that will run the bash command and send its stdout back to our bash program to output in our terminal.
+  4. We can do this by spawning a child process! See the next page for a more in depth look at child processes.
+
+  @[Action] What are child processes? 
+  undefined
+
+  @[Action] Spawning a child process 
+  undefined

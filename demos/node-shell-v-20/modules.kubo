@@ -1,0 +1,109 @@
+@[Concept] Modules 
+  @[Action] Separating commands into a separate file 
+  Thus far, we've implemented two commands: `pwd` and `date`. A good start, but we have many to go! It may get a bit unruly if we put all the logic for all of our commands squashed into our `bash.js` file alongside logic for parsing the original command string, so let's plan for the future and put our command functions into a separate file, `commands.js`.  That file will then `export` an object with the functions that represent each of our different commands.
+
+  <pre>
+  +--------------+       +------------+            
+  |              |       |            |            
+  |  commands.js +---+--->  bash.js   |            
+  |              |   ^   |            |            
+  +--------------+   |   +------------+            
+                     +                             
+                  The module commands.js can export
+                  information to the bash.js file  
+
+  </pre>
+
+  @[Action] Creating a module 
+  Node has a built-in module system. This [video](https://egghead.io/lessons/nodejs-commonjs-basics-introduction) and this [article](http://www.sitepoint.com/understanding-module-exports-exports-node-js/) are a good introduction to how it works.
+
+  - Create a new file called `commands.js` and move the logic for the `pwd` command into this file. For the time being, include printing the next `prompt >` in that logic.
+
+  - This `commands.js` file should **module.exports** an **object** containing a function `pwd` with the logic for our `pwd` command.
+
+  - Wire up `bash.js` so if the user types in a command `pwd`, it accesses that command function in the object coming from `commands.js` and calls it.
+
+  <hint title="Exporting functions">
+
+  In `commands.js` your code should look something like this:
+
+  ``` javascript
+  module.exports = {
+    pwd: function() {
+      // pwd code
+    }
+  }
+  ```
+
+  </hint>
+
+
+  <hint title="Running commands from bash.js">
+  In `bash.js`, you can access `commands.js` like so:
+
+  ``` javascript
+  var commands = require('./commands');
+  var userCommand = 'pwd';
+  commands[userCommand]();
+  ```
+
+  </hint>
+
+
+
+
+  @[Action] module.exports vs exports 
+  A warning before we move on. Sticking with `module.exports` is safe; using just `exports` is valid, but don't re-assign it. The text below is an **optional but recommended** explanation of this.
+
+  ---
+
+  There is another pattern for defining exports that we alluded to earlier. Inside of each module, Node makes `module` (and therefore `module.exports`) available to you.
+
+  ```javascript
+  function greet (name) { console.log('hello ' + name); }
+  function shout (name) { console.log('HELLO ' + name); }
+  module.exports = { greet: greet, shout: shout };
+  ```
+
+  For convenience, Node also goes one step further, and creates a *reference* to `module.exports` named `exports`. So you could instead export functions like so:
+
+  ```javascript
+  exports.greet = function (name) { console.log('hello ' + name); }
+  exports.shout = function (name) { console.log('HELLO ' + name); }
+  ```
+
+  You will undoubtedly see this and it is a valid design pattern. **However,** you must be careful when using the provided `exports` reference. You can *set properties* on `exports`, but *do not change what exports refers to*:
+
+  ```javascript
+  function greet (name) { console.log('hello ' + name); }
+  function shout (name) { console.log('HELLO ' + name); }
+  // WON'T EXPORT OUR FUNCTIONS!
+  exports = { greet: greet, shout: shout };
+  ```
+
+  Why doesn't this work? It's a little confusing, but remember that when we `require` a module, Node fetches `module.exports` from it. Inside a module, `exports` **starts out** as a reference to `module.exports`, which is good. If you set `exports` to something *else*, you aren't actually changing `module.exports` — you are only changing what the `exports` variable points to. When `require` is called, it fetches `module.exports`, it doesn't look at the separate `exports` pointer.
+
+  If you don't quite follow, don't worry — the good news is that sticking with `module.exports` is safe and easy. For a more in-depth look at `exports` vs `model.exports`, there are some very good answers in [this StackOverflow thread.](http://stackoverflow.com/questions/7137397/module-exports-vs-exports-in-node-js)
+
+  @[Action] Built-in modules and `ls` 
+  Every programming language will come with a standard library of modules that make your work as a developer much easier (and of course, Node's standard library is considered very powerful for web type of development).
+
+  One of the most powerful modules available in Node is the [`fs` module](https://nodejs.org/api/fs.html). This *built-in Node module* allows us to access the machine's file system in varied and powerful ways. This is definitely not something you can do in the browser!
+
+  You'll use the `fs` module to implement the next, very familiar command: `ls`. Take the same steps as our `pwd` command to scaffold. That means:
+
+  - Create a new function called `ls` in `commands.js`
+  - When the user types in `ls`, execute the `ls` function 
+
+  Don't forget, `fs` is not a global (like `process`) but a module — that means you'll need to `require` it: `var fs = require('fs');`
+
+  # Implementing `ls`
+
+  You can use `fs.readdirSync` ([docs here](https://nodejs.org/api/fs.html#fs_fs_readdirsync_path_options)) to get all the files in a directory.
+
+  <hint title='Using fs.readdirSync'>
+  ``` javascript
+  var fs = require('fs');
+  var files = fs.readdirSync('.');
+  ```
+  </hint>

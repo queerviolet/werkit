@@ -1,0 +1,622 @@
+@[Concept] Review week 
+  @[Action] Senior phase checkpoint 
+  The first thing you'll do is take the Senior Phase Checkpoint, which is scheduled on (or around) the Monday of Review Week.
+
+  The checkpoint will be cumulative, covering everything you've learned so far at Fullstack.
+
+  The checkpoint is used as a guideline for entrance into the Senior Phase of the program. 
+
+  `If a student underperforms on the Senior Phase checkpoint, the Academic Team will give him/her a set of recommended options to move forward in the program based on the student's academic career at Fullstack. These options may include delaying entry into the Senior Phase by taking additional time to study and/or replaying the Junior Phase.`
+
+  After you've taken the checkpoint, we recommend you take a well-deserved break for a day or two.  
+
+  Get some sleep, hang out with friends and family that you haven’t seen in 6 weeks...or really get crazy and spend some time outdoors!
+
+  When you have recharged your batteries, we'll move on to the next tasks for Review Week...
+
+  <br><br>
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] Solidify your understanding of the curriculum 
+  This week is the perfect time to make sure you "own" the material you learned in the Junior Phase.
+
+  If there were any workshops you struggled with, then watch the review videos and dive deeper into those topics.
+
+  And remember, you can also schedule office hours with your instructors and fellows if you need more help!
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] Get ready for the Senior Phase 
+  Here's a "bird's eye view" of what you'll work on during the Senior Phase:
+
+  ![screenshot1](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/31120c49-6feb-4888-a186-f1c1238c85d4/2017-05-08_14-21-19.png)<br>
+
+
+  __There are a few other things that you'll experience as part of Senior Phase as well, including:__
+
+  CTO Lectures: 
+  - Scalability
+  - UI/UX
+  - Lean Startup
+  - Agile Development
+
+  Guest speakers 
+
+  Fellowship applications process
+
+  <hr>
+
+  The rest of this workshop goes into the details for each item, and describes how they fit into the overall Career Success Program.
+
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] Learn about the projects and videos you'll make in Senior Phase 
+  Now let's take a deeper look at the projects you'll be working on during the Senior Phase.
+
+  __1) Grace Shopper__
+
+  For this project, you'll spend 7 days building an e-commerce site for a product that you and your team dream up.  You'll pull together the concepts you learned in the Junior Phase, and will build all components...including the back end, front end and database.  Your instructors will provide more details on this project when you get to it.
+
+  __2) Stackathon__ 
+
+  This is a 4-day personal hackathon project where you'll really be able to show your creativity.  If you want to get inspired, check out some previous Stackathon projects: http://www.fullstackacademy.com/hackathon-presentations  Keep in mind...you must present your stackathon project even if you didn’t get it to work!
+
+  __3) Tech Talks__
+
+  For this project, you'll create a 10 minute presentation on a topic that you're interested in, and will present it to your fellow students.  We'll look at Tech Talks on the next page.
+
+  __4) Capstone__ 
+
+  This is the "big one", that your entire time in the immersive program is leading up to.  You will work with your team mates for 21 days building this project.  Don't worry about it for now, but feel free to check out some previous Capstone projects if you want to get a sense for what other students have built:  http://www.fullstackacademy.com/student-gallery
+
+  Please note...completion of all the projects is a requirement for graduation!
+
+  __The videos you'll create__
+
+  We will create a video recording of you presenting your Stackathon, Tech Talk and Capstone project.  These videos will be *incredibly* valuable for you career-wise, for many years to come, as you'll learn later in this workshop.
+
+  In the following video, our product manager Mark gives an overview of how the video workflow will work during your Senior Phase:
+
+  <center>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/YwCbwjshl8Q" frameborder="0" allowfullscreen></iframe>
+  </center>
+
+  <br>
+  Here's the link to the spreadsheet that Mark showed in the video: 
+  <br>
+  https://docs.google.com/spreadsheets/d/1LTSFK3TaK4TU1tqFCZiFPx3DZ_yEDPZCmYFU7elKoDg/edit?usp=sharing
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] Learn how Demo Day Live works 
+  _Demo Day Live_ is the marquee event at Fullstack and Grace Hopper, where we get a chance to showcase our super-talented Seniors, and the work they have been doing.  
+
+  It's a live video broadcast on Facebook Live...think of it as like "Sportscenter for code".  But instead of being about athletes, it's about coders. The best way to get a feeling for it is to see an example:
+
+  <center>
+  https://www.fullstackacademy.com/blog/demo-day-apr-2017 <br>
+  (watch the first clip to get an overview of the event)
+  </center>
+
+  <br>
+  For _Demo Day Live_, we pull together all 3 of our campuses into the same live event, which showcases the all-around awesomeness of the Fullstack community.  This is how it works:
+
+  <center>
+  ![screenshot](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/ecfd27ff-72a1-4fa5-9942-3bac5cba59e7/2017-03-29_15-34-01.png)
+  </center>
+
+  The live audience for each event includes:
+
+  - IN NYC: presenting teams from FS NYC and Grace Hopper (and their instructors and fellows) are in the audience in Hamilton Hall (while the NYC teams are presenting)
+  - IN CHICAGO: presenting teams from FS Chicago (and their instructors and fellows) are in the audience in 1871 (while the Chicago teams are presenting)
+  - ONLINE: The audience that's watching the livestream on Facebook Live includes people that we have invited to attend (e.g.  alumni, friends & family of presenting students, hiring partners, and members of the "general public" who may find us on Facebook).
+
+  <br>
+
+  **The schedule**
+
+  On the morning of _Demo Day Live_, there is a full dress rehearsal (from 10:30 AM to 1:00 PM EST) where all teams present.  Call time for the dress rehearsal is 10:20 AM EST.
+
+  The actual _Demo Day Live_ broadcast starts at 3:30 PM EST, and runs until 5:30 PM EST.  It is actually the first event in 4 days of activities related to Hiring Day, as you can see here:
+
+  <center>
+  ![screenshot](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/fb40e85a-1acb-4398-9284-4ca9f99fe7da/2017-05-08_14-30-15.png) 
+  </center>
+
+
+
+
+
+
+  <br>
+  **Publishing the videos to employers**
+
+  We publish all the video replays in a blog post by 9 PM of Demo Day, then invite employers to watch them before Hiring Day happens three days later.  The blog post looks like this:
+
+  <center>
+  https://www.fullstackacademy.com/blog/demo-day-apr-2017
+  </center>
+  <br>
+  Each student's _Demo Day Live_ presentation video is also published in their respective Hiring Day Profile.
+
+  @[Action] Learn how prizes are awarded for Demo Day Live 
+  At the beginning of the _Demo Day Live_ broadcast, David and Nimit present some slides, that show where the competing teams will be joining from.  For example:
+
+  ![](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/afaf424e-be61-482a-bc0b-32e1f5ee38d2/2017-06-27_11-44-53.png)
+
+  ![](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/c2e458d9-3779-4beb-993c-187dbbe90a69/2017-06-27_11-45-27.png)
+
+  ![](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/dedeb4a6-08f1-4c00-861b-a08761dd36c4/2017-06-27_11-46-00.png)
+
+  ![](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/e415d6eb-dabd-41b0-ad86-8f85ea62043c/2017-06-27_11-46-27.png)
+
+  David and Nimit then describe the two winners that will be announced at the end of the broadcast:
+
+  ![](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/ce3f9d70-551e-4e42-9475-1695506a4fa4/2017-06-27_11-48-10.png)
+
+  ![](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/754fec4a-3ed5-4544-bf59-31ed20dbb121/2017-06-27_11-48-59.png)
+
+  ![](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/40c4172c-d43f-4b39-84a0-12c43f5d1340/2017-07-09_12-11-29.png)
+
+  ![](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/9704c50a-2af6-4e3c-988f-a24db1927ec9/2017-06-27_11-49-43.png)
+
+  ![](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/f08b38b8-b18b-440a-bff2-9a15dbaab29f/2017-06-27_11-50-12.png)
+
+  ![](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/17e421cf-ee90-41de-9e70-8899474c7b01/2017-06-27_11-50-51.png)
+
+  ![](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/cbd6c6c8-07bb-4068-b29a-cf57c8a9eb02/2017-06-27_11-51-20.png)
+
+  	We encourage you to invite your friends and family to tune into the live stream, and vote for your team!
+
+  For the Developers' Choice Award, voting will happen in Slack, after all teams have presented.  The poll looks like this:
+
+  ![](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/dd279ca9-9006-4c79-a5af-acc67904e758/2017-06-22_12-04-50.png)
+
+  ![](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/99933880-9133-49ff-8f34-eed806885115/2017-06-22_12-05-59.png)
+
+  David and Nimit will announce the 2 winning teams at the end of the broadcast.
+
+  @[Action] Learn how Hiring Day works 
+  If you want to get hired as a developer in New York City or Chicago, then we'd love to have you participate in Hiring Day in that city! 
+
+  Here's everything you need to know: 
+
+
+  __When is Hiring Day?__
+
+  It's during the last week of Senior Phase. 
+
+  __What is Hiring Day?__
+
+  It's an event where our hiring partner companies come to our campus in New York City and Chicago, to do "speed dating" job interviews with our graduating Seniors.
+
+  There is also an opportunity for Seniors and hiring partner companies to network in a job fair-type setting.  
+
+  __Who can participate in Hiring Day?__
+
+  If you are 100% committed to living in either New York City or Chicago after you graduate, and getting hired as a developer, then you're eligible to participate.  
+
+  __How does it work?__
+
+  If you're participating in Hiring Day, then you will be given access to our "Hiring Day app". Here's a video from Mark, where he shows how the app works:
+  <center>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/l9mUHv3-0-Y" frameborder="0" allowfullscreen></iframe>
+  </center>
+
+  *NOTE: In the video above, you'll see what the Hiring Day student profiles look like.  We have made a major upgrade since the video was recorded, and now each student's project videos appear in their profile as well.  Here's what the updated profiles look like:*
+
+  ![screenshot](https://content.screencast.com/users/markdavisDML/folders/Snagit/media/bb5fb5d1-168d-4df6-bcff-7bb5458ab0e2/2017-04-05_12-53-52.png)
+
+  Now that you know how Hiring Day works, go ahead and mark this task as complete.
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] Think about what you want to do after Fullstack 
+  Let's spend a few minutes to start thinking about life _after_ Fullstack.
+
+  There are three main career paths that are available to you after you graduate from the immersive program:
+
+  <center>
+  ![screenshot](http://content.screencast.com/users/markdavisDML/folders/Snagit/media/85778cad-14cd-48d1-ac2c-29a54ebfa074/2016-11-29_15-19-51.png)
+  </center>
+
+  Let's take a look at each one.
+
+  __Fellowship__
+
+  Some of you might want to become a fellow for the Fullstack immersive program.
+
+  Fellows stay on for a full 13 weeks (junior and senior phase) and get experience mentoring students, helping with the admissions process, and working on projects for the engineering team.  This is a paid role.
+
+  Three weeks before the fellowship ends, senior fellows start working with the Career Success team and start applying for jobs.
+
+  In week 3 of the Senior Phase, you'll attend a talk where you'll get details on how the Fellowship program works, and will receive instructions on how to apply (if you're interested). 
+
+
+  __Fund__
+
+  Do you dream of launching your own startup, and have a great idea for a product or service?  
+
+  If so, then you might want to apply for seed funding from our accelerator program, Fullstack Fund, which is available exclusively to graduates of the Fullstack immersive program.  You can read more about this program here: http://www.fullstackacademy.com/fullstack-fund  
+
+
+  __Flight__
+
+  While some graduates go on to become fellows and/or launch a startup, the vast majority of students go down the third path, which means participating in the "Flight" program to pursue your dream job as a software engineer.
+
+  As a full-stack developer, what are the career options in front of you?  Here are some common examples:
+
+  1) Get hired as a developer in a major tech hub, such as New York City, SF or Chicago<br>
+  2) Get hired as a developer in another location<br>
+  3) Get hired as a remote developer<br>
+  4) Get hired as a remote developer, traveling the world as a ["digital nomad"](https://nomadlist.com/)
+
+  <hr>
+
+  OK, so those are the main options ahead of you after you graduate -- become a fellow, launch a startup, or get hired as a software engineer.  
+
+  __Feeling slightly overwhelmed by all the options?  Well don't worry!__  
+
+  You don't need to make _any_ decisions right now.  
+
+  We just wanted to lay out all the options that will be in front of you. We'll be discussing them in more detail in the weeks ahead.
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] Start technical blogging once per week 
+  When the lead technical recruiter at Stack Overflow came to speak at Fullstack recently, one of his key takeaways was that new developers should keep a technical blog. This can be a _great_ differentiator when it comes to your job search.  You can listen to his comments here:
+
+
+  <center>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/Sq1PY5BxrPk" frameborder="0" allowfullscreen></iframe>
+
+  <br>
+  (the audio sync is a little messed up, but you'll still get the idea)
+  </center>
+
+  <br>
+  If you haven't already, then Review Week is the perfect time to start blogging about your experience learning full stack coding.  You don't need to write *War & Peace*...just start carving out some time (about an hour a week) to write down some thoughts in a blog post, and publish the posts on either Medium or your current blog.  When it comes time for your job search stuff, you'll be glad you did!
+
+  Not sure what to write about?  Here are a couple examples of great blog posts written by one of our former students:
+
+  - http://bethqiang.com/blog/2017/01/12/what-ive-been-up-to-for-4-weeks/
+  - http://bethqiang.com/blog/2016/12/14/fullstack-academy-junior-phase-in-review/
+
+
+  <br><br>
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] Learn the Policies and Norms for Senior Phase 
+  This page is just a quick reminder about the norms here at Fullstack, and then a summary of class policies to observe during Senior Phase.
+
+  __Reminder of our Community Norms__
+
+  - No "subtle-isms" (e.g. sexism, racism, ageism --  use the Incident report Form to report any issues)
+  - Professionalism and the “No Asshole Policy” is required!
+  - Ask questions (even “dumb” ones)
+  - Be patient...with yourself and others.
+  - Trust the process.
+  - Be on time.
+  - Help others. Teach others. 
+
+
+  __Class policies during the Senior Phase__
+
+  - Log into LearnDot each day for attendance
+  - Be on time -- remember that REACTO (more on that in the next section) starts each day at exactly 9:30 AM
+  - If you're late four times then that counts as one "absence"
+
+  __Career Success requirements__
+
+  - Completing all 4 projects (Grace Shopper, Stackathon, Tech Talk and Capstone) is required for graduation
+  - To participate in Flight after graduation, all pages in this workshop must be marked as complete
+  - Do not start applying for jobs until after you graduate!  You should be completely focused on your studies until then.
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>
+
+  @[Action] Decide on a topic for your Tech Talk 
+  In this video, our lead instructor Joe gives some advice on how to give a great Tech Talk:
+  <br>
+
+  <center>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/TGzGkmlJdb4" frameborder="0" allowfullscreen></iframe>
+  </center>
+
+  <br>
+
+  So now it's time to start brainstorming about different topics, and decide what you'll discuss in *your* Tech Talk.
+
+  If you'd like some inspiration, check out these videos of previous Tech Talks: http://www.fullstackacademy.com/tech-talks
+
+  __Here's a top tip!__
+
+  If you want to hit the ground running in Senior Phase, then we suggest you not only come up with the *topic* for your Tech Talk during review week, but also start working on it.  
+
+  In fact, some students like to *finish* writing their Tech Talks during review week...which is a great idea!
+
+  <br><br>
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('[type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset career-success-checkbox">
+    <div>
+      <input type="checkbox">
+      <span>Mark this page as complete</span>
+    </div>
+  </p>

@@ -1,0 +1,11 @@
+@[Workshop] Career Success Program
+@  description  "In this workshop, you'll work through the process of landing your dream job after you graduate from Fullstack."
+@  learnDotWorkshopId "585179c6a2b61e00044d8627"
+
+    @[...] ./introduction
+
+    @[...] ./review-week
+
+    @[...] ./senior-phase
+
+    @[...] ./flight
