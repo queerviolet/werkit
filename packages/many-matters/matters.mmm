@@ -5,7 +5,6 @@
   Many minor matters is a mechanism for maintainably managing many markups
   (or downs).
 
-  Hi.
     @[Action] Say again?
     MMM uses indentation and a very light syntax to distinguish between embedded
     pieces of text in different languages. This is to solve the various escaping
