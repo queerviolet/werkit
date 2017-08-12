@@ -137,6 +137,62 @@
   
     It includes all the matters from `intro.mmm` right here.
 
+  @[Concept] Why?
+    @[Action] The problem
+    Markdown is nice. You can just put in code `like this`,
+    or like this:
+
+      @[Code] md
+      ```js
+        // hi
+      ```
+
+    And if you want to extend it, you can use HTML tags.
+    Our workshops have hints:
+      @[Code] md
+      <hint title='a secret'>
+        This won't show until you click.
+      </hint>
+    
+    That's nice. We're often writing about JSX, so we have stuff
+    that looks like this:
+
+      @[Code] md
+      ```js
+        export default () => <Component>
+        </Component>
+      ```
+
+    And sometimes that's inside a `<hint>`:
+
+      @[Code] md
+      <hint title='click to confuse the markdown parser'>      
+        ```js
+          // Frankly, I can understand why the parser is confused
+          // at this point. Are we inside HTML? Getting parsed as
+          // markdown? Does the HTML parser take precedence because
+          // we're inside a <hint> tag, or do the backticks make it
+          // literal, and oh god, what if my comment has Markdown,
+          // people actually do that? Like, I might say, to generate
+          // this file, run:
+          //
+          //    ```sh
+          //    scream > /dev/null
+          //    ```
+          //
+          export default () => <Component>
+          </Component>        
+        ```
+      </hint>
+
+    I believe that there's some way of arranging the Markdown and HTML parsers
+    that make this work right. I believe this in the same way I believe 0.99999999 = 1.
+    Yes, but also no.
+
+    So many matters does not try to solve the problem of mingling Markdown and HTML-like
+    tags, and instead tackles the problem of separating blocks written in whatever language
+    from each other, and providing metadata for them.
+
   @[Concept] Things that don't work yet  
     @[Action] Evaluation blocks
     This is an evaluation block:

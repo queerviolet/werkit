@@ -176,7 +176,8 @@ async function main(_node, _index, kubo) {
   kubo = kubo || await findKubo(kubo)
   if (!kubo) {
     throw `kubo: no materials found in ${process.cwd()}`
-  }  
+  }
+  console.log(`Serving ${kubo}`)
   
   serve(path.resolve(kubo))
 }

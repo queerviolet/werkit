@@ -1,4 +1,5 @@
-const parse = require('.')
+const debug = require('debug')('mmm:loader')
+    , parse = require('.')
     , {dirname} = require('path')
     , jsx = require('./jsx')
     , {promisify} = require('util')
@@ -19,6 +20,7 @@ function load(source) {
       }))
   
   const compile = async (file, context, loading={}, source=read(file)) => {
+    debug('compile', file, context, loading)
     async function processChild(matter) {
       if (typeof matter === 'string') return matter
       if (matter.type === '...') {

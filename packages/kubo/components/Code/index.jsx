@@ -1,25 +1,31 @@
 const Code = module.exports = ({language, children}) =>
-  <Lowlight prefix='hljs-light-' className='hljs-inline' language={language} value={src(children)} />
+  language in languages?
+    <Lowlight prefix='hljs-light-' className='hljs-inline' language={language} value={src(children)} />
+    : <Lowlight prefix='hljs-light-' className='hljs-inline' value={src(children)} />
 
 Code.Inline = Code
 
 Code.Block = ({name, language=name, children}) =>
-  <Lowlight language={language} value={src(children)} />
+  language in languages?
+    <Lowlight language={language} value={src(children)} />
+    : <Lowlight value={src(children)} />
 
 const Lowlight = require('react-lowlight')
     , js = require('highlight.js/lib/languages/javascript')
     , python = require('highlight.js/lib/languages/python')
     , objc = require('highlight.js/lib/languages/objectivec')
-
+    , md = require('highlight.js/lib/languages/markdown')
+    , languages = {
+      js, javascript: js,
+      python,
+      objc, 'objective-c': objc,
+      md, markdown: md,
+    }
 require('./atelier-cave-dark.css')
 require('./atelier-cave-light.css')
 
-Lowlight.registerLanguage('js', js)
-Lowlight.registerLanguage('javascript', js)
-Lowlight.registerLanguage('python', python)
-Lowlight.registerLanguage('objc', objc)
-Lowlight.registerLanguage('objective-c', objc)
-Lowlight.registerLanguage('mmm', objc)
+for (const language in languages)
+  Lowlight.registerLanguage(language, languages[language])
 
 const source = Symbol()
 const src = children =>
