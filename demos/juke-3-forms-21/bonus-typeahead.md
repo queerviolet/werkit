@@ -1,1 +1,0 @@
-The song dropdown is a real design bummer. Swap it out for a typeahead - if you Google search for react typeaheads, you'll find many options that can help you with the implementation. You could also build your own - it's not *that* hard! (It's not that easy, either...)

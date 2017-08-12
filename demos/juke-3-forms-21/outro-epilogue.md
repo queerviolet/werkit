@@ -1,5 +1,0 @@
-We've gotten a glimpse of how we can leverage the simple, functional structure of React to create composable forms that we can easily manipulate using some basic JavaScript. We've also closed the loop and implemented a full set of CRUD operations, tying together the whole stack. In summary: good job!
-
-However, not all is right in paradise. It's getting a bit stuffy inside our `AppContainer`. Needing to use `bind(this)` is also starting to get on my nerves - functional programmers like us shouldn't need to worry about messy object-oriented structures like `this`! And all of these `componentDidMount`s are polluting what *should* be beautiful, functional components. Wouldn't it be nice if all of our application state and behavior didn't have to all live in one component, but could still be accessible wherever we needed it? Is there any way we could just `connect` our application state directly to our components?
-
-Well, get ready because next time, [`redux`](http://redux.js.org/docs/introduction/) will help us de-couple state management from our components and turn our app into a lean, mean, functional machine!
