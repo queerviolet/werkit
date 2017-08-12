@@ -10,22 +10,37 @@ const fs = require('fs')
     , {join} = require('path')
     , mkdir = promisify(fs.mkdir)
     , writeFile = promisify(fs.writeFile)
+    , readFile = promisify(fs.readFile)
     , axios = require('axios')
     , learn = require('learn.')
 
 
-async function main([_1, _2, workshopId]) {
-  if (!workshopId) {
-    console.error(`Usage: node learn.import <workshop-id>`)
+async function main(argv) {
+  program = require('commander')
+    .version('0.0.1')
+    .usage('[-u] <workshop-id,...|path,...>')
+    .option('-u, --update', 'Update an existing dir pulled from learn.')
+    .parse(argv)
+
+  if (!program.args.length) {
+    program.outputHelp()
     process.exit(1)
   }
 
+  if (program.update) {
+    return Promise.all(program.args.map(id => update(id)))
+  } else {
+    return Promise.all(program.args.map(path => fetch(path)))
+  }
+}
+
+async function fetch(workshopId, outDir) {
   const workshop = await learn.get(`api/workshops/${workshopId}`)
     .then(fetchConcepts)
   
   const assets = convertWorkshop(workshop)
   
-  const outputDir = key(workshop.name)
+  const outputDir = outDir || key(workshop.name)
   await mkdir(outputDir)
     .catch(error => error.code === 'EEXIST' || Promise.reject(error))
     .then(() => console.error('created', outputDir))
@@ -33,6 +48,11 @@ async function main([_1, _2, workshopId]) {
   console.error('wrote assets:', await write(outputDir, assets))
   return outputDir
 }
+
+const update = path =>
+  readFile(join(path, 'learn.id'))
+    .then(id => fetch(id, path))   
+    .catch(err => console.log(path, ':', err.message)) 
 
 const fetchConcepts = async workshop =>
   Object.assign(workshop, {
@@ -43,7 +63,7 @@ function convertWorkshop(workshop) {
   const {_id, name, description, photo_url, artworkUrl=photo_url, concepts} = workshop
   const artFile = artworkUrl && path.basename(artworkUrl)
       , artUrl = artworkUrl && `https://s3.amazonaws.com/learndotresources/${artworkUrl}`
-      
+  workshop.artFile = artFile
   return Object.assign({
     'index.kubo': workshopMatter(workshop),
     'learn.id': _id,
