@@ -35,7 +35,7 @@ function load(source) {
       }
       const nestedChildren = matter.children &&
         await Promise.all(matter.children.map(processChild))
-          , children = nestedChildren.reduce((a, b) => a.concat(b), [])
+          , children = nestedChildren.reduce((a, b) => a.concat(b), []).filter(x => x)
       return Object.assign({}, matter, {children})
     }
 

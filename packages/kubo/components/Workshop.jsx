@@ -72,7 +72,7 @@ class Navigator extends React.Component {
     const visible = visibleElementBoxes
       .reduce((visible, elementBox) => Object.assign(visible, {
         [elementBox.element.id]: elementBox
-      }, {}))
+      }, {}), {})
     
     const firstVisibleAction = visibleElementBoxes
       .find(({element}) => element.dataset.name)
