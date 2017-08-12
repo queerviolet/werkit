@@ -1,4 +1,10 @@
-const path = require('path')
+const program = require('commander')
+  .version('0.0.1')
+  .usage('[-t themes] [path]')
+  .option('-t, --theme [themes]', 'Themes', (val, memo) => [...memo, val], [])
+  .parse(process.argv)
+
+    , path = require('path')
     , fs = require('fs')    
     , {tmpdir} = require('os')    
     , {promisify} = require('util')
@@ -83,6 +89,27 @@ const globals = flow(
   React: my('react'),
   Code: my(`./components/Code/Code`),
 })
+
+for (const themeModule of program.theme) {
+  const resolvedTheme = resolve.sync(themeModule, {
+    basedir: process.cwd(),
+    extensions: ['.js', '.json', '.jsx'],
+  })
+  const theme = require(resolvedTheme)
+  const themeDir = path.dirname(resolvedTheme)  
+
+  Object.assign(globals,
+    ...Object.keys(theme)
+        .map(id => ({
+          [id]: resolve.sync(theme[id], {
+            basedir: themeDir,
+            extensions: ['.js', '.json', '.jsx'],
+          })
+        }))
+  )
+}
+
+console.log('globals:', globals)
 
 const babel = {
       loader: 'babel-loader',
@@ -172,7 +199,7 @@ async function findKubo(entry) {
   return entry
 }
 
-async function main(_node, _index, kubo) {
+async function main(kubo) {
   kubo = kubo || await findKubo(kubo)
   if (!kubo) {
     throw `kubo: no materials found in ${process.cwd()}`
@@ -183,7 +210,7 @@ async function main(_node, _index, kubo) {
 }
 
 if (module === require.main)
-  main(...process.argv)
+  main(...program.args)
     .catch(err => {
       console.error(err)
       process.exit(1)
