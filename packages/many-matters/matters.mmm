@@ -18,7 +18,7 @@
     This is what a matter looks like: indented, and with a head at the top.
     Indented lines without tags are not considered new matters.
 
-      @[Hint]
+      @[Hint] click to show
       This matter is a Hint. It'll generate a `<Hint>` tag in the JSX output. That's
       the extent of what MMM knows about what it's doing---it's a very thin wrapper
       on top of JSX.
@@ -135,7 +135,7 @@
       @-[Code] mmm
       @[...] ./intro.mmm
   
-    It includes all the matters from intro.mmm right here.
+    It includes all the matters from `intro.mmm` right here.
 
   @[Concept] Things that don't work yet  
     @[Action] Evaluation blocks
