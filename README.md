@@ -50,11 +50,6 @@ The workshop will be imported into `demos` and served on
 [port 9876](http://localhost:9876).
 
 
-## Update a workshop that's already been imported
-
-You can re-import a workshop without going and finding its workshop id:
-
-
 ## Import a workshop from Learndot
 
 ```sh
@@ -89,6 +84,18 @@ npm run add many-matters resolve
 
 That will install the `resolve` npm in the `many-matters` subpackage, and re-run
 `lerna bootstrap` to ensure everything stays happy.
+
+## Re-download a workshop that's already been imported
+
+You can re-import a workshop without going and finding its workshop id:
+
+```sh
+node packages/learn.kubo -u <path>
+```
+
+This relies on the presence of a `learn.id` file in the directory, created
+by the importer.
+
 
 # TODO
 
