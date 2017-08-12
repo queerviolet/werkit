@@ -46,6 +46,7 @@ class Navigator extends React.Component {
   componentWillUnmount() {
     window.removeEventListener('scroll', this.scheduleUpdate)
     window.removeEventListener('resize', this.scheduleUpdate)
+    this.navElementWillUnmount()
   }
 
   get contentElements() {
@@ -79,8 +80,10 @@ class Navigator extends React.Component {
       const {id} = firstVisibleAction.element
           , {name} = firstVisibleAction.element.dataset
           , hash = `#${id}`
-      if (window.location.hash !== hash)
+      if (window.location.hash !== hash) {
         history.replaceState(null, name, hash)
+        document.title = name
+      }
     }
     this.setState({visible}, this.scrollSelf)
   }
@@ -89,8 +92,29 @@ class Navigator extends React.Component {
     this.navSections.forEach(active =>
       active.scrollIntoView({behavior: 'smooth'}))
 
+  navElementWillScroll = evt => {
+    const {scrollTop, scrollHeight, offsetHeight} = evt.currentTarget
+        , {deltaY} = evt
+    if (scrollTop <= 0 && deltaY < 0 ||
+        scrollTop + offsetHeight >= scrollHeight && deltaY > 0) {
+      evt.preventDefault()
+      return
+    }
+
+    window.z = evt.currentTarget
+  }
+
+  navElementDidMount = nav => {
+    this.navElement = nav
+    nav.addEventListener('wheel', this.navElementWillScroll)
+  }
+
+  navElementWillUnmount(nav=this.navElement) {
+    nav.removeEventListener('wheel', this.navElementWillScroll)
+  }
+
   render() {
-    return <nav className='workshop'>
+    return <nav className='workshop' ref={this.navElementDidMount}>
       <Nav visible={this.state.visible}>{this.props.children}</Nav>
     </nav>
   }
