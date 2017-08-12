@@ -25,11 +25,6 @@ async function main([_1, _2, workshopId]) {
   
   const assets = convertWorkshop(workshop)
   
-  // const indexSrc = jsx
-  //   .then(jsxToSrc)
-  //   .then(esformatter.format)
-  //   .then(jsx => `export default () => ${jsx}`)
-
   const outputDir = key(workshop.name)
   await mkdir(outputDir)
     .catch(error => error.code === 'EEXIST' || Promise.reject(error))
@@ -48,28 +43,41 @@ function convertWorkshop({name, description, photo_url, artworkUrl=photo_url, co
   const artFile = artworkUrl && path.basename(artworkUrl)
       , artUrl = artworkUrl && `https://s3.amazonaws.com/learndotresources/${artworkUrl}`
       
-  return {
+  return Object.assign({
     'index.kubo': workshopMatter({name, description, concepts, artFile})
     , [artFile]: axios.get(artUrl, {responseType: 'arraybuffer'})
         .then(res => res.data)
+  }, ...concepts.map(convertConcept))
+}
+
+function convertConcept(concept) {
+  return {
+    [conceptFile(concept) + '.kubo']: conceptMatter(concept)
   }
 }
+
+const conceptFile = ({name}) => key(name)
+
+const include = (indent='  ') => ({name}) => `${indent}@[...] ./${key(name)}`
 
 const workshopMatter = ({name, description, concepts, artFile}) =>
 `@[Workshop] ${name}
 @  description  ${str(description)}
 ${artFile ? `@  artwork      require(${str(`./${artFile}`)})\n` : ''}
-${concepts.map(conceptMatter).join('\n\n')}
+${indent(concepts.map(include()).join('\n\n'))}
 `  
+const conceptMatter = ({name, actions, draftMode}) =>
+`@[Concept] ${name} ${draftMode ? `\n@  draftMode ${draftMode}` : ''}
+${indent(actions.map(actionMatter).join('\n\n'))}`
 
-const conceptMatter = ({name, actions, draftMode}) => draftMode
-? '' : indent(`@[Concept] ${name}\n${actions.map(actionMatter).join('\n\n')}`, '  ')
+const actionMatter = ({name, text, draftMode}) =>
+`@[Action] ${name} ${draftMode ? `\n@  draftMode ${draftMode}` : ''}
+${text}`
 
-const actionMatter = ({name, text}) =>
-  indent(`@[Action] ${name}\n${text}`, '    ')
-
+const justWs = /^\s*$/
 const indent = (str, by='  ') => str.split('\n')
   .map(line => by + line)
+  .map(line => line.match(justWs) ? '' : line)
   .join('\n')
 
 const str = val => JSON.stringify(val)
