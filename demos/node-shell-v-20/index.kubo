@@ -1,6 +1,7 @@
 @[Workshop] Node Shell v. 2.0
 @  description  "Bash-ception: write a functioning shell prompt, in which Unix-like commands interact with a Node.js process to produce output which can be piped into further commands."
 @  learnDotWorkshopId "58fa10934f85970004953c30"
+@  artwork      require("./1457364523445.jpg")
 
     @[...] ./introduction
 

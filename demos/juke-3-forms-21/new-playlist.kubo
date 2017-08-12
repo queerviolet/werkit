@@ -1,0 +1,151 @@
+@[Concept] New Playlist 
+  @[Action] New Playlist Component 
+  <style>
+  .example-btn {
+    background-image: linear-gradient(#8a9196, #7a8288 60%, #70787d);
+    background-repeat: no-repeat;
+    border-color: rgba(0, 0, 0, 0.6);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    background-color: #7a8288;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+  }
+  .example-btn:hover {
+    background-image: linear-gradient(#404448, #4e5458 40%, #585e62);
+    background-color: #62686d;
+  }
+  </style>
+
+  <ol>
+  <li> Add the following JSX to your `Sidebar` component (right beneath the second pair of `<section>` tags). (N.B. That `<hr />` tag, if you're unfamiliar with it, is just a "horizontal rule" to separate your nav from the button.
+  </li>
+
+  ```js
+  <hr />
+  <section>
+    <h4 className="text-muted">PLAYLISTS</h4>
+    <h4>
+      <Link className="btn btn-primary btn-block" to={/**todo!*/}>
+        <span className="glyphicon glyphicon-plus"></span> PLAYLIST
+      </Link>
+    </h4>
+  </section>
+  ```
+
+  <li> Create a `Route` and a presentational component for the `NewPlaylist`. The view should include a field for entering the name of the playlist, and also a button for submission. Once you've done so, make sure to `Link` up that <button class="btn example-btn"><i class="fa fa-plus"></i> PLAYLIST</button> button to navigate us there.
+  </li>
+
+  <hint title="Possible JSX">
+  <pre>const NewPlaylist = function () {
+  return (
+  &lt;div className="well"&gt;
+    &lt;form className="form-horizontal"&gt;
+      &lt;fieldset&gt;
+        &lt;legend&gt;New Playlist&lt;/legend&gt;
+        &lt;div className="form-group"&gt;
+          &lt;label className="col-xs-2 control-label"&gt;Name&lt;/label&gt;
+          &lt;div className="col-xs-10"&gt;
+            &lt;input className="form-control" type="text"/&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div className="form-group"&gt;
+          &lt;div className="col-xs-10 col-xs-offset-2"&gt;
+            &lt;button type="submit" className="btn btn-success"&gt;Create Playlist&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/fieldset&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+  )}</pre>
+  </hint>
+
+  <guide>
+  You have completed steps 1 - 2 above
+  The "playlist" button renders in the sidebar, and clicking it causes the playlist form to render
+  </guide>
+
+  @[Action] New Playlist Container 
+  The `NewPlaylist` component is a form, so let's write another `container` component to contain the current value of the input. Here's what we'll need:
+
+  1. A state field for the input value
+  2. A method to set the input value on state when the input changes (just like the FilterInput component)
+  3. A method to do something with the input value when the form is submitted (this will get passed as the `onSubmit` prop to the `<form>` element - **not** to the `<button>`)
+
+  For now, let's just try to get it so that when we submit the form, we just `console.log` the value in the form. Go for it!
+
+
+  <hint title="Why is my screen refreshing when I handle the submit!?!">
+  Remember that the native HTML behavior for an `onsubmit` listener will cause the screen to refresh - an unfortunate throwback to the time before SPAs. You can prevent this by invoking `preventDefault` on the event object.
+  </hint>
+
+  <guide>
+  Clicking submit causes the value in the input field to be logged to the console (without causing the screen to refresh as well)
+  </guide>
+
+  @[Action] Controlled Components 
+  At this point, you should be logging out the value of the input to the console. It's a shame that the field doesn't clear out when we click the submit button though. You might try setting the input value on your state to be an empty string when we submit, but you'll notice that this doesn't actually affect the value in the input field. To put it one way - changes to the input field are updating our field on state, but changes to our field on state aren't updating the input field! How can we change that?
+
+  In React parlance, a [`controlled component`](https://facebook.github.io/react/docs/forms.html#controlled-components) is a form field whose *value is managed by state*. This is very easy to do! All we have to do is pass the value from our state in as the `value` prop on the input element itself!
+
+  Give this a shot so that when you click the submit button, the input field clears out!
+
+  <hint title="Solution">
+  You'll need to pass down the input value you're managing on your state (let's call it `inputValue`. Then, in your `NewPlaylist` component...
+
+  <pre>
+  &ltinput value={props.inputValue} />
+  </pre>
+
+  Now the value in the input field will be the same as the inputValue on state. So, to get the value in the input field to clear, you just need to clear it on your state!
+  </hint>
+
+  <guide>
+  Clicking the submit button still causes the value of the field to be logged to the console, and then the input clears
+  </guide>
+
+  @[Action] Disable When Invalid 
+  Let's add some validations. Since we're managing the input's value on our state, this shouldn't be too bad! The text input should be required and have no more than 16 characters. The submit button should be disabled if either of these validations fails.
+
+  <hint title="Approach">
+  Don't forget that `button` elements can take a prop called `disabled`, which will accept a boolean. Sounds like you could manage some state in the container component, or use the value prop that controls the input value.
+  </hint>
+
+  <guide>
+  The submit button becomes disabled when the input field is empty
+  The submit button becomes disabled when the input field contains more than 16 characters
+  </guide>
+
+  @[Action] Validation Warnings 
+  Let's show or hide descriptive warning messages when the field is invalid. For example, the following JSX is a warning message we might show if the user has not entered a playlist name:
+
+  ```html
+  <div className="alert alert-warning">Please enter a name</div>
+  ```
+  Make sure that we only show this error *after* they edit the field!
+
+  <guide>
+  A warning appears when the field has more than 16 characters
+  A warning appears when the field is emptied to have no characters in it
+  A warning does not appear when the field has not yet been used (i.e. when it's first loaded)
+  </guide>
+
+  @[Action] Create 
+  Instead of logging upon form submission, let's actually create a new playlist. Go ahead and write this method on the `NewPlaylistContainer` for now (we'll be moving it shortly, though). You'll need to make your first `POST` request using axios. This is as easy as saying `axios.post`:
+
+
+  ```js
+  axios.post('/api/route/to/post/to', { /** req.body contents go here! */ })
+    .then(res => res.data)
+    .then(result => {
+      console.log(result) // response json from the server!
+    });
+  ```
+
+  When you're done you should be able to create playlists that persist to the backend. You can confirm by visiting http://localhost:1337/api/playlists. Also, your front end should do something with the returned playlist — perhaps log it out.
+
+  <guide>
+  You can confirm via /api/playlists that clicking the submit button causes a new playlist to be created in the database 
+  </guide>

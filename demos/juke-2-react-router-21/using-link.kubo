@@ -1,0 +1,32 @@
+@[Concept] Using Link 
+  @[Action] The Link Component 
+  Currently, we can change the view of our app by changing the url, but our users aren't going to want to do that - they want to click links! Time to work `react-router`'s `Link` component into our app!
+
+  The `Link` component itself is a thin wrapper around the `<a>` element - we pass it a prop called `to` that will tell it how to change the url. For example:
+
+  ```js
+  <Link to="/albums">Go to Albums</Link>
+  <Link to={`/albums/${this.props.albumId}`}>Go to an Album</Link>
+  ```
+
+  You can even style Link components the same way you would `<a>` tags using `className` and `style` - it will pass those down to the underlying `<a>` that it renders.
+
+  <guide>
+  You have finished reading the above
+  </guide>
+
+  @[Action] Navigating Around 
+  Let's  `Link` things up! Here's a checklist to help:
+
+  Done | Task
+  --|--
+  <input type="checkbox"> | Clicking on an individual album should switch the view to that album
+  <input type="checkbox"> | Clicking on "Albums" in the `Sidebar` should render all the albums again
+
+  You may notice a few cool things as you refactor:
+  - When clicking an individual album, you no longer need to use `selectAlbum` in the `Albums` (plural) component! The `componentDidMount` in the `Album` component will take care of everything when you change the url!
+  - You no longer need the `deselectAlbum` method at all! Before, whether the `Album` or `Albums` component displayed was based on the truthiness of `this.state.currentAlbum.id` - now it's based on the url!
+
+  <guide>
+  You have completed the task list above
+  </guide>

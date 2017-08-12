@@ -1,0 +1,157 @@
+@[Concept] View Switching 
+  @[Action] The Single Album View 
+  Alright! We've got a beautiful list of albums in front of us now. When we click on one, we want to update the view to show only that album, as well as a list of songs in that album.
+
+  Let's get started with the view, shall we? 
+  <ol>
+  <li> Make a new file to hold the new component (and give it an apt name like `SingleAlbum.js`). 
+  </li>
+  <li> Create a new `React.Component` class in that file and have its render method return the JSX below:
+  </li>
+  ```html
+  <div className="album">
+    <div>
+      <h3>I SHOULD BE AN ALBUM NAME</h3>
+      <img src="https://placeholdit.imgix.net/~text?txtsize=33&txt=IshouldBEanIMAGE&w=300&h=300" className="img-thumbnail" />
+    </div>
+    <table className='table'>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Artists</th>
+          <th>Genre</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <button className="btn btn-default btn-xs">
+              <span className="glyphicon glyphicon-play"></span>
+            </button>
+          </td>
+          <td>I SHOULD BE A SONG NAME</td>
+          <td>I SHOULD BE A STRING OF THIS SONG'S ARTISTS</td>
+          <td>I SHOULD BE A SONG GENRE</td>
+        </tr>
+        <tr>
+          <td>
+            <button className="btn btn-default btn-xs">
+              <span className="glyphicon glyphicon-play"></span>
+            </button>
+          </td>
+          <td>I SHOULD BE ANOTHER SONG NAME</td>
+          <td>I SHOULD BE A STRING OF THAT SONG'S ARTISTS</td>
+          <td>I SHOULD BE A SONG GENRE</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  ```
+
+  <li> `import` your new component into your `Main.js` and render it out beneath our `Albums` component, just to make sure it works. If you succeeded, then your view should look something like this:
+  </li></ol>
+  <img src="https://learndotresources.s3.amazonaws.com/workshop/5817499b3079790003310bcb/Screen%20Shot%202016-11-10%20at%2011.48.48%20AM.png" />
+
+  <guide>
+  You have completed steps 1 - 3 above
+  Your view looks similar to the screenshot above
+  </guide>
+
+  @[Action] Selected Album 
+  Looking good! Let's put an actual album's data in there. We've already got the albums on our state, but we need some way of indicating the currently selected album. Sounds like we need to update our state object! 
+
+  1. In the constructor for our `Main` component, initialize a new property (something nice, like `selectedAlbum`). Don't forget **Tom's First Law**! Initialize it to be an **empty object** (since we'll be storing an object there later)!
+
+  <guide>
+  You have completed the step above
+  </guide>
+
+  @[Action] Click Listener 
+  Let's attach a click listener to each of our albums (we'll throw it on each `<a>` tag). Remember that, the same way we have to say `className` instead of `class` for our JSX elements, we need to say `onClick` instead of `onclick`.
+
+  <ol>
+  <li> We need to use `this.setState`, so write a method on your stateful `Main` component that will receive the album we want to select as a parameter. Call it something like...`handleClick`, maybe?
+  </li>
+  <li> `Bind` the method in our constructor (we're going to eventually pass it as a callback to our click listener, so we need to preserve the `this` context).
+  </li>
+  <li> Pass this method down as a prop to our `Albums` component.
+  </li>
+  <li> Now that we have the method available as a prop in our `Albums` component, we need to pass it to our click handler. However, we also want to make sure that we pass along the album that we want as an argument. What to do....perhaps we could give the click listener an anonymous function instead?
+  </li>
+  <hint title="Solution to step 4">
+  <pre>
+  &lta onClick={() => this.props.handleClick(album)}>
+  </pre>
+  </hint>
+
+  <li> Now that we have a way to change our currently selected album on state, pass the current album down as a prop to your `SingleAlbum` component! Change the JSX to interpolate out the information for the single album so that you'll have the correct information when you render (you'll probably notice that you don't have everything you need...that's okay, we'll fix that shortly!)
+  </li></ol>
+  <guide>
+  You have completed steps 1 - 5 above
+  Clicking an album in your Albums component causes the single Album rendered beneath it to change to the one that was clicked
+  </guide>
+
+  @[Action] Fetch Single Album 
+  As you may have noticed, it doesn't look like we have all of the information we need to display the songs (check out `http://localhost:1337/api/albums` - the songs in each album's songs array only have ids!)
+
+  However, check out what happens when we try to fetch just one album (`http://localhost:1337/api/albums/1`, for example). That looks much better! 
+
+  1. Instead of using an album from the albums array on our state, modify your click handler to fetch the album from the server and put that on the state instead!
+
+  <hint title="If you have trouble, check here first">
+  ```js
+  // make it so that the method we invoke when we choose an album accepts the album Id,
+  // and use that to fetch the appropriate album from the server
+  handleClick (albumId) {
+    axios.get('/api/albums/' + albumId)
+      .then(/** you do the rest */)
+  }
+  ```
+  </hint>
+
+  <hint title="Solution">
+  <pre>
+  handleClick (albumId) {
+    axios.get(`/api/albums/${albumId}`)
+      .then(res => res.data)
+      .then(album => // Using arrow functions is important here! Otherwise, our this context would be undefined!
+        this.setState({ selectedAlbum: album })
+      );
+  }
+  </pre>
+
+  Once you have the album, fill out the rest of the JSX to display the song information (be sure to `Array.prototype.map` over each of the songs in the album's songs array!)
+  </hint>
+
+  <guide>
+  Clicking an album in your Albums component fetches the clicked album from the server, sets it on state, and displays it below (including all of the appropriate song information)
+  </guide>
+
+  @[Action] View Switch 
+  Very cool! Now when we click on an album in our albums list, the chosen album will appear lower down on the page. That's not quite what we want though...we want the view to switch when we select an album so that we only see the chosen album. Take a moment and think - how can we tell from our state whether or not we have a chosen album or not?
+
+  <hint title="This is how">
+  Our selected album on state will either be an empty object (if no album is selected), or an object representing an album (once we choose one) - so we could check the truthiness of a field that an album will always have (like its id).
+  </hint>
+
+  Sounds like we should be able to conditionally switch between whether or not we render the `Albums` component or the `SingleAlbum` component. Normally, this would be a job for an `if` statement, but unfortunately we can't use an `if` statement directly in a JSX expression - however, we can use a `ternary control operator`! Do you remember how those work? [Check out these docs](https://facebook.github.io/react/docs/conditional-rendering.html) for a reminder!
+
+  1. Modify the JSX in your `Main` component so that only the `Albums` component displays at first, and then after you click an album, only the `SingleAlbum` component displays (with the chosen album).
+
+  <guide>
+  You have completed the step above
+  You view switches appropriately between the list of albums and the single album when an album is clicked
+  </guide>
+
+  @[Action] De-Select Album 
+  Awesome - our view is switching! But...we can't seem to go back to the all-albums view without refreshing. Let's make it so that if we click the `Albums` link in the `Sidebar` component, we'll show all of the albums again.
+
+  1. Write a new method on your `Main` component that will "reset" the `selectedAlbum` to its initial state.
+  2. Pass that method down as a prop to our `Sidebar` component (and don't forget to `bind`).
+  3. Attach prop as a click handler to the appropriate JSX in the `Sidebar` component
+
+  <guide>
+  You have completed steps 1 - 3 above
+  Clicking the "Albums" link in the sidebar causes the list of all albums to show again
+  </guide>

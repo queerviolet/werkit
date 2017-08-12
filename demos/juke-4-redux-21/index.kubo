@@ -1,0 +1,16 @@
+@[Workshop] Juke 4. Redux (2.1)
+@  description  "Redux is a powerful state management library. Learn how a centralized store that can only be modified by \"dispatching\" user actions can make your application's state as predictable as simple, pure function."
+@  learnDotWorkshopId "581353d9b659df00039f518d"
+@  artwork      require("./1486226482079.jpeg")
+
+    @[...] ./intro
+
+    @[...] ./building-lyrics-search
+
+    @[...] ./connecting-to-the-view
+
+    @[...] ./new-concepts
+
+    @[...] ./the-great-refactoring
+
+    @[...] ./optimizations

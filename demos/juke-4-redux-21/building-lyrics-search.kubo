@@ -1,0 +1,208 @@
+@[Concept] Building Lyrics Search 
+  @[Action] Mmm, whatcha say? 
+  Much of this workshop will be reorganizing and refactoring existing functionality, so it might be best to do our first bit of work with Redux while building a new, standalone feature.
+
+  In this part 4 starting point, there has been a new route added to the server of `/api/lyrics/:artist/:song`. This route will use a separate npm package to grab the song lyrics from the internet, and respond to requests with `{ lyric: String }` as information, where `String` is the lyrics to given song by given artist. Hit http://localhost:1337/api/lyrics/imogen%20heap/hide%20and%20seek to see the response.
+
+  This will be our source of information for our first excursion into using Redux.
+
+  @[Action] Defining File Structure 
+  Before we go further, let's get all the file creation for the next few steps out of the way.
+
+  Currently, you should have a `react` directory with two subdirectories (`components` and `containers`) and a few root files (`index.js`, `audio.js`, `utils.js`).
+
+  Let's add two new root files directly into the `react` directory named `store.js` and `constants.js`. These can be empty for now -- we will be working in them in the following steps.
+
+  Create two new subdirectories (on the same level as `components` and `containers`) named `action-creators` and `reducers`. Place a `root-reducer.js` into `reducers` and a `lyrics.js` into `action-creators`.
+
+  <guide>
+  You've created all the files and folders described above.
+  </guide>
+
+  @[Action] Action Types 
+  Let's think about the actions that a user can take to change the UI. We can define them with a set of string constants called `action types`. This is a really great aspect of using Redux, although it will seem very strange and unnecessary at first. All of the possible events that will affect what is eventually our global Redux state are given a name -- this is what we call an `action type`.
+
+  Say we wanted to have a button for a user to remove a song from an album. We might define an action as `const REMOVE_SONG = 'REMOVE_SONG';`. (By convention, string constants are stored in a variable in ALL CAPS).
+
+  Going back to our lyrics feature, the only real user action we want to consider for now is setting lyrics text. In one of our newly created files, `constants.js`, let's add the following line:
+
+  ```js
+  export const SET_LYRICS = 'SET_LYRICS';
+  ```
+
+  We've now defined the first type of action that can be sent to and received by our Redux state. All future action types will also end up in this file in identical fashion. Next, we'll use this type in an action creator.
+
+  <guide>
+  You've added the line above to `constants.js`
+  </guide>
+
+  @[Action] Action Creators 
+  Now that we have an action type defined in our `constants.js`, let's make use of that type in what is known as an *action creator*.
+
+  The difference between an action type and creator can often become skewed. _Action types_ are a definition and label for a kind of action. _Action creators_ are functions that can (possibly) take information and return objects that are formatted to be sent into the Redux state. These objects are called *actions* (thus having been created) and almost always have a `type` property that describe what *type* of action they are.
+
+  In `lyrics.js`, located in the `action-creators` directory, let's write and export a function named `setLyrics`, which will receive a string (maybe called `text`?) and return an object with two properties:
+
+  * `type`, which should be equal `SET_LYRICS` variable imported from `constants.js`
+  * `lyric`, equal to the string that was passed into the function. This is often referred to the _payload_ of the action, to distinguish it from the action's _type_.
+
+  <hint title="Solution">
+  ```js
+  import {SET_LYRICS} from '../constants';
+
+  export const setLyrics = function (text) {
+    return {
+      type: SET_LYRICS,
+      lyric: text
+    };
+  };
+  ```
+  </hint>
+
+  <guide>
+  You've correctly defined and exported a setLyrics action creator.
+  </guide>
+
+  @[Action] Reducers 
+  Now we need to describe how our state will change when it receives an action. With plain React, we use `setState`. With Redux, we pass an `action` to the store's `dispatch` method, and the store executes its `reducer` function. The reducer function has the following signature:
+
+  ```js
+  function reducer (prevState, action) {
+    return newState;
+  }
+  ```
+
+  We pass in the state we're about to replace with the effect of an action, and the object we return describes the new state our app will use to re-render.
+
+  Typically, the reducer consists of a `switch` statement that describes a different update depending on the action's type. In this case, we have one expected action -- `SET_LYRICS`. If the `action.type` is not `SET_LYRICS`, we should just return the state before action.
+
+  **REMEMBER**: it is EXTREMELY important that the reducer be a *pure function*. This means you must follow two rules:
+  1. The same output is always returned for the same input
+  2. No side effects (AJAX, mutating data, etc).
+
+  We'll see more reasons why this is so important later, but for now think of it this way: our state is the crux of our app, so any changes to it should be as predictable and debuggable as possible.
+
+  <hint title="Solution">
+  ```js
+  import {SET_LYRICS} from '../constants';
+
+  const initialState = { text: '' };
+
+  export default function reducer (state = initialState, action) {
+    switch (action.type) {
+      case SET_LYRICS: 
+         return Object.assign({}, state, { text: action.lyric });
+      default: 
+         return state;
+    }
+  }
+  // Two things to note: 
+  //   1. We use Object.assign to maintain immutability.
+  //      Since our state only has one key on it, it doesn't matter much, but what if we added more?
+  //   2. If we receive an action that doesn't have a type we recognize, we return the previous state
+  ```
+  </hint>
+
+  <guide>
+  You've defined and exported the reducer described above.
+  </guide>
+
+  @[Action] The Store 
+  Notice anything interesting? We haven't actually installed `redux` yet! We've mostly just written plain ol' JavaScript. All that `redux` is going to do is offer us a few helper functions - let's install it now if we haven't already:
+
+  `npm install --save redux`
+
+  Now it's time to hook everything up to our central command - the `store`. The store contains the object representing the state of our application (accessible via `store.getState`), and contains the only method capable of changing that state (`store.dispatch`). 
+
+  [Create a store](http://redux.js.org/docs/basics/Store.html) in your `store.js` file using your reducer. Export your created store.
+
+  <hint title="Solution">
+  ```js
+  import {createStore} from 'redux';
+  import reducer from './reducers/root-reducer';
+
+  export default createStore(reducer);
+  ```
+  </hint>
+
+  <guide>
+  You've created a store using your root reducer and exported it from store.js
+  </guide>
+
+  @[Action] Recap 
+  The previous steps may have flown by -- so let's take a second to understand what's been done.
+
+  We have four main components in our Redux story:
+
+  * *Action Types*: These are essentially labels of the different kinds of actions that may enter our store. We define and use these labels from `constants.js` so we can stay consistent and our editors can make use of variable naming instead of simply strings.
+
+  * *Action Creators*: These are functions that actually produce our actions -- objects with a `type` property and--often, but not always--other information attached. These are the objects that will actually be dispatched to the store.
+
+  * *Reducers*: A function that receives the previous state of a store and an action object. The reducer should then read the action object's type and decide what the following state should be. The old state should not be affected in any way -- the new state created should be a *brand new state*.
+
+  * *Store*: The most central component of Redux, the store is the holder of state and our channel for affecting and reacting to changes to that state.
+
+  What you've set up so far should serve as a pattern for anything you'll do with Redux after this point. Realize also that React hasn't come into play at all. This is a fact that is often forgotten: Redux itself has no direct relation to React: it can be used totally independently. It does happen to be a very good tool to use with large React apps.
+
+  @[Action] Interact and Listen 
+  So let's use Redux and our store without React to experience what we've set up so far. In our `index.js` file, paste in the following code. You can comment out all of our React/React-Router imports and usage, but it's not necessary.
+
+  ```js
+  import store from './store';
+  import {setLyrics} from './action-creators/lyrics';
+
+  console.log('-------------------------');
+  console.log('State before any actions: ', store.getState());
+
+  const inTheAirTonightAction = setLyrics('I can feel it coming in the air tonight ... hold on ...');
+  store.dispatch(inTheAirTonightAction);
+
+  console.log('-------------------------');
+  console.log('State after first SET_LYRICS action: ', store.getState());
+
+  const rickRollAction = setLyrics('Never gonna give you up, never gonna let you down');
+  store.dispatch(rickRollAction);
+
+  console.log('-------------------------');
+  console.log('State after second SET_LYRICS action: ', store.getState());
+  ```
+
+  In the above code, we use the `dispatch` method of `store` to send an action object into our store, which will be received by our reducer and used to produce our next state. We call another method on our store, `getState`, to gain access to that store. We can also ask for the state before any actions are dispatched, in which case we see our initialState.
+
+  Another method we can use knowing about a changed state is the `subscribe` method on our store. To a similar effect of the code above:
+
+  ```js
+  import store from './store';
+  import {setLyrics} from './action-creators/lyrics';
+
+  const unsubscribe = store.subscribe(function () {
+      console.log('----------------');
+      console.log('State changed!!', store.getState());
+  });
+
+  store.dispatch(setLyrics('I can feel it coming in the air tonight ... hold on ...'));
+  store.dispatch(setLyrics('Never gonna give you up, never gonna let you down'));
+
+  unsubscribe();
+
+  store.dispatch(setLyrics('Hello, darkness, my old friend.'));
+  ```
+
+  In the code above, we register a function to be called whenever our state updates. We see two versions of our state log out. Calling `subscribe` returns a function that can be used to remove our listener from the store -- often called unsubscribing. In this case, a change to the state after invoking `unsubscribe` does not trigger any logging.
+
+  <guide>
+  You've tried the examples above and investigated console output.
+  </guide>
+
+  @[Action] Bonus: Redux Dev Tools 
+  This section is a bonus, but a very small and easy one, and one which may yield some nice dividends as you start working with Redux!
+
+  Go ahead and install the [Redux DevTools Chrome extension](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en).
+
+  Then, as per [the instructions here](https://github.com/zalmoxisus/redux-devtools-extension#11-basic-store), modify your new store so that it is "instrumented" with these tools. NB: the plus sign is just github's way of showing that a line has been added in a diff (which is also why the line is colored green). Deleted lines are red and prepended with a minus sign. Make sure you haven't actually copied the plus sign at the beginning of the line over or your JS engine will try to coerce the return value of `window.__REDUX_DEVTOOLS_EXTENSION__()` into a number before passing it into the `createStore` method, and you're gonna have a bad time.
+
+  You'll know it's working if you open your Chrome dev tools, click on "Redux," and see a full UI (instead of the message "no store found").
+
+  <guide>
+  You refresh your Juke tab, and the Redux dev tools pane in Chrome does NOT say "No store found."
+  </guide>

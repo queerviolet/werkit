@@ -1,0 +1,63 @@
+@[Concept] Getting Started 
+  @[Action] Starting Point 
+  For this workshop, you're going to be on Node version 6+.  We recommend using the npm module called ['n'](https://github.com/tj/n) to easily switch Node versions.  Switch to Node version 6+ now.
+
+  Head to [this github repo](https://github.com/FullstackAcademy/juke-react) then fork, clone, and `npm install`. We're starting with a fully working backend, complete with routes, models, and even a snazzy mp3 seeding utility (source in `bin/seed`). In fact our database won't have any music in it until you run that seeding utility (coming up).
+
+  First, browse through this backend (i.e., mostly the stuff in `server`) and get a conceptual sense of how it all fits together.
+
+  ---
+
+  <small>*Note for Heroku Postgres users: if you get an error with `npm install` then you need to follow the directions in this StackOverflow link: http://stackoverflow.com/a/21080707</small>
+
+  <small>*Note for Linux users: if you get the error `You need to install postgresql-server-dev-X.Y for building a server-side extension or libpq-dev for building a client-side application`, then run `sudo apt-get install libpq-dev` and try `npm install` again.*</small>
+
+  @[Action] Seed 
+  <span style="color:red">**Important:**</span> For the seed file to work, you must be using **Node 6.0.0** or higher. You can check your node version by typing `node --version` into your console.
+
+  If your Node version is lower than v6, you can either update Node directly (here is a [Stack Overflow](http://stackoverflow.com/questions/11284634/upgrade-nodejs-to-the-latest-version-on-mac-os) article on how you may want to do this on OSX - for other operating systems, try googling an answer), or you may use a Node version manager like [n](https://www.npmjs.com/package/n) or [nvm](https://github.com/creationix/nvm).
+
+  <hr />
+
+  Juke's seed script includes ~40++ CC-licensed music tracks, from cloud storage. In addition, Juke has support for seeding iTunes libraries.
+
+  From the project root:
+
+  ```sh
+  npm run seed
+  ```
+
+  If everything goes well, you should eventually see a report that everything seeded, and be bumped back to your shell prompt. Go ahead and `npm start`, then confirm your API is solid by visiting http://localhost:1337/api/albums/1 (you should see some JSON). If you would like to use an iTunes library, but *only* the CC music shows, you may need to prepare your iTunes library as follows:
+
+  # Adding music from your iTunes library (Optional)
+
+  If you are using a newer version of iTunes, you might need to follow these steps to create your `iTunes Music Library.xml`
+  1. Open iTunes
+  2. Add songs to your iTunes library if necessary (sign in, authorize the computer, download songs)
+  3. In the File Menu and Select `iTunes -> Preferences`
+  4. in the `Preferences` pane select the `Advanced` section (the icon is a gear)
+  5. There should be a checkbox that says `Share iTunes Library XML with other applications`. Make sure it's checked.
+
+  Now you can re-run the seeding script. After it runs check to make sure your iTunes music now exists in the database. If you want more control of exactly what get's seeded, see below.
+
+  # Extra seeding options
+
+  The seed binary at `./bin/seed` can be invoked directly, with a number of flags. You can see all available flags using `--help`:
+
+  ```plain
+  $ ./bin/seed --help
+
+    Usage: seed [options] [iTunes Music Library.xml...]
+
+    Seeds the juke database with metadata from an XML iTunes library file. By default, we'll import Juke's music.xml and your iTunes library.
+
+    Options:
+
+      -h, --help         output usage information
+      -f, --force        Force sync (will delete everything in the db)
+      -n, --no-itunes    Skip importing iTunes library
+      -L, --limit <num>  Limit total tracks imported to <num> (default 500)
+      -u, --unlimited    Import unlimited tracks
+  ```
+
+  Flags can also be passed using npm scripts, but following a `--` intermediate flag. For example, `npm run seed -- --no-itunes` will skip importing your iTunes tracks.

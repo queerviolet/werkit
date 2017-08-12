@@ -1,0 +1,20 @@
+@[Workshop] Juke 5. React-Redux (2.1)
+@  description  "Learn how the small but mighty React-Redux library can tie together our React components and our Redux store to make an app that's ready to scale into the big leagues!"
+@  learnDotWorkshopId "58135430b659df00039f518f"
+@  artwork      require("./1480367165595.jpeg")
+
+    @[...] ./intro
+
+    @[...] ./provider
+
+    @[...] ./connect
+
+    @[...] ./single-station
+
+    @[...] ./refactor-all-the-things
+
+    @[...] ./bonus
+
+    @[...] ./composability-cookbook
+
+    @[...] ./outro

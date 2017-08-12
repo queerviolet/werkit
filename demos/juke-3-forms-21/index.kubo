@@ -1,0 +1,20 @@
+@[Workshop] Juke 3. Forms (2.1)
+@  description  "Use your functional programming knowledge to compose React components like a true front-end ninja!"
+@  learnDotWorkshopId "581352f6b659df00039f5189"
+@  artwork      require("./1478617160915.jpeg")
+
+    @[...] ./intro
+
+    @[...] ./artist-filter
+
+    @[...] ./new-playlist
+
+    @[...] ./all-playlists
+
+    @[...] ./single-playlist
+
+    @[...] ./song-adder
+
+    @[...] ./bonus
+
+    @[...] ./outro

@@ -1,0 +1,261 @@
+@[Concept] Optimizations 
+  @[Action] Goal 
+  So far so good! We can create new channels, which update across clients! We still have two outstanding issues to resolve:
+
+  * Fixing our `activeClassName` bug
+  * Showing the channel name in the header
+
+  For this next section, we'll focus on fixing the `activeClassName` bug, and clean up the code in `store.js` by using an extremely helpful `redux` utility called `combineReducers`.
+
+  <guide>
+  You have read the above
+  </guide>
+
+  @[Action] A Word on shouldComponentUpdate 
+  If you've been reading the React and/or Redux docs, you may have come across a lifecycle hook called [`shouldComponentUpdate`](https://facebook.github.io/react/docs/optimizing-performance.html#avoid-reconciliation), which can yield some massive performance wins for React.
+
+  The doc linked to above goes into some great detail about how it works, so I won't cover it too much myself, but the gist is that React components have a lifecycle hook called `shouldComponentUpdate`, which receives the `nextProps` and `nextState` that are passed down to a component when it's about to re-render. If `shouldComponentUpdate` is defined, it will be evaluated before that component re-renders, and if `shouldComponentUpdate` returns `false`, the rendering will be canceled!
+
+  This could yield huge benefits. Consider the following (common) situation:
+  ```js
+      <SharedStateContainer> // state has three fields: { foo, bar, quux }
+      /                    \
+  <ComponentA>          <ComponentB>
+  // needs foo and bar   // needs foo and quux
+  ```
+
+  If we change the value of `foo` in the SharedStateContainer, then we of course want to re-render both ComponentA and ComponentB. But what if we change the value of `bar`? We need ComponentA to re-render, but why should ComponentB have to re-render as well? It shouldn't!
+
+  `shouldComponentUpdate` can compare the current props that ComponentB has, and the nextProps that it will receive when SharedStateContainer re-renders. If we only changed `bar` in our parent's state, then ComponentB would be able to tell that `props.foo === nextProps.foo` `&&` `props.quux === nextProps.quux`, and return `false` in its `shouldComponentUpdate`. Then ComponentB's rendering (as well as the rendering of any of its own children) would be canceled.
+
+  This may not seem like much in an example with only a handful of components, but imagine that ComponentA and ComponentB have **hundreds** of child components. You can imagine how much your browser would thank you to not have to re-paint all of them every time!
+
+
+  Okay, are you ready for the best part? **The `connect` method implements `shouldComponentUpdate` for you**. As long as you use `connect`, you get a huge performance boost just for showing up!
+
+  Go ahead and high five your partner - that's pretty cool, right?
+
+  All that you need to do (and this is something you've already been doing) is make sure that your state is **immutable** - updates to arrays should always perform immutable operations like `concat`, `map` and `filter` (but **never** `push` or `pop`), and updates to objects should always use `Object.assign` with a fresh object literal as the first argument.
+
+  If you don't, then this same functionality will bite you. Remember that objects and arrays in JavaScript represent a location in memory, and when you evaluate equality for an object or an array, the `===` operator is actually checking to see if the object or array is referring to the same location in memory, *not* whether their contents are the same.
+
+  ```js
+  const array = [];
+  const sameArray = array;
+  sameArray.push(1);
+
+  array === sameArray; // true! The same array is referenced by both variables!
+
+  const differentArray = array.slice();
+  array === differentArray // false! Array.prototype.slice always returns a new array!
+  ```
+
+  This means that if you *mutate* an object or array on your state, your `connect` components will think that nothing has changed (because the address of your current object will be equal to the address of the next object), and they'll prevent your components from re-rendering even though they should!
+
+  Moral of the story - don't forget to always treat your state as **immutable**. That, and `connect` is pretty awesome.
+
+  <guide>
+  You have read and understood the above
+  </guide>
+
+  @[Action] Update Blocking and withRouter 
+  That being said, `connect` and `shouldComponentUpdate` are the source of our `activeClassName` woes. Here's why:
+
+  In `ChannelList.js`, think about the props that we receive: messages and channels. Do either of these change when the url changes from `/channels/1` to `/channels/2`? No, they don't! Because the component doesn't receive any data that changes, the `connect` will be *too* smart and block re-rendering.
+
+  Now, what data *does* change when the url changes? The answer is the route props that we get from React Router (`match`, `location` and `history`)! However, those props are only passed from `Route`s down to their `component`s, and `ChannelList` is not rendered by a `Route`.
+
+  Fortunately, React Router exposes a nice higher order function that we can use to pass down the the route props to any arbitrary component: [`withRouter`](https://reacttraining.com/react-router/web/api/withRouter). We can use this to pass the route props to `ChannelList` - `connect` will recognize the changing data, and re-render like normal.
+
+  * Check out this article in the React Router docs about update blocking (and how to fix it): https://reacttraining.com/react-router/web/guides/dealing-with-update-blocking
+  * Use `withRouter` fix our `activeClassName` bug
+
+  <hint title="Solution">
+  If we wrap our connected component in `withRouter`, the connected component will be aware when the router changes
+
+  ```js
+  export default withRouter(connect(mapStateToProps)(ChannelList));
+  ```
+  </hint>
+
+  <guide>
+  The activeClassName changes appropriately in the channel list again
+  </guide>
+
+  @[Action] Combine Reducers 
+  Something that might be bugging you is how big the `switch` statement within our `reducer` has gotten. It's bugging me too - fortunately, `redux` offers us a utility function that we can use to break up our one big reducer into many smaller "sub-reducers".
+
+  If you haven't yet (or even if you have), check out the [Redux docs for combineReducers](http://redux.js.org/docs/api/combineReducers.html)
+
+  When you feel comfortable with what `combineReducers` does, move on and we'll use it to refactor our Redux code!
+
+  <guide>
+  You have learned about combineReducers
+  </guide>
+
+  @[Action] Breaking Up store.js 
+  Now that we know how `combineReducers` works, let's refactor `store.js` so that instead of a single `store.js`, we have a `store/` directory that contains multiple sub-reducers, and combines them all in an `index.js`. You should have a sub-reducer for each slice of state.
+
+  Here's what it might look like:
+
+  <hint title="store directory">
+  ```
+  client/
+    store/
+      channels.js
+      index.js
+      messages.js
+      name.js
+      newChannelEntry.js
+      newMessageEntry.js
+  ```
+  </hint>
+
+  If you would like an example to get started, here's what `messages.js` and `index.js` might look like:
+
+  <hint title="messages.js">
+
+  Note how in the sub-reducer, the `state` is actually the messages array itself! `combineReducers` does all the work of putting together our big "state" object together.
+
+  <pre>
+  import axios from 'axios';
+  import socket from '../socket';
+
+  // ACTION TYPES
+
+  const GET_MESSAGE = 'GET_MESSAGE';
+  const GET_MESSAGES = 'GET_MESSAGES';
+
+  // ACTION CREATORS
+
+  export function getMessage (message) {
+    const action = { type: GET_MESSAGE, message };
+    return action;
+  }
+
+  export function getMessages (messages) {
+    const action = { type: GET_MESSAGES, messages };
+    return action;
+  }
+
+  // THUNK CREATORS
+
+  export function fetchMessages () {
+
+    return function thunk (dispatch) {
+      return axios.get('/api/messages')
+        .then(res => res.data)
+        .then(messages => {
+          const action = getMessages(messages);
+          dispatch(action);
+        });
+    };
+  }
+
+  export function postMessage (message) {
+
+    return function thunk (dispatch) {
+      return axios.post('/api/messages', message)
+        .then(res => res.data)
+        .then(newMessage => {
+          const action = getMessage(newMessage);
+          dispatch(action);
+          socket.emit('new-message', newMessage);
+        });
+    };
+  }
+
+  // REDUCER
+
+  export default function messagesReducer (state = [], action) {
+
+    switch (action.type) {
+
+      case GET_MESSAGES:
+        return action.messages;
+
+      case GET_MESSAGE:
+        return [...state, action.message];
+
+      default:
+        return state;
+    }
+
+  }
+
+  </pre>
+  </hint>
+  <hint title="index.js">
+  ```js
+  import {
+    createStore,
+    applyMiddleware,
+    combineReducers
+  } from 'redux';
+  import createLogger from 'redux-logger';
+  import thunkMiddleware from 'redux-thunk';
+  import { composeWithDevTools } from 'redux-devtools-extension';
+
+  // import the messages sub-reducer
+  import messages from './messages';
+
+  const reducer = combineReducers({
+    messages
+  });
+
+  const store = createStore(
+    reducer,
+    composeWithDevTools(applyMiddleware(
+      thunkMiddleware,
+      createLogger()
+    ))
+  );
+
+  export default store;
+
+  ```
+  </hint>
+
+  Try the rest on your own!
+
+  Also, can you make it so that you don't need to refactor all of the files that use our action creators?
+
+  <hint title="Approach">
+  Did you know that you can `export` the exports of another module?
+
+  For example, in `store/index.js`, if you say `export * from './messages'`, this will cause `index.js` to export all of the functions that `messages.js` exports! Whoa!
+
+  Following the example above, this means `index.js` would look like:
+
+  ```js
+  import {
+    createStore,
+    applyMiddleware,
+    combineReducers
+  } from 'redux';
+  import createLogger from 'redux-logger';
+  import thunkMiddleware from 'redux-thunk';
+  import { composeWithDevTools } from 'redux-devtools-extension';
+
+  // import the messages sub-reducer
+  import messages from './messages';
+
+  const reducer = combineReducers({
+    messages
+  });
+
+  const store = createStore(
+    reducer,
+    composeWithDevTools(applyMiddleware(
+      thunkMiddleware,
+      createLogger()
+    ))
+  );
+
+  // store is exported by default
+  export default store;
+
+  // ...but we also export everything from messages!
+  export * from './messages';
+  ```
+  </hint>

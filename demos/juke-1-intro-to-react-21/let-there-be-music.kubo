@@ -1,0 +1,340 @@
+@[Concept] Let There Be Music 
+  @[Action] Play Audio 
+  <style>
+  .example-btn {
+    background-image: linear-gradient(#484e55, #3a3f44 60%, #313539);
+    background-repeat: no-repeat;
+    border-color: rgba(0, 0, 0, 0.6);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    color: #ffffff;
+    background-color: #3a3f44;
+  }
+  .example-btn:hover {
+    background-image: linear-gradient(#020202, #101112 40%, #191b1d);
+    background-color: #232628;
+  }
+  </style>
+
+  If you've gotten this far and understand the concepts we've covered up until now, then **great job**! I'd say you're in pretty good shape with the fundamentals of React! For this reason, the following section will be a bit harder and there will be less guidance - be sure to write a help ticket if you get stuck!
+  <hr />
+
+  That being said, what would **Juke** be without the audio player? Let's pound out some tunes! Be a dear and use headphones to keep from disturbing your neighbors.
+
+  HTML5 comes with an [`<audio>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio), which we could use like so:
+
+  ```js
+  const audio = document.createElement('audio');
+  audio.src = 'https://learndotresources.s3.amazonaws.com/workshop/5616dbe5a561920300b10cd7/Dexter_Britain_-_03_-_The_Stars_Are_Out_Interlude.mp3';
+  audio.load();
+  audio.play();
+  // for now, reload the page if you want to stop the music
+  ```
+
+  In fact, start by making that one specific song play (`'https://learndotresources.s3.amazonaws.com/workshop/5616dbe5a561920300b10cd7/Dexter_Britain_-_03_-_The_Stars_Are_Out_Interlude.mp3'`) whenever *any* of those <button class="btn example-btn"><i class="fa fa-play"></i></button>s get clicked. Don't worry about playing the correct songs just yet, just get those buttons all doing this one thing.
+
+  <hint title="Approach">
+  Try attaching an `onClick` listener to each button.
+  </hint>
+
+  <hint title="How does that work again…?">
+  `onClick` causes a function to be invoked when that DOM element is clicked. This can include accessing (or calling) a method on a component. If we wanted a component to invoke a method on its parent, we could just pass the method down from the parent to the child via props (making sure to bind the `this` context to the parent component!)
+  </hint>
+
+  <hint title="…yeah, I'm going to need more.">
+  In your main component you'll want something like:
+  <pre>
+
+  // declare our audio as global to the module, so we can use it
+  const audio = document.createElement('audio');
+
+  class Main extends React.Component {
+    /* ... */
+    constructor (props) {
+      super(props);
+      // We're passing this.start to a click listener, so we need to make sure to bind it
+      // to preserve this "this" context within the function.
+      // We're not currently using "this" in this.start, but we might want to later...
+      this.start = this.start.bind(this);
+    }
+
+    start () {
+      audio.src = 'https://learndotresources.s3.amazonaws.com/workshop/5616dbe5a561920300b10cd7/Dexter_Britain_-_03_-_The_Stars_Are_Out_Interlude.mp3';
+      audio.load();
+      audio.play();
+    }
+
+    render () {
+      /** some jsx */
+      &ltAlbum start={this.start} /&gt
+      /** more jsx */
+    }
+  }
+
+  </pre>
+  Then in your Album you can add something like 
+  <pre>
+  onClick={this.props.start}
+  </pre>
+  for each button.
+  </hint>
+
+  <guide>
+  Clicking any "play" button causes the song to play
+  </guide>
+
+  @[Action] The Right Song 
+  Now make it so that each play button will play the song it *actually* corresponds to. Just focus on playing for now, we'll get to pausing soon enough.
+
+  ...
+
+  Easier said than done, huh? There are two big steps:
+  <ol>
+  <li> Locate each song's audio source. 
+  </li>
+  <hint title="Approach">
+  Actually this problem isn't that much different from the **Case of the Missing Cover Art**. We just need to identify the right URL and transform the data we are attaching to our state to have the right properties.
+  </hint>
+  <hint title="Moar halp plz!">
+  Check out `server/app/routes/songs.js`. There's a route there that we can use to serve up the correct audio. If the `audio.src` is set to that route, it will request the audio appropriately when you `audio.load` it.
+  </hint>
+
+  <li> Make it so that clicking "play" will cause the correct song to play. 
+  </li></ol>
+  <hint title="Approach">
+  We could pass the handler function directly to the onClick listener like so
+
+  <pre>
+  &ltbutton onClick={this.props.start}&gt
+  </pre>
+
+  The problem here is we can't pass any arguments to our "start" method. However, we could also go right ahead and pass an anonymous function to onClick as well
+
+  <pre>
+  &ltbutton onClick={() =&gt this.props.start()}&gt
+  </pre>
+
+  Now, we can pass in whatever arguments we want!
+
+  </hint>
+
+  <guide>
+  You have completed steps 1 - 2 above
+  The correct audio for each song starts playing when you click that song's "play" button
+  </guide>
+
+  @[Action] The Current State of Things 
+  Sorry, still not doing pausing. Instead, let's work on giving our users some visual feedback when they play a song. Step one: we need a way to tell that a song is even currently playing!
+
+  Remember - the *only* way to cause the render method to execute again is by using `setState`. This means that we need to find a way to represent this on our state object. 
+  <ol>
+  <li> Take a moment to discuss with your partner how you could represent a song being played on your state.
+  </li>
+  <hint title="Our suggestion">
+  We could represent this with a field called `currentSong`, that stores the selected song object, or the selected song id.
+  </hint>
+
+  <li>Add the appropriate field to your `state` object.
+
+  Remember earlier how we did `this.start = this.start.bind(this)`?  If you use `this.setState` inside of the `start` function, it's important that `start` keeps the original `this` even though it's being passed around to other components.  This is a pretty common problem in React and making sure that you're managing `this` properly is important.
+  </li></ol>
+  <guide>
+  You have completed steps 1 - 2 above
+  Your state object contains a new field to represent the song currently being played
+  </guide>
+
+  @[Action] Visual Feedback 
+  We're aiming for something like this:
+
+  <img src="http://i.imgur.com/K7bAaEa.png">
+  <ol>
+  <li> Let's start by hiding the play button for that song whenever a song is playing. 
+  </li>
+  <hint title="Approach">
+  Remember that you can interpolate JavaScript expressions into JSX, like [ternary control operators](https://facebook.github.io/react/tips/if-else-in-JSX.html).
+  </hint>
+
+  <li> Now let's make the background of a song's row highlight when the song starts. From the view-end, bootstrap makes this very convenient. Open up the element inspector and CTRL + click on a <tr> then "Edit as HTML". Add the `active` class and then watch as bootstrap does our job for us.
+
+  Now, how to work this into our render logic? Did you know that you can give `className` an interpolated expression that evaluates to string?
+  </li>
+  <hint title="A possible solution">
+
+  <pre>
+  album.songs.map(function (song) {
+    return (
+      &lttr className={song.id === this.props.currentSong.id ? 'active' : ''}&gt //etc...
+    )
+  })
+
+  </pre>
+  </hint>
+
+  <li> While you're at it — if you haven't already — make it so that only one song can be playing at any given time. Don't worry about a song ending or anything like that, just make it so that if the user clicks a song, it stops the previous one and plays the new one.
+  </li></ol>
+  <guide>
+  You have completed steps 1 - 3 above
+  When a song is playing, the row is "highlighted" and the play button doesn't appear for that row
+  </guide>
+
+  @[Action] Player 
+  Let's open up our `Footer` component and get this party started! Here's a checklist of things to do to help you along:
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('#checks [type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <ul id="checks" class="list-reset">
+    <li>
+      <input type="checkbox">
+      <span>Only show the player controls once a song starts playing</span>
+    </li>
+    <li>
+      <input type="checkbox">
+      <span>Switch the play button to a pause button once a song starts playing</span>
+    </li>
+    <li>
+      <input type="checkbox">
+      <span>Make it so the pause button actually pauses</span>
+    </li>
+    <li>
+      <input type="checkbox">
+      <span>Toggle the pause button back to play after pause is clicked</span>
+    </li>
+    <li>
+      <input type="checkbox">
+      <span>Check off the checkmark to the left of this text</span>
+    </li>
+  </ul>
+
+  Try not to look at these hints (and they are only hints, not solutions) unless you get stuck:
+
+  <hint title="Player controls only visible when playing">
+  Don't you have some kind of state property that can come in handy? We could probably pass it down to the component that needs it...
+  </hint>
+
+  <hint title="switch play to pause while song plays & vice-versa">
+  It sounds like there's a couple factors here. Is any song playing, is this specific song playing, what causes a song to become playing or not, etc. You will need some state to hang around and check against. Also, there are Bootstrap glyphicon classes that will come in handy here.
+  </hint>
+
+  <hint title="Pausing">
+    You'll need to use the `audio` HTML5 element API. Multiple functions will have to have access to this object so they can call its various methods when certain actions occur.
+  </hint>
+
+  <guide>
+  You have completed the tasks in the checklist above and have a functional player in the footer
+  </guide>
+
+  @[Action] Next & Previous 
+  <style>
+  .example-btn {
+    background-image: linear-gradient(#484e55, #3a3f44 60%, #313539);
+    background-repeat: no-repeat;
+    border-color: rgba(0, 0, 0, 0.6);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    color: #ffffff;
+    background-color: #3a3f44;
+  }
+  .example-btn:hover {
+    background-image: linear-gradient(#020202, #101112 40%, #191b1d);
+    background-color: #232628;
+  }
+  </style>
+
+  Now make the <button class="btn example-btn"><i class="fa fa-step-backward"></i></button> and <button class="btn example-btn"><i class="fa fa-step-forward"></i></button> buttons work.
+
+  Start by focusing on the common cases (middle songs), then go ahead and add in wrap-around (for edge cases). Clicking <button class="btn example-btn"><i class="fa fa-step-forward"></i></button> on the last song should start the first, and clicking <button class="btn example-btn"><i class="fa fa-step-backward"></i></button> on the first should start the last.
+
+  You can also make it so that when a song ends, the next one begins to play. HTML `<audio>` elements have an `'ended'` event we can hook into via `.addEventListener`. Go ahead and try it out - do you know where to add an event listener?
+
+  <hint title="Solution...for now">
+  <pre>
+  // in your Main component
+  ...
+  componentDidMount () {
+    /** ... */
+    audio.addEventListener('ended', () =&gt; {
+      this.next(); // or some other way to go to the next song
+    });
+    /** ... */
+  }
+  ...
+  </pre>
+  </hint>
+
+  <guide>
+  The next and previous buttons advance to the next song in the list
+  When a song ends, the next song starts playing
+  </guide>
+
+  @[Action] Progress Bar 
+  The `<audio>` element also has a `'timeupdate'` event. Let's hook into this to display the current remaining percentage. 
+
+  <ol>
+  <li>Add a `progress` field to our state.
+  </li>
+  <li>Update the progress field on "timeupdate" like so:
+  </li>
+  ```js
+  // Main.js
+  componentDidMount () {
+
+    /** ... */
+
+    // Remember, side effects like attaching event listeners go in componentDidMount!
+    audio.addEventListener('timeupdate', () => {
+      this.setState({
+        progress: 100 * audio.currentTime / audio.duration
+      });
+    });
+
+    /** ... */
+
+  }
+  ```
+
+  <li>And then throw this somewhere into the view: `<h3>Percent complete: { this.state.progress }%</h3>
+  `.
+  </li>
+  <li>Once you've got that working, you can remove the JSX we just put in, and instead use an [inline style](https://facebook.github.io/react/docs/dom-elements.html#style) in the actual progress bar like so:
+  </li></ol>
+  ```js
+  ...
+  // Why two curly braces all of a sudden?
+  // The expression we're interpolating is actually just an object literal!
+  <div class="progress-bar" style={{width: `${progress}%`}}></div>
+  ...
+  ```
+
+  <guide>
+  You have completed steps 1 - 4 above
+  The progress bar appears and updates appropriately when a song is played
+  </guide>

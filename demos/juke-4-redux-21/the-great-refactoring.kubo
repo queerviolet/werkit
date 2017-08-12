@@ -1,0 +1,470 @@
+@[Concept] The Great Refactoring 
+  @[Action] Collecting Ourselves 
+  Juke is a non-trivial application, even only considering the front-end. This can make such a large refactor seem pretty intimidating. Let's take stock of what exists and what will be done.
+
+  ## What exists:
+
+  * An amazing, flawless lyrics feature powered by React and Redux
+  * ~~Bunch of other useless stuff~~
+  * A gigantic `AppContainer` that contains most of our state-driven functions and interactions
+  * Player
+  * All Albums and Single Albums views
+  * All Artists view
+  * Single Artists view with Artist Albums and Songs nested
+  * Sidebar with Playlists information
+  * Add New Playlist view
+
+  Phew, that's a lot! Luckily, I brought this:
+
+  ```js
+  // ******Lyrics******
+  export const SET_LYRICS = 'SET_LYRICS';
+
+  // Albums
+  export const RECEIVE_ALBUMS = 'RECEIVE_ALBUMS';
+  export const RECEIVE_ALBUM = 'RECEIVE_ALBUM';
+
+  // Artists
+  export const RECEIVE_ARTISTS = 'RECEIVE_ARTISTS';
+  export const RECEIVE_ARTIST = 'RECEIVE_ARTIST';
+
+  // Playlists
+  export const RECEIVE_PLAYLISTS = 'RECEIVE_PLAYLISTS';
+  export const RECEIVE_PLAYLIST = 'RECEIVE_PLAYLIST';
+
+  // Songs
+  export const RECEIVE_SONGS = 'RECEIVE_SONGS';
+
+  // Player
+  export const START_PLAYING = 'START_PLAYING';
+  export const STOP_PLAYING = 'STOP_PLAYING';
+  export const SET_CURRENT_SONG = 'SET_CURRENT_SONG';
+  export const SET_LIST = 'SET_LIST';
+  export const SET_PROGRESS = 'SET_PROGRESS';
+  ```
+
+  Above is all of the action types you'll need to refactor all Juke global state to 100% Redux. Replace your current `constants.js` with this file. It will be an excellent guide going forward. Also, now is a perfect time to do a `git commit`!
+
+  <guide>
+  You've replaced your constants.js with the above.
+  </guide>
+
+  @[Action] First Steps 
+  The meatiest component in our refactoring is definitely the player. Let's start our refactoring journey here.
+
+  The initial state shape of our Player looks like this:
+
+  ```js
+  {
+    currentSong: {},
+    currentSongList: [],
+    isPlaying: false,
+    progress: 0
+  }
+  ```
+
+  We could add this information to our current reducer, but that begs the question: as our application grows larger and larger, will be placing every possible action in a single reducer?
+
+  No.
+
+  No, we won't.
+
+  <guide>
+  You are ready for some next level Redux.
+  </guide>
+
+  @[Action] Reducer Composition 
+  Dealing with one massive switch statement would get hairy pretty quickly. Fortunately, Redux comes with a nice utility function called [combineReducers](http://redux.js.org/docs/api/combineReducers.html) that we can use to merge a set of smaller reducers that only handle a single field on state into one large reducer.
+
+  Let's rewire our current reducer situation a bit.
+
+  Rename your `reducers/root-reducer.js` file to `lyrics-reducer.js`. Also, create a new file in `reducers` named `player-reducer.js`. These reducers will be responsible for reacting to actions and managing state properties relevant to their specific features.
+
+  Use the following code in your `player-reducer.js`. Take time to read through it and understand each line. You'll be adding more to this file soon.
+
+  ```js
+  import {
+    START_PLAYING,
+    STOP_PLAYING
+  } from '../constants';
+
+  export const initialPlayerState = {
+    currentSong: {},
+    currentSongList: [],
+    isPlaying: false,
+    progress: 0
+  };
+
+  export default function (state = initialPlayerState, action) {
+
+    const newState = Object.assign({}, state);
+
+    switch (action.type) {
+
+      case START_PLAYING:
+        newState.isPlaying = true;
+        break;
+
+      case STOP_PLAYING:
+        newState.isPlaying = false;
+        break;
+
+      default:
+        return state;
+
+    }
+
+    return newState;
+
+  }
+  ```
+
+  Now that we have a reducer for lyrics state/actions and another for player state/actions, let's combine them in order to create a new *root* reducer. In `store.js`, import both lyrics and player reducers and also import the `combineReducers` function from Redux. Make your new first argument to `createStore` look like this:
+
+  ```js
+  combineReducers({
+    lyrics: lyricsReducer,
+    player: playerReducer
+  });
+  ```
+
+  The states managed by these reducers will now be available on the store state under the properties `lyrics` and `player`. Go to your lyrics page, search, and look at the console. You should see the fruits of your efforts in the form of these two properties.
+
+  This has also introduced a bug with your lyrics feature -- the lyrics no longer show up! The fix should be simple enough; see if you can find it.
+
+  <hint title="The Fix">
+  `this.state.text` should now be `this.state.lyrics.text`!
+  </hint>
+
+  <guide>
+  You've separated your lyrics and player reducers.
+  You've replaced your previous root reducer with a call to `combineReducers`, as described above.
+  You've fixed the bug in your lyrics page.
+  </guide>
+
+  @[Action] Reimplementing Player 
+  Let's walk through an example by just re-implementing playing and pausing in Redux (we'll ignore updating the progress bar and moving to the next/previous song for the time being). Try to do each step on your own before checking the hint, but feel free to check the hints afterwards to make sure you're on the right track! If something doesn't make sense, then go right ahead and ask for help!
+
+  * Identify the state and behavior that needs to be moved to Redux
+  <hint title="Approach">
+  Check out `AppContainer.js`. If we follow the methods that control playing and pausing, we can see the state and behavior required:
+
+  ```js
+    play () {
+      AUDIO.play();
+      this.setState({ isPlaying: true });
+    }
+
+    pause () {
+      AUDIO.pause();
+      this.setState({ isPlaying: false });
+    }
+
+    load (currentSong, currentSongList) {
+      AUDIO.src = currentSong.audioUrl;
+      AUDIO.load();
+      this.setState({ currentSong, currentSongList });
+    }
+
+    startSong (song, list) {
+      this.pause();
+      this.load(song, list);
+      this.play();
+    }
+
+    toggleOne (selectedSong, selectedSongList) {
+      if (selectedSong.id !== this.state.currentSong.id)
+        this.startSong(selectedSong, selectedSongList);
+      else this.toggle();
+    }
+
+    toggle () {
+      if (this.state.isPlaying) this.pause();
+      else this.play();
+    }
+
+    next () {
+      this.startSong(...skip(1, this.state));
+    }
+
+    prev () {
+      this.startSong(...skip(-1, this.state));
+    }
+  ```
+
+  From this, we can see that we need to handle the following state:
+  <ul>
+  <li>isPlaying</li>
+  <li>currentSong</li>
+  <li>currentSongList</li>
+  </ul>
+  And we'll need to define the following behavior:
+  <ul>
+  <li>play</li>
+  <li>pause</li>
+  <li>load</li>
+  <li>startSong</li>
+  <li>toggleOne</li>
+  <li>toggle</li>
+  </ul>
+  </hint>
+
+  * Check your `constants.js` for action types for the different actions that a user can take. These might correspond to each time we use setState in in one of our methods above.
+
+  ```js
+  export const START_PLAYING = 'START_PLAYING';
+  export const STOP_PLAYING = 'STOP_PLAYING';
+  export const SET_CURRENT_SONG = 'SET_CURRENT_SONG';
+  export const SET_LIST = 'SET_LIST';
+  ```
+
+  * Write SYNCHRONOUS action creators to return our actions. All these should do is return an action object with a type and a payload.
+
+  <hint title="Approach">
+  <pre>
+
+  const startPlaying = () => ({ type: START_PLAYING });
+
+  const stopPlaying = () => ({ type: STOP_PLAYING });
+
+  const setCurrentSong = (currentSong) => ({ 
+    type: SET_CURRENT_SONG,
+    currentSong
+  });
+
+  const setCurrentSongList = (currentSongList) => ({ 
+    type: SET_LIST,
+    currentSongList
+  });
+
+  </pre>
+  </hint>
+
+  * Write ASYNCHRONOUS action creators that will be able to handle side effects (like calling a method on our audio element). HINT: all of the methods we had on our component above can be re-written as async action creators. 
+  <hint title="Approach">
+  <pre>
+  export const play = () => dispatch => {
+    AUDIO.play();
+    dispatch(startPlaying());
+  };
+
+  export const pause = () => dispatch => {
+    AUDIO.pause();
+    dispatch(stopPlaying());
+  };
+
+  export const load = (currentSong, currentSongList) => dispatch => {
+    AUDIO.src = currentSong.audioUrl;
+    AUDIO.load();
+    dispatch(setCurrentSongList(currentSongList));
+    dispatch(setCurrentSong(currentSong));
+  };
+
+  export const startSong = (song, list) => dispatch => {
+    dispatch(pause());
+    dispatch(load(song, list));
+    dispatch(play());
+  };
+
+  export const toggle = () => (dispatch, getState) => {
+    const { isPlaying } = getState().player;
+    if (isPlaying) dispatch(pause()); 
+    else dispatch(play());
+  };
+
+  export const toggleOne = (selectedSong, selectedSongList) => 
+    (dispatch, getState) => {
+      const { currentSong } = getState().player;
+      if (selectedSong.id !== currentSong.id)
+        dispatch(startSong(selectedSong, selectedSongList));
+      else dispatch(toggle());
+  };
+
+  export const next = () => 
+    (dispatch, getState) => {
+      dispatch(startSong(...skip(1, getState().player)));
+  };
+
+  export const prev = () => 
+    (dispatch, getState) => {
+      dispatch(startSong(...skip(-1, getState().player)));
+  };
+
+  </pre>
+  </hint>
+
+  * Update your player reducer for each slice of state we're moving to Redux
+
+  <hint title="Solution">
+  <pre>
+  import {
+    START_PLAYING,
+    STOP_PLAYING,
+    SET_CURRENT_SONG,
+    SET_LIST
+  } from '../constants';
+
+  export const initialPlayerState = {
+    currentSong: {},
+    currentSongList: [],
+    isPlaying: false,
+    progress: 0
+  };
+
+  export default function (state = initialPlayerState, action) {
+
+    const newState = Object.assign({}, state);
+
+    switch (action.type) {
+
+      case SET_CURRENT_SONG:
+        newState.currentSong = action.currentSong;
+        break;
+
+      case SET_LIST:
+        newState.currentSongList = action.currentSongList;
+        break;
+
+      case START_PLAYING:
+        newState.isPlaying = true;
+        break;
+
+      case STOP_PLAYING:
+        newState.isPlaying = false;
+        break;
+
+      default:
+        return state;
+
+    }
+
+    return newState;
+
+  }
+  </pre>
+  </hint>
+
+  <guide>
+  You've set up action creators and reducer for player.
+  </guide>
+
+  @[Action] Reimplementing Player Con't (Components) 
+  Now that Redux is managing our state and behavior, let's go ahead and tie it into our React app's `AppContainer` component. We can actually do this without breaking a lot of the functionality in the `AppContainer` - though `AppContainer`'s state is currently being managed by React, we can still go right ahead and connect it to our store for information that Redux currently manages and slowly refactor it to use the props that Redux will pass to it instead! Cool? You bet. Let's see how this works:
+
+  * Update AppContainer's `constructor()` and `componentDidMount` functions to combine the store state with our currently used `initialState.js` object. Be sure to remove any properties from `initialState` that are now replaced by Redux!
+  <hint title="Approach">
+  Mimic what we did with `LyricsContainer`. Use `subscribe`, `getState`, `this.unsubscribe`, etc.
+  </hint>
+
+  * Import your action creators from `action-creators/player.js` and replace the innards of each player-specific method on AppContainer e.g. `toggle`, `toggleOne`, `load`. 
+  <hint title="Approach">
+  <pre>
+  import { toggle, toggleOne, load, startSong, play, pause, next, prev } from '../action-creators/player';
+
+  // Further down . . .
+
+  play () {
+    store.dispatch(play());
+  }
+
+  pause () {
+    store.dispatch(pause());
+  }
+
+  load (currentSong, currentSongList) {
+    store.dispatch(load(currentSong, currentSongList));
+  }
+
+  startSong (song, list) {
+    store.dispatch(startSong(song, list));
+  }
+
+  toggleOne (selectedSong, selectedSongList) {
+    store.dispatch(toggleOne(selectedSong, selectedSongList));
+  }
+
+  toggle () {
+    store.dispatch(toggle());
+  }
+
+  next () {
+    store.dispatch(next());
+  }
+
+  prev () {
+    store.dispatch(prev());
+  }
+  </pre>
+  </hint>
+
+  * Slowly refactor the render method of the `AppContainer` to use the state information from Redux. This basically amounts to adding `.player` to `this.state` access for the Player component, e.g. `this.state.currentSong` --> `this.state.player.currentSong`.
+
+  ```js
+  /*
+    This is outside of the hint for the moment due to issues with Markdown.
+    Don't scroll down until you've given it a go!
+  */
+
+
+
+
+
+
+
+
+  render () {
+      return (
+        <div id="main" className="container-fluid">
+          <div className="col-xs-2">
+            <Sidebar playlists={this.state.playlists} />
+          </div>
+          <div className="col-xs-10">
+          { this.props.children }
+          </div>
+          <Player
+            currentSong={this.state.player.currentSong}
+            currentSongList={this.state.player.currentSongList}
+            isPlaying={this.state.player.isPlaying}
+            progress={this.state.progress}
+            next={this.next}
+            prev={this.prev}
+            toggle={this.toggle}
+          />
+        </div>
+     );
+  ```
+
+  <guide>
+  You've completed all steps above and AppContainer is actively calling action creators and using/passing down state information about the player from the Redux store.
+  </guide>
+
+  @[Action] Rinse, Repeat 
+  Now that we've gone through a pretty hefty example, we should have all the tools we need to migrate to Redux entirely! Here's what's missing from the Redux store right now:
+
+  * Player progress
+  * All albums
+  * A possible selected album
+  * All artists
+  * A possible selected artist
+  * All playlists
+  * A possible selected playlist
+  * All songs (to be used only for adding songs to playlists -- for now.)
+
+  I'm taking the training wheels off now, but here's a list of steps to guide you. You'll probably need to iterate back and forth on various steps as you try out various approaches. Don't be afraid to send a help ticket if you get stuck or want some guidance!
+
+  1. Use the action types you pasted into `constants.js` to direct your work.
+  2. Use the current functionality of `AppContainer` and methods that are not using action creators as your targets.
+  3. Use unmoved properties in `initialState` to plan out your new sub-reducers.
+  4. Write action creators that will generalize the actions you want to dispatch to your store.
+  5. Write a sub-reducer for each grouping of state information that describes how it will update in response to an action.
+    * Don't forget to define a default value for each slice of state and to return the current state by default if the action doesn't match
+    * Also, be **very** sure to maintain immutability in your reducer. If you're not sure if you're doing this right, check out [this section](http://redux.js.org/docs/recipes/reducers/ImmutableUpdatePatterns.html) of the Redux docs.
+  6. Add each sub-reducer to the `combineReducers` call in `store.js`.
+  7. Keep in mind that, because of our sub-reducing, the shape of our state changes in small but significant ways: We now have `.player` and `.lyrics`, after more work we will probably have `.artists`, `.albums`, `.playlists`, `.songs`. Components receiving props from `AppContainer` are expecting things to be a little "flatter" and you may have to change these dumb components to adhere to the new state shape.
+
+  <guide>
+  You've transferred all properties from `initialState` over to Redux store.
+  You've created action creators for all actions that `AppContainer` is currently handling.
+  You've updated downstream dumb components that receive props from `AppContainer`.
+  You've recognized how amazing you are for getting all of this done. Seriously.
+  </guide>

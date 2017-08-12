@@ -1,0 +1,111 @@
+@[Concept] Writing Sub-Routes 
+  @[Action] Goal 
+  Let's practice some more! Right now, all of our components are technically sub-routes of the `/` route, but those routes can also have sub-routes of their own! Let's break up the `Artist` (singular) component so that instead of displaying the albums and songs in one view, we first show two `Link`s, and depending on which the user clicks, we show either the artist's albums or the artist's songs **below**.
+
+  <div class="flex flex-wrap">
+    <div class="col-3"></div>
+      <div class="col-6">
+        <h5 class="center">Currently</h5>
+        <img src="http://i.imgur.com/kWDQHvm.png">
+        <p class="center">Let's split it up into...</p>
+      </div>
+    <div class="col-3"></div>
+  </div>
+
+  <div class="flex flex-wrap">
+    <div class="col-4 p1 border-box">
+      <h5 class="center">By default</h5>
+    </div>
+    <div class="col-4 p1 border-box">
+      <h5 class="center">Clicked ALBUMS tab</h5>
+    </div>
+    <div class="col-4 p1 border-box">
+      <h5 class="center">Clicked SONGS tab</h5>
+    </div>
+    <div class="col-4 p1 border-box">
+      <img src="http://i.imgur.com/AKrhYGJ.png">
+    </div>
+    <div class="col-4 p1 border-box">
+      <img src="http://i.imgur.com/KvQU7wI.png">
+    </div>
+    <div class="col-4 p1 border-box">
+      <img src="http://i.imgur.com/kK8vuO7.png">
+    </div>
+  </div>
+
+
+  <guide>
+  You have finished reading the above
+  </guide>
+
+  @[Action] Setup 
+  Go ahead and replace the JSX in the one-artist component with something like this:
+
+  ```js
+  const selectedArtist = this.props.selectedArtist;
+  const children = this.props.children;
+  const propsToPassToChildren = {
+    /**todo: make sure to include all the props that the child components need! **/
+  }
+
+  return (
+  <div>
+    <h3>{ selectedArtist.name }</h3>
+    <ul className="nav nav-tabs">
+      <li><Link to={/**todo**/}>ALBUMS</Link></li>
+      <li><Link to={/**todo**/}>SONGS</Link></li>
+    </ul>
+    { children && React.cloneElement(children, propsToPassToChildren) }
+  </div>
+  )
+  ```
+
+  You might also be wondering about the `children &&` part. This is a slick alternative technique for checking the truthiness of a value (before we used a regular ternary expression)! Remember, first of all, that we need to check the truthiness of the children prop to avoid getting a TypeError. The `&&` operator will "short-circuit" if it encounters a falsey value - meaning that once it sees that `children` is a false value, the JavaScript interpreter won't even continue to evaluate the remaining values in the expression (so we get those nasty TypeErrors).
+
+  <guide>
+  The Artist component renders the new JSX instead of the the artist's albums and songs
+  </guide>
+
+  @[Action] Artist Albums 
+  Try it out for yourself! 
+
+  1. Add a new **child** route to the `/artists/:artistId` Route for `/artists/:artistId/albums`.
+  2. Try making it so that when we navigate to a route like `/artists/:artistId/albums`, we see a list of appropriate albums. Make sure that each album links to its own album page too (`albums/:albumId`)! Your first instinct might be to make a new component, but hold on a sec...do you think we could just re-use what we already have?
+
+  If you get stuck, try reviewing the [tutorial](https://github.com/reactjs/react-router-tutorial).
+
+  <guide>
+  Clicking the "Albums" link in the nav displays all of the artist's albums in the space beneath
+  </guide>
+
+  @[Action] Artist Songs 
+  Second verse, same as the first! Do what you just did, only with artist songs!
+
+  <guide>
+  Clicking the "Songs" link in the nav displays all of the artist's songs in the space beneath
+  </guide>
+
+  @[Action] Child Route Path Shorthand 
+  *By the way,* `react-router` Routes can take *absolute* or *relative* paths as a prop, and paths of child routes are built on top of their parent paths.
+
+  *Ex:* The following...
+  ```jsx
+  <Route path='/hello' component={Greetings}>
+  	<Route path='/hello/world' component={PlanetEarth} />
+  </Route>
+  ```
+
+  ...can be refactored to:
+  ```jsx
+  <Route path='/hello' component={Greetings}>
+  	<Route path='world' component={PlanetEarth} />
+  </Route>
+  ```
+
+  **Note:** Relative paths of child routes _do not_ need the leading `/`, as that signifies the root path.
+
+  Try re-factoring parent-child routes in your app now!
+
+  <guide>
+  Move on when you and your partner have chosen a parent-child path style and implemented it in _all_ of your routes.
+  </guide>

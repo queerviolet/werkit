@@ -1,0 +1,46 @@
+@[Concept] Intro 
+  @[Action] Instructor Notes 
+  @  draftMode true
+  Instructor Notes
+
+  Keep these notes in "Draft Mode" so only Instructors / Fellows can see them.
+
+  Just wanting to keep a list of most asked questions, so that everyone can be adequately prepared.
+
+  - What does react-router add to what we already know (hooking in to URL and better non-ternary code)
+  - How does browserHistory work if there is no hash (serving up index.html, which requests bundle.js, which loads react-router, which hooks into URL, which determines if that path matches a view, which then renders the view)
+
+  @[Action] Pre-Reading 
+  Before we get started, read through the [tutorial](https://github.com/reactjs/react-router-tutorial/tree/master/lessons/01-setting-up) on React Router's Github page (no need to actually code along to it though, unless you have time).
+
+  Do note that they use some es5 (e.g. `.createClass`). See if you can remember how it would work with es6 syntax.
+
+  @[Action] Goal 
+  For this workshop, we'll be focusing on front-end "routes" using React Router. Ultimately, React Router provides an elegant and powerful abstraction for the "view swapping" stuff we are currently doing with conditional logic in our JSX. Most of this workshop will be refactoring existing code.
+
+  The only "feature" we will add involves viewing one artist: instead of rendering that artist's albums and songs simultaneously in the same view, we will have "tabs" for ALBUMS and SONGS, so a user will view each one at a time. Notice that the URL changes as we change state.
+
+  <div class="flex flex-wrap">
+    <div class="md-col-6 xs-col-12 p2 border-box">
+      <h3>Starting Point</h3>
+      <img src="http://goo.gl/eMPRLi">
+    </div>
+    <div class="md-col-6 xs-col-12 p2 border-box">
+      <h3>Workshop Goal</h3>
+      <img src="http://goo.gl/qTR4DR">
+    </div>
+  </div>
+
+  @[Action] Single Page Applications 
+  With the [ascension of AJAX](http://www.aaronsw.com/weblog/ajaxhistory), the web has become a platform for single-page applications. Such applications do not refresh and instead dynamically replace their content to simulate changing pages.
+
+  For web developers, this change has brought new opportunities as well as new challenges. In some ways, the "developer ergonomics" of the old web were great. You could change pages with `<a href="...">`. To send data, you submitted a form. As single page applications became the status quo, the users' experience improved, while the engineers' deteriorated. You felt this deeply during **Trip Planner**.
+
+  Comprehensive frontend Javascript frameworks were born in this climate. They have grown to include tools and patterns that address the challenges of managing website navigation.
+
+  @[Action] React Router 
+  [`React Router`](http://angular-ui.github.io/ui-router/site/#/api) is one such tool, a swell third-party React library that allows us to establish "routes" in our frontend application that render different components while also updating the URL as we traverse our application. Back button functionality and everything!
+
+  Through `react-router` we have "routes". In its simplest form, a route is a combination of two things, a URL and a component. As far as we are concerned it is a kind of *rule* about our application: when the URL matches, the component executes its render method.
+
+  And to be clear, `react-router` is 1000% [sic] a frontend technology. Though `react-router` interacts with URLs/routes/navigation, it changes *literally nothing* about how our server works. By the end of this workshop, our app will have come to a very subtle divide, where some of our routing will be managed by the frontend, and some by the backend.

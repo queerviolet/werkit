@@ -1,0 +1,16 @@
+@[Workshop] Shoestring
+@  description  "Implement some central features of the bootstrap library. Beef up your CSS skills, apply responsive web design, and learn about SASS."
+@  learnDotWorkshopId "55d23008b7a9010300b812f5"
+@  artwork      require("./1458083956741.jpg")
+
+    @[...] ./introduction
+
+    @[...] ./setup
+
+    @[...] ./sass-and-grids
+
+    @[...] ./responsive-setup
+
+    @[...] ./responsive-exercise
+
+    @[...] ./bonus

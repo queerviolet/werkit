@@ -1,0 +1,6 @@
+@[Concept] Submission Guidelines 
+  @[Action] Guidelines 
+  * For its final evaluation, your project must be deployed
+  * Your README should have a link to the live site
+  * Your live site should have a path at /github that redirects to your Github repo (e.g. stackstore.herokuapp.com/github -> github.com/davidyang/stackstore)
+  * Presentation guidelines can be found [here](https://gist.github.com/glebec/00394001b55ce6c060d74a1cfae46a69)

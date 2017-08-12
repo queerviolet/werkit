@@ -1,0 +1,22 @@
+@[Workshop] Juke 1. Intro to React (2.1)
+@  description  "Take the first steps in building a dynamic music application using React, a powerful library for building user interfaces. Understand how to build React components, manage state, and render your view."
+@  learnDotWorkshopId "5817499b3079790003310bcb"
+@  artwork      require("./1478617138520.jpeg")
+
+    @[...] ./overview
+
+    @[...] ./getting-started
+
+    @[...] ./basic-react-app
+
+    @[...] ./all-albums
+
+    @[...] ./view-switching
+
+    @[...] ./let-there-be-music
+
+    @[...] ./refactor
+
+    @[...] ./bonus
+
+    @[...] ./conclusion

@@ -1,0 +1,83 @@
+@[Concept] Introduction 
+  @[Action] Instructor Notes 
+  @  draftMode true
+  Please keep this in *Draft* mode, as these are notes for instructional staff to assist with common issues noted during this project. If you have addition issues, please add them!
+
+
+  - OAuth
+  	- Google issues:
+  		- You see this in the [client](https://www.dropbox.com/s/msdmeq1dyjy56rd/client%20google%2B%20error.png?dl=0) or this in the server [console](https://www.dropbox.com/s/wre4ico22cv7cj1/terminal%20google%2B%20error.png?dl=0)
+  		- To get a more descriptive message, go to the line in the node_modules folder and `console.log(more)` there 
+  		- Go to console.developer.google.com --> click [`Dashboard`](https://www.dropbox.com/s/x6ir65os6k2n148/dashboard%20enable.png?dl=0) --> search [`google+`](https://www.dropbox.com/s/rfql73158pyjbrk/google%2B%20search.png?dl=0) --> click [`Enable`](https://www.dropbox.com/s/ua72s55gjbh1nms/google%2B%20enable.png?dl=0)
+
+  @[Action] Overview 
+  In this development team simulator, you're using your recently acquired skills to build an e-commerce platform that will allow your client (the instructors) to create, manage and run an e-commerce site.
+
+  This project will be much less structured than previous workshops and will require that you work together as a team to successfully accomplish your goals.  You will have support in the form of Help Tickets, Office Hours, Code Reviews and Architecture Meetings, but you are recommended to use those resources to validate assumptions, work through your most difficult mind-bending problems, and resolve team issues—DO NOT use them as a crutch to solve simpler problems.
+
+  Throughout the exercise, instructors and your fellow will release product, technical and team requirements to you.  Plan accordingly by keeping your development clean, structured and flexible.
+
+  @[Action] Objectives 
+  * Build a fullstack JavaScript app from the ground up
+  * Bring together the concepts and tools learned earlier in the program
+  * Emphasize best practices
+  * Practice using proper Git workflow (feature branching, pull requests, etc.)
+  * Practice Agile team management
+  * Work in pairs to accomplish tasks
+  * Use testing to ensure the reliability of your code
+  * Create a set of models/schemas that properly matches the functional and technical criteria of the application
+  * Create an authentication scheme that supports non-logged-in, logged-in, and administrator users
+  * Deploy application and understand the deployment process
+  * Use your creativity to build a compelling e-commerce site
+
+  @[Action] Evaluation 
+  You will be presenting your project to the instructors on the scheduled final day of the project. The parameters for this presenting are forthcoming.
+
+  The instructors will be evaluating your presentation and the content of your project on many different criteria, including but not limited to:
+
+  - Feature completeness
+  - Code quality and general best practices in front-end and back-end
+  - Project management and effective use of Git
+  - Quality of unit tests
+  - Schema design
+  - RESTfulness of routes
+  - DRY
+  - Effectively separating functionality with dumb/presentational components, smart/container components, async action creators, etc.
+  - UI/site usability
+  - Security
+  - Design/visual appeal
+
+  @[Action] Resources 
+  We recommend that you use [Bones](https://github.com/FullstackAcademy/bones). Bones is a react-redux-sequelize-express-node-etc-etc 'boilerplate' project with auth built-in. Clone it to make your own copy, follow the directions within to modify your remote URLs, and then `npm install` then `npm run dev`. There will be more training throughout the week in understanding its initial files.
+
+  Use [waffle.io](https://waffle.io/) for project management. You may find [this article](https://help.waffle.io/automatic-work-tracking/auto-work-tracking-basics/recommended-workflow-using-pull-requests-automatic-work-tracking) of interest, though you are not required to implement the workflow detailed within.
+
+  You will also have a fellow assigned to your team that will act as your "project manager". They will be tracking the day-to-day progress of your application, scheduling and administering meetings (via waffle.io), occasionally pair programming with members of your team and acting as the liaison between your team and your client (the instructors).
+
+  @[Action] Group Work 
+  In this project, you will work in teams of 4. In a team of four people A B C D, there are 3 unique pairing combinations: AB CD, AC BD, AD BC. As you work through the project, please continue to switch pairs on a feature by feature basis. If a feature is taking more than two days, please consult your assigned fellow or an instructor.
+
+  Use Git to manage your project, and GitHub for easy collaboration. As needed, meet as a team to decide on the next reachable goals for your project and split them into achievable tasks. For a given task, we recommend the following workflow.
+
+  1. **Make a GitHub issue for the task.**
+  2. Assign a pair (<span style="color:green;">green</span>) to work on the task.
+  3. <span style="color:green;">Branch off of `master` (use `git checkout -b branch-name-here` to create a new branch - include the issue # in the branch name).</span>
+  4. <span style="color:green;">Continually edit and commit.</span>
+  5. <span style="color:green;">Switch to `master`, `git pull`, switch to branch, `git merge master`. Fix conflicts.</span>
+  5. <span style="color:green;">Push the branch to origin.</span>
+  6. <span style="color:green;">When task is "complete", make a pull request (and reference the issue) on GitHub</span>
+  7. Assign a person (<span style="color:purple;">purple</span>) not in the pair to code review the pull request.
+  8. <span style="color:purple;">Review the code</span>
+      - <span style="color:purple;">If you have no comments (*really you have none?*), go to #9, otherwise...</span>
+      - <span style="color:purple;">Make round of comments.</span>
+      - <span style="color:green;">Address round of comments (perhaps repeating steps #4-5)</span>
+      - Go to #8
+  9. <span style="color:purple;">Merge the PR.</span>
+  10. Everybody: switch to `master`, pull from origin.
+
+  Further reading: Waffle's [Recommended Workflow Using Pull Requests & Automatic Work Tracking](https://help.waffle.io/automatic-work-tracking/auto-work-tracking-basics/recommended-workflow-using-pull-requests-automatic-work-tracking)
+
+  @[Action] Getting Started 
+  Once you've got your team, figure out what you're selling and come up with a team name. Your team will also have a Slack channel for collaboration with each other and your fellow/instructors.
+
+  Now create an app using `Bones` (see its README for ways to do that), push it up to GitHub, add all your team members as collaborators and start making tasks in waffle.io. You should send your assigned fellow your team name and a link to your GitHub repo.

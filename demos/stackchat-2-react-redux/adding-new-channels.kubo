@@ -1,0 +1,456 @@
+@[Concept] Adding New Channels 
+  @[Action] Goal 
+  So far, we've written a new container that uses a `mapStateToProps` function to get our list of channels and messages from state, and passes them down to our presentational component.
+
+  Next, we'll dive into the marshmallow center of the workshop - adding new channels - and see how we can pass down behavior as well using `connect`'s second argument, `mapDispatchToProps`.
+
+  <guide>
+  You have read and understood the above
+  </guide>
+
+  @[Action] Channel Entry 
+  Our goal is to fill out a form with a channel's name and submit it to post a new channel. We should model this behavior out in Redux (in `store.js`) before we worry about our view components. 
+
+  By now, this should start to feel familiar - feel free to give it a shot on your own! The process will be very similar to posting new messages, so you can use that code as a reference. If you want some more guidance, open the hint below - it will advise you on the different ingredients you need to make.
+
+  <hint title="Guidebook">
+  * Add a field to state for the value of the channel entry input field
+  * Write an action type and an action creator for writing a channel name into the input
+  * Write an action type and an action creator for receiving a new channel from the server
+  * Add cases to your reducer for handling the two actions above
+  * Write a thunk that will post a new channel to the server, and then dispatch the action for adding a new channel to our array of channels. To post a new channel on the server, we need a request body that includes the `name` of the new channel
+  </hint>
+  <br/>
+  <hint title="Solution">
+  You will likely end up with new code like this in your `store.js`:
+
+  ```js
+  // action types
+  const WRITE_CHANNEL_NAME = 'WRITE_CHANNEL_NAME';
+  const GET_CHANNEL = 'GET_CHANNEL';
+
+  // action creators
+  export function writeChannelName (channelName) {
+    const action = { type: WRITE_CHANNEL_NAME, channelName };
+    return action;
+  }
+
+  export function getChannel (channel) {
+    const action = { type: GET_CHANNEL, channel };
+    return action;
+  }
+
+  // thunk creator
+  export function postChannel (channel) { // expecting channel to an object like: { name: 'new_channel_name' }
+
+    return function thunk (dispatch) {
+      return axios.post('/api/channels', channel)
+        .then(function (res) { return res.data })
+        .then(function (newChannel) {
+          dispatch(getChannel(newChannel));
+        });
+    };
+  }
+
+  function reducer (state = initialState, action) {
+    // etc...
+      case WRITE_CHANNEL_NAME:
+        return {
+          ...state,
+          newChannelEntry: action.channelName
+        };
+
+      case GET_CHANNEL:
+        return {
+          ...state,
+          channels: [...state.channels, action.channel]
+        };
+
+    // etc...
+  }
+
+  ```
+  </hint>
+
+  <guide>
+  You have added the necessary functionality to `store.js`
+  </guide>
+
+  @[Action] Defining Methods With mapDispatchToProps 
+  Now that we can handle adding a new channel with Redux, let's get down to connecting our component!
+
+  When you open `NewChannelEntry.js`, you'll notice that it is a clean, "dumb", functional component. Part of our goal in using `connect` is to keep it that way. In fact, let's keep two goals in mind:
+
+  **1. Maximize the number of functional components in our code (they are the easiest to understand, and the most re-usable)**
+
+  **2. Minimize the number of times we directly import and use the store**
+
+  That first point should be pretty familiar (think Tom's Second Law)! The second point may be a little strange though - we've been directly using `store.dispatch` a lot. However, now that we have `connect`, we can avoid using the `store` directly most of the time. This is a good rule to follow, because it enforces a stricter `separation of concerns` that will make our code easier to navigate. Think of it this way - instead of dirtying our hands by using the store, we delegate that responsibility to connect.
+
+  *"But wait"*, you ask - *"how are we supposed to dispatch actions from our components without writing methods on them?"*
+
+  I'm so glad you asked - the answer is to use `mapDispatchToProps`!
+
+  `mapDispatchToProps` is the second argument we pass to `connect`. Just like `mapStateToProps`, it's a function that returns an object, and any key-value pairs on that object will become available as props on the connected component.
+
+  However, *unlike* `mapStateToProps`, a `mapDispatchToProps` function receives the `dispatch` method as the first argument, rather than `state`. We can use the dispatch method here to implement our methods (like click/submit/change handlers)!
+
+  **Example:**
+
+  ```js
+  // receives dispatch as an argument
+  const mapDispatchToProps = function (dispatch) {
+    return {
+      someMethod: function () {
+        dispatch(someActionCreator())
+      };
+    };
+  }
+
+  // receives state as an argument
+  const mapStateToProps = function (state) {
+    return {
+      someStuff: state.someStuff
+    }
+  }
+
+  // receives the props that mapStateToProps and mapDispatchToProps define
+  function SomeComponent (props) {
+    return (
+      <div>
+        <h5>{ props.someStuff }</h5> {/* props.someStuff comes from mapStateToProps */}
+        <button onClick={props.someMethod}>Click Me</button> {/* props.someMethod comes from mapDispatchToProps */}
+      </div>
+    )
+  }
+
+  const SomeContainer = connect(mapStateToProps, mapDispatchToProps)(SomeComponent);
+  ```
+
+  <guide>
+  You have read and understood the above
+  </guide>
+
+  @[Action] Control Input 
+  Let's start connecting `NewChannelEntry`!
+
+  <ol>
+  <li> Import `connect` into `NewChannelEntry.js`</li>
+  <br/>
+  <li> Write `mapStateToProps` and `mapDispatchToProps` functions (return empty objects for now). Pass these to `connect`, and then pass in the NewChannelEntry component to create the container. Export the container by default.</li>
+  <br/>
+  <hint title="Solution">
+  ```js
+  const mapStateToProps = function (state) {
+    return {};
+  };
+  const mapDispatchToProps = function (dispatch) {
+    return {};
+  };
+
+  const Container = connect(mapStateToProps, mapDispatchToProps)(NewChannelEntry);
+  export default Container;
+  ```
+  </hint>
+
+  <br/>
+  Now that we're set up, let's map some state to props.
+
+  <li> Map the value of the channel input from our state to be a prop for the `NewChannelEntry` component </li>
+  <br/>
+  <hint title="Solution">
+  ```js
+  const mapStateToProps = function (state) {
+    return {
+      newChannelEntry: state.newChannelEntry
+    };
+  };
+  ```
+  </hint>
+  <br/>
+  <li> Pass the input value from state in as the `value` prop for the `<input>` element in the component. Remember that this makes our `<input>` a "controlled" component. </li>
+  <br/>
+  </ol>
+  <hint title="Solution">
+  <pre>
+  &lt;input
+    value={props.newChannelEntry}
+    className="form-control"
+    type="text"
+    name="name"
+    placeholder="Enter channel name"
+  />
+  </pre>
+  </hint>
+
+  <guide>
+  You have completed the steps above
+  </guide>
+
+  @[Action] Handling Change 
+  Now let's work up the behavior that we'll pass to the component.
+
+  <ol>
+  <li> In the object your `mapDispatchToProps` function returns, write a "handleChange" function. This should accept an "event", and dispatch an action to update the input value in the store </li>
+  </br>
+  <hint title="Solution">
+  ```js
+  import { writeChannelName } from '../store';
+
+  const mapDispatchToProps = function (dispatch, ownProps) {
+    return {
+      handleChange (evt) {
+        dispatch(writeChannelName(evt.target.value));
+      }
+    };
+  };
+  ```
+  </hint>
+  <br/>
+  <li>Pass your change handler to the change listener on the `<input>`</li>
+  <br/>
+
+  <hint title="Solution">
+  <pre>
+  &lt;input
+    value={props.newChannelEntry}
+    onChange={props.handleChange}
+    className="form-control"
+    type="text"
+    name="name"
+    placeholder="Enter channel name"
+  />
+  </pre>
+  </hint>
+
+  <br/>
+  When you're done, typing into the input field should update the value in the store!
+
+  <guide>
+  You have completed the steps above
+  </guide>
+
+  @[Action] Submitting a Channel 
+  All right - we're very close now. 
+
+  <ol>
+
+  <li> In your `mapDispatchToProps`, write a submit handler function that you can pass down to the component. It should expect the event object as an argument, and should dispatch our `postChannel` thunk. We have two options for getting the value of the form input - we could use the value that we've stored on state, or we could "cheat" a little bit and grab the value off of the event, which may be quicker for now. Remember that for submit events, you can find the value of any form input by its name on `event.target` (for example, in this case we could find the current value of the input on `event.target.channelName.value`, because our `<input>` in the form has `name="channelName"`. </li>
+
+  <br/>
+
+  <hint title="Solution">
+  Here's how we would grab the value off of the event:
+
+  ```js
+  import { writeChannelName, postChannel } from '../store';
+
+  const mapDispatchToProps = function (dispatch, ownProps) {
+    return {
+      handleChange (evt) {
+        dispatch(writeChannelName(evt.target.value));
+      },
+      handleSubmit (evt) {
+        evt.preventDefault();
+        const name = evt.target.channelName.value;
+        dispatch(postChannel({ name }));  // this is ES6 object destructuring! It's equivalent to { name: name }
+      }
+    };
+  };
+  ```
+  </hint>
+
+  <br/>
+
+  <li> Attach the submit handler to the `<form>` element. </li>
+
+  <br/>
+
+  <hint title="Solution">
+  <pre>
+  &lt;form onSubmit={props.handleSubmit}>
+  </pre>
+  </hint>
+
+  <br/>
+
+  **Try it out** - you should see the new channel get added. That being said, it'd be no fun to just chat on this new channel ourselves. Let's make sure to emit this new channel across sockets so that other clients get the new channel as well!
+
+  <br/>
+  <br/>
+
+  <li> After we've created the new channel, we want to emit a `'new-channel'` event. This will be very similar to what we've done for new messages. </li>
+
+  <br/>
+
+  <hint title="Solution">
+  <pre>
+  export function postChannel (channel) {
+
+    return function thunk (dispatch) {
+      return axios.post('/api/channels', channel)
+        .then(res => res.data)
+        .then(newChannel => {
+          dispatch(getChannel(newChannel));
+          socket.emit('new-channel', newChannel);
+        });
+    };
+  }
+  </pre>
+  </hint>
+
+  <br/>
+
+  <li> If you check out `server/socket/index.js`, you'll notice that we're already listening for the `'new-channel'` event, and emitting one back to all other clients. This means that all we need to do now is listen for that event from the client, and update our state with the new channel. Once again, this should be quite familiar. </li>
+
+  <br/>
+
+  <hint title="Solution">
+  In `client/socket.js`:
+  <pre>
+    socket.on('new-channel', channel => {
+      store.dispatch(getChannel(channel));
+    });
+  </pre>
+  </hint>
+
+  </ol>
+
+  **Try it out again!** Use your partner's machine or another browser tab to test. Now we're rolling in real time!
+
+  There are two more improvements we can make, though:
+
+  * It would be nice if the field cleared out its value when we submitted...this is an optional exercise for you
+  * When we create a new channel, it would be really nice to instantly navigate to that new channel. We will do this together in the next section
+
+  <guide>
+  You can create new channels, and these new channels appear across sockets
+  </guide>
+
+  @[Action] OwnProps 
+  Before we go any further, let's take a moment to learn about the **second** argument that `connect` passes to both `mapStateToProps` and `mapDispatchToProps`. It's called `ownProps`.
+
+  In addition to `state` as its first parameter, `mapStateToProps` functions can also expect to receive an object called `ownProps` in the second parameter.
+
+  ```js
+  function mapStateToProps = function (state, ownProps) {
+    return {
+      // etc...
+    };
+  }
+  ```
+
+  Likewise, `mapDispatchToProps` receives the **same** thing.
+  ```js
+  function mapDispatchToProps = function (dispatch, ownProps) {
+    return {
+      // etc...
+    };
+  }
+  ```
+
+  This is so that container components can accept props of their own (for example, from other components we write, or from `react-router` if a container is mounted under a `Route`).
+
+  Consider this example:
+
+  ```js
+  import FoodListContainer from '../containers/FoodListContainer';
+
+  export default function MyFavoriteFoods (props) {
+
+    // ["bagels", "chocolate", "key lime pie"]
+    // ...in case anyone was wondering
+    const myFavoriteFoods = props.myFavoriteFoods;
+
+    return (
+      <div>
+        <h3>Blah Blah Blah</h3>
+        <FoodListContainer favorites={myFavoriteFoods} />
+      </div>
+    );
+  }
+  ```
+
+  Now, if `FoodListContainer` is a `connect` component, we will have access to "myFavoriteFoods" as `ownProps.favorites`:
+
+  ```js
+  const mapStateToProps = function (state, ownProps) {
+    return {
+      favorites: ownProps.favorites, // ["bagels", "chocolate", "key lime pie"]
+      hasHealthyDiet: ownProps.favorites.indexOf("broccoli") !== -1 // false :(
+    };
+  }
+
+  const mapDispatchToProps = function (dispatch, ownProps) {
+    return {
+      changeDiet: function () {
+        dispatch(changeDietActionCreator(ownProps.favorites))
+      }
+    };
+  }
+  ```
+
+  Sound good? Then onward!
+
+  <guide>
+  You have read and understood the above
+  </guide>
+
+  @[Action] Dynamic Routing 
+  Now, where were we? Oh yes - when we create a new channel, we want to dynamically navigate to that new channel. To do this, we'll learn a little bit more about React Router's [`history`](https://reacttraining.com/react-router/web/api/history) prop.
+
+  In addition to `match` and `location`, `history` is one of the three props that every `Route` passes to its `component`. The `history` object is mutable (so use it with care)! We need it here though, because it supports a method (`history.push('pathname')`), which will allow us to dynamically change the value in the URL bar such that everything in our router will re-render.
+
+  **Example**:
+
+  * If we say `history.push('/new-channel')`, then the url will change to `http://localhost:8080/new-channel`, and the new channel component will be re-rendered.
+
+  * If we say `history.push('/channels/1')`, then the url will change to `http://localhost:8080/channels/1`, and the messages list component will be re-rendered.
+
+  With this in mind:
+
+  * In your `NewChannelEntry`, obtain the `history` prop that the `Route` sends to you
+  * Use the `history.push` method to update the url *after* the new channel is created
+
+  **Note:** when you're done, it may be difficult to tell that it worked because of our `activeClassName` bug! To test it out, send a message to your new channel and make sure that the proper message counter increments!
+
+  <hint title="Where is the history object?">
+  Remember `ownProps` is the second argument to `mapDispatchToProps` and `mapStateToProps`. You'll find it there! 
+  </hint>
+
+  <hint title="More hints">
+  Thunk creators can take any number of arguments - why not pass `history` along so that you can use it after the channel is created?
+  </hint>
+
+  <hint title="Solution">
+  You submit handler may change like so. We'll pass down the history object as an additional argument to postChannel:
+
+  ```js
+      handleSubmit (name, evt) {
+        evt.preventDefault();
+        dispatch(postChannel({ name }, ownProps.history));
+        dispatch(writeChannelName(''));
+      }
+  ```
+
+  And your postChannel thunk creator may be modified to do this, so that it uses history.push after the promise resolves:
+
+  <pre>
+  export function postChannel (channel, history) {
+
+    return function thunk (dispatch) {
+      return axios.post('/api/channels', channel)
+        .then(res => res.data)
+        .then(newChannel => {
+          dispatch(getChannel(newChannel));
+          socket.emit('new-channel', newChannel);
+          history.push(`/channels/${newChannel.id}`);
+        });
+    };
+  }
+  </pre>
+  </hint>
+
+  <guide>
+  Submitting a new channel switched you to that new channel
+  </guide>

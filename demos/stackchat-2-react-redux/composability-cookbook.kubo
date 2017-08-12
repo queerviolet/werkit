@@ -1,0 +1,596 @@
+@[Concept] Composability Cookbook 
+  @[Action] Intro 
+  The following sections are **not necessary** to complete this workshop.
+
+  They are bonus readings that go over several advanced concepts, and are meant to be a reference as you continue your React journey. You may wish to read them now, or at some point in the future. They contain some thoughts (*including some opinions*) on how to take advantage of React's functional architecture to write components that are modular and DRY.
+
+  I hope you enjoy them and return to them every so often!
+
+  @[Action] Handling Localized State 
+  There are several form components in Juke (for example, the `input` to filter artists, or the `select` used to add songs to playlists.
+
+  We learned about the distinction that some developers make between `local state` and `application state` in [Juke Part 3: Forms](https://learn.fullstackacademy.com/workshop/581352f6b659df00039f5189/content/5820a141c9884c0003daac3a/text). When we throw the `redux` store into the fray, this distinction can become much more acute. While the `redux` store, at its strictest, is meant to be the single source of truth for **all** of the state in your application (from the identity of the logged in user, down to the lowliest `input` element), some developers don't like the idea of "polluting" their redux store with something as localized as form data. 
+
+  There are two schools of thought here:
+
+  1. We might choose to keep all of our `application state` in our Redux store, and write components that need local state as stateful React components (and use `setState` to update them). The upside of this approach is that it feels nice to not have to "clutter" our Redux store with state that feels ephemeral. The downside is that, strictly speaking, we no longer have a single source of truth for **all** the state in our app - we must be careful to make sure that our local state really is just local!
+
+  2. We might choose to be strict about keeping everything in our Redux store, and try to take advantage of the composability of reducers to work out a system that puts all of our local state in one place. For example, we might make a slice of state called "forms", and nest the local state for each form in our app there. The upside of this approach is that we don't lose any of the advantages that Redux has given us. The downside is that it requires more forethought and coordination. This is where libraries like [`redux-form`](http://redux-form.com/6.0.5/) come in - it introduces a reducer and several higher order components that tuck the state of our forms away in their own place.
+
+  Either one of these is a perfectly fine choice. All that I would suggest you do is that you be **consistent** with which approach you choose. It would be far more confusing if only *some* of your form data was handled in your `redux` store and *some* was handled by local state in a React class.
+
+  @[Action] Localized State: Example 
+  Say that we want to take a combined approach where we keep local form data in a React component's state, and manage our application's data in our `redux` store. Here is how we might combine our three types of components. Consider the following simple form:
+
+  **With no user submitted**
+  <div>
+  <img src="https://learndotresources.s3.amazonaws.com/workshop/58135430b659df00039f518f/no-duke.png"/>
+  </div>
+  **After submitting a user**
+  <div>
+  <img src="https://learndotresources.s3.amazonaws.com/workshop/58135430b659df00039f518f/duke.png"/>
+  </div>
+
+  In this example, our `redux` store will hold the `user`, but the data in the field will be held by a stateful React component.
+
+  1. A `connect` component written with `react-redux`, which exposes a way to `dispatch` changes to the `redux` store
+  2. A stateful React class that manages local form data
+  3. A stateless functional React component that displays the UI and connects event listeners
+
+  **Container.js**
+  ```js
+  import { connect } from 'react-redux';
+  import { submitLoginActionCreator } from '../action-creators';
+  import StatefulFormClass from './StatefulFormClass';
+
+  const mapStateToProps = state => {
+    return {
+      // our main state.user
+      user: state.user
+    };
+  };
+
+  const mapDispatchToProps = dispatch => {
+    return {
+      // dispatches a change to our central `state.user` in the redux store
+      submitLogin (userName) {
+        dispatch(submitLoginActionCreator(userName));
+      }
+    };
+  };
+
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(StatefulFormClass);
+  ```
+
+  **StatefulFormClass.js**
+  ```js
+  import React, { Component } from 'react';
+  import StatelessForm from './StatelessForm';
+
+  export default class StatefulFormClass extends Component {
+
+    constructor (props) {
+      super(props);
+      this.state = {
+        inputValue: '' // the entered user name
+      };
+      this.handleChange = this.handleChange.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    // updates our local state when the input form is changed
+    handleChange (evt) {
+      evt.preventDefault();
+      this.setState({
+        inputValue: evt.target.value
+      });
+    }
+
+    // takes our local inputValue and passes it to the method from our connect component, 
+    // which has access to `dispatch`
+    handleSubmit (evt) {
+      evt.preventDefault();
+      this.props.submitLogin(this.state.inputValue);
+    }
+
+    render () {
+      // passes down the local methods and inputValue, as well as the `user` from the store
+      return (
+        <StatelessForm 
+          user={this.props.user}
+          inputValue={this.state.inputValue}
+          handleSubmit={this.handleSubmit}
+          handleChange={this.handleChange}
+        />  
+      );
+    }
+  }
+  ```
+
+  **StatelessForm.js**
+  ```js
+  import React, { Component } from 'react';
+
+  export default function (props) {
+
+    // a prop from our redux store
+    const user = props.user; 
+
+    // props from our local stateful component
+    const inputValue = props.inputValue; 
+    const handleChange = props.handleChange;
+    const handleSubmit = props.handleSubmit;
+
+    return (
+      <div>
+
+        { user ? <h3>You are already logged in: { user }</h3> : null }
+
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="username">Enter your name</label>
+          <input value={inputValue} onChange={handleChange} />
+          <button type="submit">Submit</button>
+        </form>
+
+      </div>
+    );
+  }
+  ```
+
+  @[Action] Higher Order Components 
+  A higher order component is still the same in concept as a higher order function - it's still just a function that returns another function. The only difference is that the function that a higher order component returns is a React class. Higher order functions are key to `composing re-usable functionality`.
+
+  As a refresher, here's how we might use a higher order function to compose different pieces of functionality.
+
+  Here's a piece of code we write fairly frequently:
+  ```js
+  axios.get('/api/something').then(res => res.data)
+  ```
+
+  Let's say we have a backend that contains `/api/puppies` and `/api/kittens`. We would like to be able to do something like this:
+  ```js
+  getPuppies().then(puppies => console.log(puppies))
+  getKittens().then(kittens => console.log(kittens));
+  ```
+
+  We *could* write each of these functions ourselves:
+  ```
+  const getPuppies = () =>
+    axios.get('/api/puppies').then(res => res.data);
+
+  const getKittens = () =>
+    axios.get('/api/kittens').then(res => res.data);
+  ```
+
+  Ugh, that was exhausting. We can do better - let's write a higher order function that will create arbitrary "api getters" for us.
+
+  ```js
+  const createApiGetter = (resourceName) => {
+    return () => {
+      return axios.get(`api/${resourceName}`).then(res => res.data);
+    }
+  }
+  ```
+
+  *Or, even cleaner:*
+  ```js
+  const createApiGetter = (resourceName) => () =>
+    axios.get(`api/${resourceName}`).then(res => res.data);
+  ```
+
+  Now, if we want to create those API functions, all we need to say is this:
+  ```js
+  const getPuppies = createApiGetter('puppies');
+  const getKittens = createApiGetter('kittens');
+  ```
+
+  Ah, much better. It may look like an extra step when there are only puppies and kittens, but imagine if there were birds and turtles and hedgehogs and all sorts of resources we wanted to request.
+
+  Now let's take a look a generalized higher order component - this same logic applies:
+
+  ```js
+  import React from 'react';
+  import ComponentA from './ComponentA';
+  import ComponentB from './ComponentB';
+
+  const higherOrderComponent = function (InnerComponent) {
+
+    return function (props) {
+      <div>
+        {/* some view we want to share */}
+        <InnerComponent />
+      </div>
+    }
+  }
+
+  const ComposedComponentA = higherOrderComponent(ComponentA);
+  const ComposedComponentB = higherOrderComponent(ComponentB);
+  ```
+
+  In the next section, we'll look at a practical example.
+
+  @[Action] Higher Order Components: Example 
+  Consider the following simple (but modular) table component:
+
+  ```js
+  // just an inline style
+  const boldStyle = { fontWeight: 700 };
+
+  const makeCell = (label) =>
+    <td key={label}>{ label }</td>
+
+  const makeRow = (row, headers) =>
+    <tr key={row.id}>{ headers.map(header => makeCell(row[header])) }</tr>
+
+  const Table = (props) => {
+
+    const headers = props.headers;
+    const rows = props.rows;
+
+    return (
+      <table>
+        <thead>
+          <tr style={bold}>
+          { headers.map(makeCell) }
+          </tr>
+        </thead>
+        <tbody>
+        { rows.map(row => makeRow(row, headers)) }
+        </tbody>
+      </table>
+    );
+  }
+  ```
+
+  We could use this to spin up a little table with any arbitrary data:
+
+  ```js
+  const COL_HEADERS = ["name", "breed"]
+
+  const DOGS = [
+    {
+      name: 'Lexie',
+      breed: 'Goldendoodle',
+      id: 1
+    },
+    {
+      name: 'Cody',
+      breed: 'Pug',
+      id: 2
+    },
+    {
+      name: 'Ben',
+      breed: 'Pitbull?',
+      id: 3
+    }
+  ];
+
+  ReactDOM.render(
+    <Table rows={DOGS} headers={COL_HEADERS} />,
+    document.getElementById('app')
+  );
+  ```
+  <img src="https://learndotresources.s3.amazonaws.com/workshop/58135430b659df00039f518f/table.png"/>
+
+  In our application, say that we sometimes want a table that looks just like the one we have above. But sometimes, we like to add a header to our components:
+
+  <img src="https://learndotresources.s3.amazonaws.com/workshop/58135430b659df00039f518f/table-with-header.png"/>
+
+  And we like to add headers to all kinds of components - not just tables! We want these headers to all be consistent, too.
+
+  We could just tack an `<h3>` tag in wherever we need it, but that could potentially lead to inconsistencies, and if we wanted to change the `<h3>` to an `<h2>` or something like that, we'd need to hunt them down everywhere. Instead, we could compose a component that will render the table with an arbitrary header. 
+
+  ```js
+  const mixinTitle = (InnerComponent) => {
+    return (props) => {
+      const { title  } = props;
+
+        return (
+          <div>
+            <h3>{ title }</h3>
+            <InnerComponent {...props} />
+          </div>
+        );
+    }
+  }
+  ```
+
+  Now look how easy our life is:
+
+  ```js
+  const TableWithTitle = mixinTitle(Table);
+
+  ReactDOM.render(
+    <TitleTable title="Dogs" rows={DOGS} headers={COL_HEADERS} />,
+    document.getElementById('app')
+  );
+  ```
+
+  What's great about this is that we can now add the same header to any component. All we need to do is compose it with the `mixinTitle` function and pass it the additional `title` prop:
+
+  ```js
+  // consider this additional, simple component
+  const Greeting = (props) => {
+    return <p>{ props.message }</p>
+  }
+
+  const TableWithTitle = mixinTitle(Table);
+  const ParagraphWithTitle = mixinTitle(Greeting);
+
+  ReactDOM.render(
+    <div>
+      <TitleTable title="Dogs" rows={DOGS} headers={COL_HEADERS} />
+      <ParagraphWithTitle title="Greeting" message="Hello world" />
+    </div>,
+    document.getElementById('app')
+  );
+  ```
+
+  <img src="https://learndotresources.s3.amazonaws.com/workshop/58135430b659df00039f518f/table%20and%20p.png"/>
+
+  @[Action] Higher Order Classes 
+  As you may have inferred from the previous section, it is also possible to compose higher order components that return React classes (including classes that manage **state**) rather than just stateless components:
+
+  ```js
+  import React from 'react';
+
+  const statefulMixin = function (InnerComponent) {
+    return class StatefulWrapper extends React.Component {
+      constructor (props) {
+        super(props);
+        this.state = {/** a higher order component frequently manages local state */}
+        this.handleSomething = this.handleSomething.bind(this); // if this being passed to an event handler
+      }
+
+      handleSomething () {/** this might set our local state **/}
+
+      render () {
+      /** Remember our separation of concerns between stateful and presentational components.
+          The higher order component's render function should only return the inner component
+          decorated with any props the higher order component received and any state/behavior
+          that it's managing. */
+        return (
+          <InnerComponent
+            handleSomething={this.handleSomething}
+            {...this.props}
+            {...this.state}
+          />
+        )
+      }
+    }
+  }
+  ```
+
+  This is extremely powerful - this allows us to compose state and behavior rather than just presentational features. In the next section, we'll see how this can simplify the way we deal with form data.
+
+  @[Action] Higher Order Classes: Example 
+  Say that we have various form elements of various types, like the following:
+
+  <img src="https://learndotresources.s3.amazonaws.com/workshop/58135430b659df00039f518f/valid%20entry.png"/>
+
+  These may just be small, versatile React components like these:
+
+  ```js
+  const Input = (props) => {
+    const { handleChange, value } = props;
+    return <input type="text" value={value} onChange={handleChange} />
+  };
+
+  const Select = (props) => {
+    const { handleChange, value } = props;
+    return (
+      <select value={value} onChange={handleChange}>
+        <option value="puppies">Hug Puppies</option>
+        <option value="kittens">Pet Kittens</option>
+        <option value="annihilation">FIRE ZEE MISSILES!</option>
+      </select>
+    );
+  };
+  ```
+
+  Now, we want to show an arbitrary warning message whenever an arbitrary condition has been met.
+  <img src="https://learndotresources.s3.amazonaws.com/workshop/58135430b659df00039f518f/warning%20entry.png"/>
+
+  We could write two separate stateful components that perform this validation (one that renders the `Input` and one that renders the `Select`). But let's think in terms of composition: these two form elements share the same behavior. The only differences between them are:
+
+  1. How we determine when the current value is invalid
+  2. What message to show when the current value is invalid
+
+  If we imagine what this might look like as a React element, we might come up with this sort of interface:
+
+  ```js
+  {/*
+    `warningMessage` would just be a string with the custom message
+
+    `validate` would be a function that accepts the value in the form, and returns true if we SHOULD show a warning,
+    and false if we SHOULD NOT show a warning
+  */}
+  <InputOrSelect warningMessage={""} validate={(formValue) => {}} />
+  ```
+
+  We have a good idea at this point how we would manage this functionality using local React state, but instead of writing separate classes to manage it, let's write a function that will return a class to manage that state/behavior instead:
+
+  ```js
+  const validateMixin = (InnerComponent) => {
+
+    const red = { color: 'red' }; // just an inline style
+
+    return class extends Component {
+
+      constructor (props) {
+        super(props);
+        this.state = {
+          value: '',
+          showWarning: false
+        };
+        this.handleChange = this.handleChange.bind(this);
+      }
+
+      handleChange (evt) {
+        const value = evt.target.value;
+        const { validate } = this.props;
+
+        this.setState({
+          value,
+          showWarning: validate(value)
+        });
+      }
+
+      render () {
+        const { showWarning } = this.state;
+        const { warningMessage } = this.props;
+
+        return (
+          <div>
+            { showWarning && <p style={red}>{ warningMessage }</p> }
+            <InnerComponent {...this.state} {...this.props} handleChange={this.handleChange} />
+          </div>
+        );
+      }
+    }
+  }
+  ```
+
+  Now, whenever we want one of our form elements to have this warning behavior, we simply mix the form's component into the class. All we need to do is define the warning message, and the criteria for showing the warning:
+
+  ```js
+  const Input = (props) => {
+    const { handleChange, value } = props;
+    return <input type="text" value={value} onChange={handleChange} />
+  };
+
+  const Select = (props) => {
+    const { handleChange, value } = props;
+    return (
+      <select value={value} onChange={handleChange}>
+        <option value="puppies">Hug Puppies</option>
+        <option value="kittens">Pet Kittens</option>
+        <option value="annihilation">FIRE ZEE MISSILES!</option>
+      </select>
+    );
+  };
+
+  const WarnableInput = validateMixin(Input);
+  // validate if the input is too long
+  const validateInput = (inputString) => inputString.length > 16;
+
+  const WarnableSelect = validateMixin(Select);
+  // validate if we choose to destroy humanity
+  const validateSelect = (selected) => selected === 'annihilation';
+  ```
+
+  Now look how easy we have it:
+
+  ```js
+  ReactDOM.render(
+    <div>
+      <WarnableInput warningMessage="This is too long" validate={validateInput} />
+      <WarnableSelect warningMessage="Maybe this is a bad idea?" validate={validateSelect} />
+    </div>,
+    document.getElementById('app')
+  );
+  ```
+
+  @[Action] Self Documentation 
+  You've heard it before - good code should be `self-documenting`. This means that the names you choose should read like human language, and make semantic sense for the thing you're trying to do. When it comes to writing functions, this applies not only to the name that you give the function, but also to the name you give the arguments. Consider the following horrible function:
+
+  ```js
+  function doAThing () {
+    const args = Array.prototype.slice.call(arguments);
+    if (!args[0].length) return false;
+    else return args[1](args[0]);
+  }
+  ```
+
+  Ugh. We have no idea how to use this function. We need to read through the entire function's body to figure out what arguments it takes, if any, and it's not even clear what data types the function is expecting for those arguments.
+
+  Let's improve our lives a bit:
+  ```js
+  function doAThing (someString, callbackFunc) {
+    if (!someString.length) return false;
+    else return callbackFunc(someString);
+  } 
+  ```
+
+  Okay, this is better. We know without having to walk through the function's body that it expect to receive a string as the first argument, and a function as the second argument. It takes way less brain power to realize that this function returns false if the string has no length, and otherwise returns the result of invoking the callback function with the string. It's still a contrived, nonsense function but you get the picture.
+
+  React components are just functions, and the same rules apply. The challenging thing is that React components only accept an object called "props" as an argument, and this can make learning how to use a particular component just as hard as it was to learn how the function above worked.
+
+
+  **Quick:** what props does this component need to work?
+  ```js
+  function MyComponent (props) {
+    return (
+      <div className="container">
+        <label>{props.label}</label>
+        <input value={props.value} onChange={props.handleChange} />
+        <div className="form-control">
+          <button className={props.buttonClassName}>Click Me</button>
+        </div>
+      </div>
+    );
+  }
+  ```
+
+  That wasn't very fun, was it? In the `Juke` workshops, you've probably encountered the following pattern (which avails itself of `destructured assignment`). 
+
+  ```js
+  function MyComponent (props) {
+    const { label, value, handleChange, buttonClassName } = props;
+
+    return (
+      <div className="container">
+        <label>{label}</label>
+        <input value={value} onChange={handleChange} />
+        <div className="form-control">
+          <button className={buttonClassName}>Click Me</button>
+        </div>
+      </div>
+    );
+  }
+  ```
+
+  This is way better. Not only does it clean up the namespace within JSX, but it also **clearly defines what props the component expects**. To learn how to use this component, you don't need to read much further than the first line to figure out what it takes for it to work.
+
+  We can do even better, too. We can destructure objects **in the function's definition** as well.
+
+
+  For example, here's a function that expects a config object:
+  ```js
+  function configureApplication (configObj) {
+    // uses configObj.lovesPuppies and configObj.lovesKittens
+  }
+  ```
+
+  If we want to pass an object in as an argument, it would be helpful to know what fields the function is going to use. That function can be written to **destructure** the key-value pairs it wants to use directly into the scope of the function:
+
+  ```js
+  function configureApplication ({ lovesPuppies, lovesKittens }) {
+    // uses lovesPuppies and lovesKittens directly
+  }
+  ```
+
+  This function still expects to receive an object, but it makes it perfectly clear that it's expecting an object with keys for "lovesPuppies" and/or "lovesKittens".
+
+  Let's use this technique to perfect our component from before:
+
+  ```js
+  function MyComponent ({ label, value, handleChange, buttonClassName }) {
+    return (
+      <div className="container">
+        <label>{label}</label>
+        <input value={value} onChange={handleChange} />
+        <div className="form-control">
+          <button className={buttonClassName}>Click Me</button>
+        </div>
+      </div>
+    );
+  }
+  ```
+
+  Now not only is our namespace clear, but our eyes don't even need to enter the function now - we can tell exactly what props it expects in the declaration. If you're not used to the syntax, it may take some initial getting used to, but after that you'll want all of your stateless components to be written this way!
+
+  Note that we can only avail ourselves of this readability when we use stateless functional components, which is yet another reason why you should use them over classes whenever possible. (And of course don't forget **Tom's Second Law** by keeping them as dumb as can be!)

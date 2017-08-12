@@ -1,0 +1,11 @@
+@[Workshop] Grace Shopper
+@  description  undefined
+@  learnDotWorkshopId "54b3de126adfdb0b0027d52f"
+
+    @[...] ./introduction
+
+    @[...] ./requirements
+
+    @[...] ./extra-features
+
+    @[...] ./submission-guidelines

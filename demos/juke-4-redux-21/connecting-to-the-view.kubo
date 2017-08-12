@@ -1,0 +1,305 @@
+@[Concept] Connecting to the View 
+  @[Action] Intro 
+  Now that we have our Redux store in place, let's bring React and our view into the picture.
+
+  The trajectory for the next few steps are:
+
+  * Create a `LyricsContainer` component that subscribes and dispatches actions to our store, and uses the store's state values. Integrating this component with React Router and our `Sidebar` will make it accessible.
+
+  * Create a `Lyrics` component that is dumb and knows nothing about our store or actions. This component will give our lyrics feature a view and handle input from user to be used for searching.
+
+  * Using the `Lyrics` component from within `LyricsContainer` to pass input handling functions and state information from the store.
+
+  <guide>
+  You've simply read the above. Following steps will accomplish the goals listed above.
+  </guide>
+
+  @[Action] LyricsContainer is Smart 
+  We've been working with components that we've been signifying as "containers". They are named this because they are considered "smart" -- they know about and affect our application state. Other components--"dumb" components--are simply a function of their `props` and do not control or maintain additional state.
+
+  With Redux now in play, we think of our "container" components as components that *know about and interact with our Redux store*.
+
+  Let's define a new component in our `containers` directory named `LyricsContainer`. This should be a class syntax component so we can set component state as well as access lifecycle methods.
+
+  * In this component's `constructor`, let's set the initial component state to the value of the store state, using `getState()`.
+
+  * In this component's `componentDidMount`, let's subscribe to the store and call `setState` with the store's state when the store updates. Calling `subscribe` will also return a function which we should set to `this.unsubscribe`.
+
+  * In this component's `componentWillUnmount`, let's invoke `this.unsubscribe` in order to deregister our listener and prevent errors/memory leaks.
+
+  * In this component's `render`, output some dummy element for now (like an `<h1>Just a container, more to come!</h1>`). We will replace this with our `Lyrics` component soon.
+
+  * As usual, export this component from the file.
+
+  Lastly, **add a new `<Route>` to `index.js` that will render this component**. Placing a new `<Link>` in `Sidebar` would also be nice too.
+
+  <guide>
+  You've defined a LyricsContainer component that subscribes to store and unsubscribes when it will be unmounted.
+  You've made a store subscription to `setState` when the store broadcasts a change.
+  You've added LyricsContainer to Route list in index.js and a Link is added to Sidebar.
+  </guide>
+
+  **Component solution below. Ignore it until you've tried coding one yourself**.
+
+  ```js
+  import React, {Component} from 'react';
+  import store from '../store';
+
+  export default class extends Component {
+
+    constructor() {
+      super();
+      this.state = store.getState();
+    }
+
+    componentDidMount() {
+      this.unsubscribe = store.subscribe(() => {
+        this.setState(store.getState());
+      });
+    }
+
+    componentWillUnmount() {
+      this.unsubscribe();
+    }
+
+    render() {
+      return (
+        <h1>Just a container for now!</h1>
+      );
+    }
+
+  }
+  ```
+
+  @[Action] Lyrics is Dumb 
+  Our `Lyrics` component is going to be **so dumb**, when you stand near it, you can hear the ocean!
+
+  Define `Lyrics` in the `components` directory as a dumb component (and don't forget to export!). 
+
+  It should have four significant elements:
+
+  * An `<input>` for typing in the artist to search.
+  * An `<input>` for typing in the song to search.
+  * A `<pre>` to display the lyrics of any found song (`<pre>` preserves line breaks).
+  * A `<button>` that will trigger a submit.
+
+  It should expect to receive in six important `props`: 
+
+  * `text`: Possibly a string of lyrics to display, but could very well be `null`.
+  * `setArtist`: A function that should be invoked with the artist that will be searched.
+  * `artistQuery`: The current value of artist to be searched
+  * `setSong`: A function that should be invoked with the song that will be searched.
+  * `songQuery`: The current value of song to be searched
+  * `handleSubmit`: A function that should be invoked when ready to search.
+
+  <guide>
+  You've defined the Lyrics component to the above specifications
+  </guide>
+
+  **Code below is a solution, ignore until you've tried!**
+
+  ```js
+  import React from 'react';
+
+  export default function (props) {
+
+    const artistChange = e => {
+      props.setArtist(e.target.value);
+    };
+
+    const songChange = e => {
+      props.setSong(e.target.value);
+    };
+
+    return (
+      <div id="lyrics">
+        <form onSubmit={props.handleSubmit}>
+          <div>
+            <input type="text" value={props.artistQuery} placeholder="Artist" onChange={artistChange}/>
+            <input type="text" value={props.songQuery} placeholder="Song" onChange={songChange}/>
+          </div>
+          <pre>{props.text || 'Search above!'}</pre>
+          <button type="submit">Search for Lyrics</button>
+        </form>
+      </div>
+    );
+
+  }
+  ```
+
+  @[Action] Handling Input 
+  Now that we have our `Lyrics` dumb component, let's integrate it with our `LyricsContainer`.
+
+  First, in our `constructor()`, let's update our component's initial local state to also include `artistQuery` and `songQuery`. This will store values from inputs for later submission.
+
+  Second, create component functions `setArtist` and `setSong` that will be passed into `Lyrics`. The body of these functions should `setState` the local component's `artistQuery` and `songQuery` respectively. Make sure you force bind these functions in the constructor!
+
+  Third, create a `handleSubmit` component function. Have this simply log out `this.state` for now. It will be filled in our next step.
+
+  Lastly, modify `render()` to produce a `Lyrics` component, passing along its six expected props. (`text`, `setArtist`, `setSong`, `artistQuery`, `songQuery`, and `handleSubmit`). Some of these will originate from `this.state`, and others won't.
+
+  <guide>
+  You've completed the steps above.
+  You've made sure when you click the submit button on `Lyrics`, that the expected `this.state` logs out. This will be used in the next step.
+  </guide>
+
+  ```js
+  import React, {Component} from 'react';
+  import store from '../store';
+  import Lyrics from '../components/Lyrics'
+
+  export default class extends Component {
+
+    constructor() {
+
+      super();
+
+      this.state = Object.assign({
+        artistQuery: '',
+        songQuery: ''
+      }, store.getState());
+
+      this.handleArtistInput = this.handleArtistInput.bind(this);
+      this.handleSongInput = this.handleSongInput.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
+      this.unsubscribe = store.subscribe(() => {
+        this.setState(store.getState());
+      });
+    }
+
+    componentWillUnmount() {
+      this.unsubscribe();
+    }
+
+    handleArtistInput(artist) {
+      this.setState({ artistQuery: artist });
+    }
+
+    handleSongInput(song) {
+      this.setState({ songQuery: song });
+    }
+
+    handleSubmit() {
+      // TBD.
+    }
+
+    render() {
+      return <Lyrics
+        text={this.state.text}
+        setArtist={this.handleArtistInput}
+        setSong={this.handleSongInput}
+        artistQuery={this.state.artistQuery}
+        songQuery={this.state.songQuery}
+        handleSubmit={this.handleSubmit}
+      />
+    }
+
+  }
+  ```
+
+  @[Action] Dispatch! 
+  It is finally time to make use of our `setLyrics` action creator and affect the Redux store/state ... forever (until refresh).
+
+  Let's import our `setLyrics` function from `action-creators/lyrics.js`. This will give us the action object we'll need for dispatching once we have lyrics.
+
+  Next, let's import `axios` so we can get some AJAX goin'.
+
+  Third, let's fill in `handleSubmit`. When we submit, we should make an AJAX GET request to our lyrics route (`/api/lyrics/:artist/:song`). Use `this.state.artistQuery` and `this.state.songQuery` to fill in parameters. Once we have received a response, the `data` property of the response will be an object with a `lyric` property. This is the text we need to create an action out of and dispatch!
+
+  Use `setLyric` to create an action object out of our lyric text, and finally, use our store to `dispatch` the action!
+
+  Since we already have our component subscribed to changes to the store's state, and passing its own `text` state property down to `Lyrics`, we should see the full effect of our `Lyrics` page. If not, work through the previous steps to make sure everything is in place, debug and possibly submit a help ticket!
+
+  <guide>
+  The lyrics page is successfully displaying lyrics text based on artist and song being searched.
+  </guide>
+
+  **Solution code below, ignore until you've tried!**
+
+
+  ```js
+  import React, {Component} from 'react';
+  import Lyrics from '../components/Lyrics';
+  import axios from 'axios';
+
+  import {setLyrics} from '../action-creators/lyrics';
+  import store from '../store';
+
+  export default class extends Component {
+
+    constructor() {
+
+      super();
+
+      this.state = Object.assign({
+        artistQuery: '',
+        songQuery: ''
+      }, store.getState());
+
+      this.handleArtistInput = this.handleArtistInput.bind(this);
+      this.handleSongInput = this.handleSongInput.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
+      this.unsubscribe = store.subscribe(() => {
+        this.setState(store.getState());
+      });
+    }
+
+    componentWillUnmount() {
+      this.unsubscribe();
+    }
+
+    handleArtistInput(artist) {
+      this.setState({ artistQuery: artist });
+    }
+
+    handleSongInput(song) {
+      this.setState({ songQuery: song });
+    }
+
+    handleSubmit(event) {
+
+      event.preventDefault();
+      if (this.state.artistQuery && this.state.songQuery) {
+
+        axios.get(`/api/lyrics/${this.state.artistQuery}/${this.state.songQuery}`)
+          .then(response => {
+            const setLyricsAction = setLyrics(response.data.lyric);
+            store.dispatch(setLyricsAction);           
+          });
+
+      }
+
+    }
+
+    render() {
+      return <Lyrics
+        text={this.state.text}
+        setArtist={this.handleArtistInput}
+        setSong={this.handleSongInput}
+        artistQuery={this.state.artistQuery}
+        songQuery={this.state.songQuery}
+        handleSubmit={this.handleSubmit}
+      />
+    }
+
+  }
+  ```
+
+  @[Action] Look Upon Your Kingdom 
+  The true purpose and use case of Redux takes a while to blossom. It takes quite a bit of time and code size. Right now, we are using our Redux store for a single piece of information (lyrics text), but we have established a nearly complete pattern for moving the rest of our application's global state into a single place.
+
+  This is a reality of using Redux and important to understand. Initially, the boilerplate will feel very cumbersome and questionably useful. The argument can be made very convincingly that using Redux with an application as small as Juke is needless complexity!
+
+  However, once that boilerplate has been established and practiced, it makes the process of scaling up the codebase much less painful and much easier to understand and keep track.
+
+  You've done a lot so far! Take a moment to bask in your own awesomeness. Does it feel good?
+
+  <guide>
+  You've sufficiently basked in your own awesomeness.
+  </guide>

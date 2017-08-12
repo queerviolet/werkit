@@ -1,0 +1,37 @@
+@[Concept] Bonus 
+  @[Action] Active ClassName 
+  Because `Link` components have access to the state of the `Router`, they know some pretty neat stuff, like if their component is the one currently rendering - check out [activeClassName](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#activeclassname) and see if you can get your links to show the `.active` class when selected. **Note:** to make this look right, you may need to modify the CSS (`/public/style.css`) a bit - that's okay! It's good review :)
+
+  @[Action] Not Found 
+  What happens if you try to navigate to a route that doesn't exist? It seems like it would be nice to show a friendly message that could lead users back to where they're supposed to go. How can we specify a Route that will get hit if we don't find a match?
+
+  @[Action] What the ?_k=ckuvup 
+  Users are complaining about all that junk in our URLs. Did you know that React Router offers a [different history implementation](https://github.com/ReactTraining/react-router/blob/master/docs/guides/Histories.md) that can drop it from our routes? You may run into a number of issues. Use your google-fu or make a help ticket if you get stuck.
+
+  **Note:** some older versions of `react-router` have lots of junk in the url, like the aforementioned `?_k=ckuvup`. Later versions may not have as much junk, but `hashHistory` will at least have the `#`.
+
+  @[Action] Email Share Button 
+  <style>
+  .example-btn {
+    background-image: linear-gradient(#484e55, #3a3f44 60%, #313539);
+    background-repeat: no-repeat;
+    border-color: rgba(0, 0, 0, 0.6);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    color: #ffffff;
+    background-color: #3a3f44;
+  }
+  .example-btn:hover {
+    background-image: linear-gradient(#020202, #101112 40%, #191b1d);
+    background-color: #232628;
+  }
+  </style>
+
+  The higher ups have decided that kids these days really want to be able to email each other links to albums. Go ahead and build out a <button class="btn example-btn"><i class="fa fa-share-square-o"></i></button> and stick it next to album titles when viewing a single album.
+
+  Here's what it should do:
+
+  <img src="http://goo.gl/bgJgvf">

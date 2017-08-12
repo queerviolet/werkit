@@ -1,0 +1,271 @@
+@[Concept] Connect 
+  @[Action] Codebase 
+  With that little bit of unpleasantness behind us, let's get to the goods!
+
+  First, let's re-familiarize ourselves with the codebase - it may be a bit different than what you ended up with yesterday. In particular, check out:
+
+  1. `Main.js` - a new Route has been added here to render the new channel entry view. Also note that we are now using the `componentDidMount` hook in `Main.js` to fetch all of our messages, rather than the one in `MessagesList.js`. This is because we always want to update the message counter next to each channel name in the sidebar whenever the app loads. If we only fetched all messages when `MessagesList` loaded, we would not have them if we refreshed the page while looking at the "new-channel" Route.
+  2. `NewChannelEntry.js` - this is our form for entering new channels
+  3. `ChannelList.js` - this is our hardcoded list of channels that we're going to replace
+  4. `store.js` - make sure that you remember how the store is organized
+  5. `server/socket.js` - a new listener has been added for channels! We'll want this later!
+
+  <guide>
+  You have reviewed at least the components above
+  </guide>
+
+  @[Action] Channels 
+  Let's get started by replacing the hardcoded channels in our `ChannelList` with real channels from the server. If you request http://localhost:8080/api/channels, you should receive a JSON list of channels from the server (they match the ones that we've hardcoded in). 
+
+  If we want them to show up in our view, we need to store them on our state (just like messages). Let's start out by making room for channels in our Redux store! This will be a great review of all of the concepts we learned yesterday. In `store.js`:
+
+  * Add an `action type` to represent getting channels from the server
+  * Add a field to our `initialState` to represent our list of channels
+  * Add an `action creator` that creates an action for receiving our channels from the server
+  * Add a case to our `reducer` that updates our state with the list of channels we get when we dispatch our action
+  * Finally, add a `thunk creator` that creates a thunk to perform the AJAX request that fetches our channels from the server. The thunk should eventually dispatch our synchronous channel action to the store
+
+  For reference, look at the way we currently fetch our list of messages from the server and add them to our store - channels will be very similar.
+
+  <hint title="Solution">
+  You'll eventually end up adding code like this:
+
+  <pre>
+  // action type
+  const GET_CHANNELS = 'GET_CHANNELS';
+
+  // action creator
+  function getChannels (channels) {
+    return {
+      type: GET_CHANNELS,
+      channels: channels
+    };
+  }
+
+  // thunk creator
+  function fetchChannels () {
+    return function (dispatch) {
+      axios.get('/api/channels')
+        .then(res => res.data)
+        .then(channels => dispatch(getChannels(channels)));
+    }
+  }
+
+  // initialState
+  const initialState = {
+    messages: [],
+    name: '',
+    newMessageEntry: '',
+    channels: []
+  }
+
+  // reducer
+  function reducer (state = initialState, action) {
+    // etc...
+
+    case GET_CHANNELS:
+      return { ...state, channels: action.channels };
+
+    // etc...
+  }
+  </pre>
+  </hint>
+
+  <guide>
+  You have completed the steps above
+  </guide>
+
+  @[Action] Loading Channels 
+  First, let's get our list of channels from the server (right now, we're still using hardcoded data).
+
+  <ol>
+
+  <li> Open `Main.js` </li>
+  <li> Import your "fetch channels" thunk creator </li>
+  <li> In the `componentDidMount` of the `Main` component, dispatch a thunk for fetching the channels (this is in addition to dispatching the thunk to get messages that's already there). It's totally fine to dispatch the thunks separately - it doesn't matter who gets there first </li>
+
+  <hint title="Solution">
+  Your `componentDidMount` should look something like this:
+  ```js
+    componentDidMount () {
+      const messagesThunk = fetchMessages();
+      const channelsThunk = fetchChannels();
+      store.dispatch(messagesThunk);
+      store.dispatch(channelsThunk);
+    }
+  ```
+  </hint>
+
+  <br/>
+  At this point, whenever your app loads, you'll fetch all of the messages *and* channels and put them in the store. Now that the channels are in the store, we can use them!
+
+  </ol>
+
+  <guide>
+  You have completed the steps above
+  </guide>
+
+  @[Action] A Connection 
+  The moment of truth is at hand! Get ready to write your first `connect` component using `react-redux`. If you haven't had the chance yet, read [this page of the redux docs](http://redux.js.org/docs/basics/UsageWithReact.html) to familiarize yourself with how `connect` works. I'll walk you through this first one step by step.
+
+  <ol>
+
+  <li> Open `ChannelList.js`</li>
+  <br/>
+  <li> Remove all of the `store.subscribe` boilerplate - we're going to replace it with `connect`. You can even re-write the component as a function! Get rid of all that hardcoded data as well - we're going to replace it with REAL data from the store! </li>
+  <br/>
+  <hint title="Possible starting point">
+
+  We could re-write the ChannelList component to look like this:
+
+  <pre>
+  function ChannelList (props) {
+    return (
+      &lt;ul>
+        &lt;li>
+          &lt;NavLink to={"URL_GOES_HERE"} activeClassName="active">
+            &lt;span># {/* channel name goes here */}&lt;/span>
+            &lt;span className="badge">{/* number of messages calculation goes here */}&lt;/span>
+          &lt;/NavLink>
+        &lt;/li>
+        &lt;li>
+          &lt;NavLink to="/new-channel">Create a channel...&lt;/NavLink>
+        &lt;/li>
+      &lt;/ul>
+    );
+  }
+  </pre>
+  </hint>
+  <br/>
+  <li> Import `connect` from `react-redux` (remember, it's **not** a default export).</li>
+  <br/>
+  <li> Write a function called `mapStateToProps`. It should expect to receive `state` as its first argument, and return an empty object (we'll fill it in later).</li>
+  <br/>
+  <hint title="Solution">
+  ```js
+  const mapStateToProps = function (state) {
+    return {};
+  };
+  ```
+  </hint>
+  <br/>
+  <li> Pass `mapStateToProps` to `connect`. This will return another function - pass the `ChannelList` component to that function. Store the result in a variable called `ChannelListContainer` </li>
+  <br/>
+  <hint title="Solution">
+  Double functions, whoa!
+  ```js
+  const ChannelListContainer = connect(mapStateToProps)(ChannelList);
+  ```
+  </hint>
+  <br/>
+  What just happened? To get a full understanding, check out the [Example](https://learn.fullstackacademy.com/workshop/591c4d7633a48d0004c39898/content/591c4d7733a48d0004c398a4/text) - but in short, we've wrapped our "dumb" ChannelList component in a "smart" component that's connected to the store! All we need to do now is decide what values we want to get from the store (using the `mapStateToProps` function that we wrote), and we'll be guaranteed to re-render the component with them every time they change!
+  <br/><br/>
+  <li> Export the `ChannelListContainer` by default (you may need to remove the `export default` from the original `ChannelList` </li>
+  <br/>
+  </ol>
+
+  Now, when we render `<ChannelList />` from another component, we're *actually* rendering the smart container, which in turn renders the "dumb" component! Before things work the way they did before though, we need to complete a few more steps - move on to the next section and we'll wrap things up!
+
+  <guide>
+  You have completed the steps above
+  </guide>
+
+  @[Action] Map State 
+  Now that `ChannelList` is connected, let's see what it means to "map state to props".
+
+  1. Map the channels field on state to a prop that we give to `ChannelList`
+  <br/><br/>
+  <hint title="Solution">
+  ```js
+  const mapStateToProps = function (state) {
+    return {
+      channels: state.channels
+    };
+  };
+  ```
+  </hint>
+  <br/>
+  2. Map the messages field on state to a prop that we give to `ChannelList`
+  <br/><br/>
+  <hint title="Solution">
+  ```js
+  const mapStateToProps = function (state) {
+    return {
+      channels: state.channels,
+      messages: state.messages
+    };
+  };
+  ```
+  </hint>
+  <br/>
+  Now, our `ChannelList` component will be re-rendered with the channels and messages values from our state whenever either of them change. This means we can use them to calculate the view!
+  <br/><br/>
+  3. In the `ChannelList` dumb component, use the channels array (available on props) to map out a list of `<li>` elements to match what we had before.
+  <br/><br/>
+  <hint title="Solution">
+  In the ChannelList component:
+
+  <pre>
+  function ChannelList (props) {
+    return (
+      &lt;ul>
+        {
+          props.channels.map(channel => {
+            return (
+              &lt;li key={channel.id}>
+                &lt;NavLink to={`/channels/${channel.id}`} activeClassName="active">
+                  &lt;span># {channel.name}&lt;/span>
+                  &lt;span className="badge">{/* number of messages calculation goes here */}&lt;/span>
+                &lt;/NavLink>
+               &lt;/li>
+            )
+          })
+        }
+        &lt;li>
+          &lt;NavLink to="/new-channel">Create a channel...&lt;/NavLink>
+        &lt;/li>
+      &lt;/ul>
+    );
+  }
+  </pre>
+
+  </hint>
+  <br/>
+  4. In the `ChannelList` dumb component, use the messages array (available on props) to re-implement the message counter next to each channel.
+  <br/><br/>
+  <hint title="Solution">
+  In the ChannelList component:
+
+  <pre>
+  function ChannelList (props) {
+    return (
+      &lt;ul>
+        {
+          props.channels.map(channel => {
+            return (
+              &lt;li key={channel.id}>
+                &lt;NavLink to={`/channels/${channel.id}`} activeClassName="active">
+                  &lt;span># {channel.name}&lt;/span>
+                  &lt;span className="badge">{props.messages.filter(message => message.channelId === channel.id).length}&lt;/span>
+                &lt;/NavLink>
+               &lt;/li>
+            )
+          })
+        }
+        &lt;li>
+          &lt;NavLink to="/new-channel">Create a channel...&lt;/NavLink>
+        &lt;/li>
+      &lt;/ul>
+    );
+  }
+  </pre>
+
+  </hint>
+
+  **Try it out!** The channels should appear again, and adding new messages should update the counter for that channel!
+
+  <p style="color:red;font-weight:bold">Wait up! Something's broken!</p> You might notice that channels in the sidebar no longer switch to their `activeClassName` when you select them - that stinks! We'll learn why this is happening and fix it shortly - move on in the meantime.
+
+  <guide>
+  Everything should work they way it did when we started (except for the bug mentioned above). Only now, we're using real data!
+  </guide>

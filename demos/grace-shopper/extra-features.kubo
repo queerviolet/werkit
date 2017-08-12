@@ -1,0 +1,109 @@
+@[Concept] Extra Features 
+  @[Action] Checkout with Stripe 
+  [Stripe](https://stripe.com/) lets your users transmit credit card info securely to the Stripe service. Instead of transmitting credit card details directly to your server, Stripe generates *tokens* which your server can use to communicate to Stripe — generating a charge request. You can store tokens in order to allow users to charge to their credit card in the future without re-entering their payment info.
+
+  ## Guide / Docs
+
+  Check out the [step-by-step demo here](https://stripe.com/docs#try-now).
+
+  • | Satisfactory / Only | Bonus
+  --|--|--
+  Client | Use Stripe's prebuilt [Checkout](https://stripe.com/docs/checkout/tutorial) form, ideally with the "Custom" strategy. We recommend [react-stripe-checkout](https://www.npmjs.com/package/react-stripe-checkout) in this case. | Build a custom form and communicate with Stripe & your server via [Stripe.js](https://stripe.com/docs/custom-form). 
+  Server | Use the [`stripe`](https://stripe.com/docs/libraries#node-library) npm library ([API docs here](https://stripe.com/docs/api/node), [tutorial here](https://stripe.com/docs/charges)) to accept tokens from your front-end app and send charges via the Stripe API. | N/A
+
+  Only set up Stripe to use developer mode. In developer mode, the card number `4242 4242 4242 4242` will always work. When Stripe returns that the processing of the card is successful, mark the order as "paid" (otherwise only admins be able to mark orders as paid).
+
+  @[Action] Wishlist 
+  Any logged in user should be able to create any number of wishlists. Each wishlist can hold items and respective quantities like a cart, but instead of checking out, users are given a shareable link. Any  user (including a guest user) who follows that link will be prompted to decide whether to checkout the order. If so, they go through the checkout process normally. Though this should not affect the purchasing user's cart.
+
+  To reflect these changes, an order should now have two "user" fields, one for the "purchaser" and one for the "target".
+
+  ---
+
+  ** Ideal (but optional) **
+
+  In a wishlist checkout, as opposed to a standard checkout, the purchasing user can choose not to specify the shipping address. Instead, if the payment process is successful the "wishing" user will get an update requesting that they specify a shipping address to complete the checkout process. This update could take any form—for example it could be an email.
+
+  @[Action] Promotions 
+  Administrators should be able to create promotional codes that are valid for all products, for one specific product or for a category. Promos should involve at least the following fields:
+
+  - code
+  - creation date
+  - expiration date
+  - valid products and/or categories
+
+  ### Requirements:
+
+  Regular users: 
+
+  * There should be a promotion code box on the checkout page
+  * The promotion code should be validated against the server and update the current cart
+  * The promotion code should persist in the order
+  * Only one active promo code per order
+  * View a list of currently active promo codes
+  * Past order views will detail which if any promo was applied
+
+  Admin users:
+
+  * Access the promo code tab where they can create, edit, delete promo codes
+  * Admins should be able to see which if any promo was applied to *any* order (of any other user)
+
+  @[Action] Social Media 
+  Don't just use OAuth for authentication! Leverage the *scopes* aspect and *permanent access tokens* from the OAuth strategies to enable richer social media integration. Social media is a huge component of modern web app business strategies.
+
+  Some generic ideas include:
+
+  * Posting on behalf of the user
+  * Sharing content with friends
+  * Liking content
+  * Commenting on content
+
+  This is a fairly open-ended requirement — surprise us with your ingenuity!
+
+  @[Action] Recommendation Engine 
+  Recommendations are very powerful in helping users transact more on your site. In every product detail page AND checkout confirmation page, show users other recommended products given the current product they are viewing or all the products in their cart, respectively.
+
+  Users will see a section called "Recommendations" that will list products they might like.  They'll see this on the product detail page and on the checkout confirmation page.
+
+  The Recommendation Engine will be accessed via just one endpoint. That endpoint should take a Product ID and return 3 product IDs.
+
+  While your recommendation algorithm can be implemented however you want, the simplest method is to take a look at all Orders in the system. For each product in that order, build a hash of other products that were in the order. The values in that hash should be the number of times that products are in the same order together. For example, let's say we have 5 items: *A*,*B*,*C*,*D*,*E*. If we have orders like:
+
+    * A,B,C
+    * A,C,E
+    * A,C,D
+    * A,C,E
+
+  Then our internal engine should have something like: `{ A: { C:4 } }`. This represents that product with ID *A* has been in the same order with *C* 4 times.
+
+  # Separate Process
+
+  For extra technical challenge, you *could* make the recommendations engine an entirely separate node/express app. This node app would also connect to your database, and serve up information at a single HTTP endpoint.
+
+  Your regular app could connect to the Recommendation Engine either via the backend or the frontend (as an Angular service).
+
+  @[Action] Multitenancy 
+  Add to your StackStore the ability for users to create their own mini-store (similar to eBay or Amazon). Conceptually, you will add a new user role: "seller".
+
+  A user should set up a store with: name, description, URL slug (so their store can be something like yourstackstore.com/stores/davidsstore). Store names must be unique.
+
+  A user should be able to add products to their store. These products will only belong to their store and not be generally available on the site.
+
+  A user should be able to modify their store's appearance. You may choose whether that will involve the user writing custom CSS or some user interface for arranging/styling visual components of their store.
+
+  @[Action] Analytics Engine 
+  Similar to Google Analytics, build a traffic monitoring engine that will track page views and events.
+
+  This should be a separate fullstack app that accepts "pings" from your main website and tracks them in another database. You could choose postgres which you've worked with, or you could try out a different database management system, such as MongoDB. The frontend should have at least a simple analytics dashboard where you show number of page views/ events over the last hour, day, week. You may serve your analytics app locally and exclude authentication. If you'd like an extra challenge, connect your analytics app to your main site's database (in addition to its own analytics database) and only allow authenticated admins to view the analytics web-dashboard.
+
+  The analytics app should accept a POST to `/ping` that captures standard analytics information.  You can get a lot of information in JavaScript: REFERRER, Request Type, URL, User Agent, Requestor IP.
+
+  The payload should track three main things: Event Name, Event Information and Additional Information.
+
+  * Event Names will be things like: Page View, Button Click, Product View.
+  * Event Information will be either URLs, Product Category or Product Listing.
+  * Additional Information can be anything that can be stored as JSON.
+
+  You should create a JavaScript snippet, intended for use on the frontend, that will be responsible for sending pings to your analytics app. Your analytics app should itself serve up that script. For example, in your StackStore main app's index.html, you'll put something like `<script src="http://anayltic-app-domain/analytics.js"></script>`, where `analytics.js` is the snippet you've built that knows what data to send to your analytics server.
+
+  Finally, build a script that will ping your Analytics Engine with fake data (5000 events) so that we can see data in the dashboard.

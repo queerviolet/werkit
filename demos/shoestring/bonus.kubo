@@ -1,0 +1,52 @@
+@[Concept] Bonus 
+@  draftMode true
+  @[Action] Flexboxes 
+  Now that you've completed the workshop using Bootstrap 3 and their grid-system, its time to explore **Flexboxes**!
+
+  A **Flexbox** officially called CSS Flexible Box Layout Module is new layout module in CSS3 made to improve the items align, directions and order in the container even when they are with dynamic or even unknown size. The prime characteristic of the flex container is the ability to modify the width or height of its children to fill the available space in the best possible way on different screen sizes.
+
+  Doesn't that sound quite similar to responsive web design? For the bonus, you will be converting your apps responsiveness from using Bootstrap to using Flexboxes. We will walk through one instance of this using the `Portfolio` section within your workshop.
+
+
+  ## Helpful Resources
+
+  Take a quick look through these guides, as covers almost everything you'll need to know about Flexboxes.
+
+  - [A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+  - [A Visual Guide to CSS3 Flexbox Properties](https://scotch.io/tutorials/a-visual-guide-to-css3-flexbox-properties)
+  - [The Ultimate Flexbox Cheatsheet](http://www.sketchingwithcss.com/samplechapter/cheatsheet.html)
+
+
+
+  We will first remove all the bootstrap classes from the portfolio image `div`'s:
+  <hint title="Remove Bootstrap classes">
+      class="col-lg-4 col-md-6 col-sm-12"
+  </hint>
+
+
+  Once the Bootstrap classes are removed, they should stretch to full-width of the screen. Now, lets implement flexboxes! You might choose to add new classes or ids to select the appropriate HTML elements. The parent `div`  of all image divs should be of display type flex:
+
+  ```css
+  .parent-div {
+    display: flex; /* or inline-flex */
+  }
+  ```
+
+
+  By default, flex items will all try to fit onto one line. You can change that and allow the items to wrap as needed with `flex-wrap` property:
+
+  <hint title="Flexbox Wrapping">
+  	.parent-div {
+  	  flex-wrap: nowrap | wrap | wrap-reverse;
+  	}
+  </hint>
+
+
+
+  Lastly, we need to set a `flex` property to all the image divs. Check out [this article](https://css-tricks.com/almanac/properties/f/flex/) to understand the concept of the `flex` shorthand along with how `flex-grow`, `flex-shrink` and `flex-basis` relate to it.
+
+  <hint title="Flex Shorthand">
+  	.image-div {
+  	  flex: 0 1 auto;
+  	}
+  </hint>

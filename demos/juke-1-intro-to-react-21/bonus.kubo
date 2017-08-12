@@ -1,0 +1,28 @@
+@[Concept] Bonus 
+  @[Action] Shuffle 
+  <style>
+  .example-btn {
+    background-image: linear-gradient(#484e55, #3a3f44 60%, #313539);
+    background-repeat: no-repeat;
+    border-color: rgba(0, 0, 0, 0.6);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    color: #ffffff;
+    background-color: #3a3f44;
+  }
+  .example-btn:hover {
+    background-image: linear-gradient(#020202, #101112 40%, #191b1d);
+    background-color: #232628;
+  }
+  </style>
+
+  Add a <button class="btn example-btn"><i class="fa fa-random"></i></button> button to an album. If a user presses this button, the player should play the songs in random order. But it should not repeat a song until it has played all the others. So it should cycle randomly through the list, and after one cycle it should do another random cycle, etc. Pressing the button again would let the current song continue to play, but switch back to normal progression behavior.
+
+  @[Action] Scrubber 
+  Make it so that a user can click on a spot in the progress bar and seek to that spot in the song. Good luck!
+
+  @[Action] Keyboard Input 
+  Add keyboard shortcuts, so you can pause/play with the spacebar and go back/forward with the arrow keys. The docs for the React [event system](https://facebook.github.io/react/docs/events.html) are a good place to start.

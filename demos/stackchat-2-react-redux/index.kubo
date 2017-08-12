@@ -1,0 +1,20 @@
+@[Workshop] StackChat 2. React-Redux
+@  description  "Learn how the small but mighty React-Redux library can tie together our React components and our Redux store to make an app that's ready to scale into the big leagues!"
+@  learnDotWorkshopId "591c4d7633a48d0004c39898"
+@  artwork      require("./1495736263613.jpeg")
+
+    @[...] ./intro
+
+    @[...] ./provider
+
+    @[...] ./connect
+
+    @[...] ./adding-new-channels
+
+    @[...] ./optimizations
+
+    @[...] ./bonus
+
+    @[...] ./composability-cookbook
+
+    @[...] ./outro

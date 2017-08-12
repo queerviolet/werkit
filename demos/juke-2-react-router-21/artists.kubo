@@ -1,0 +1,131 @@
+@[Concept] Artists 
+  @[Action] Adding Artists 
+  Let's practice our navigational skills by adding a new feature to Juke - the ability to view our music collection by artist! We'll create a new `Artists` (plural) component to view a list of all artists, and then create an `Artist` (singular) component to view the albums and songs for a single artist. See below for an example of what this looks like:
+
+  <div class="flex flex-wrap">
+    <div class="md-col-12 xs-col-12 p2 border-box">
+      <h3>Goal</h3>
+      <img src="http://goo.gl/eMPRLi">
+    </div>
+  </div>
+
+  <guide>
+  You have finished reading the above
+  </guide>
+
+  @[Action] State 
+  The first thing we should do is add a place in our state for the list of all artists, and a place to hold the selected artist! (You wouldn't want to break **Tom's First Law**, would you?) We've even set aside an `initialState.js` file for you to use! Go ahead and add the initial values there!
+
+  <hint title="Possible solution">
+  ```js
+  // add two fields like the following to initialState.js
+  {
+    artists: [],
+    selectedArtist: {}
+  }
+  ```
+  </hint>
+
+  <guide>
+  You have completed the task above
+  </guide>
+
+  @[Action] New Components 
+  Our first task is to display a list of artists when the url matches `/artists`. First, let's get our new `Artists` component set up.
+
+
+  <ol>
+  <li>Create a new component with the following JSX:
+  </li>
+
+  ```js
+  <div>
+    <h3>Artists</h3>
+      <div className="list-group">
+      {
+        this.props.artists.map(artist => {
+          return (
+            <div className="list-group-item" key={artist.id}>
+              {/* determine where to actually Link to later! */}
+              <Link to="">{ artist.name }</Link>   
+            </div>
+          )    
+        })
+      }
+    </div>
+  </div>
+  ```
+
+
+  <li>We should also update our `Sidebar` with a `Link` to the new component:
+  </li>
+
+  ```html
+  <section>
+    <h4 className="menu-item">
+      <Link to={/**fillMeIn**/}>ARTISTS</Link>
+    </h4>
+  </section>
+  ```
+
+  <li> And of course, we'll need a new `Route` in our `index.js`. Go ahead and write a `Route` that will display the `Artists` component you wrote when the url matches `/artists`.
+  </li>
+  <li> Finally, we need to actually get our artists from the server (re-familiarize yourself with the `server/` if you're not sure what server route to hit). Where should we perform this fetch? In the same place where we perform the `axios` request to get all of our albums! Add a new `axios.get` request to get all of our artists, put them on the state, and send them down as a prop to the `children`!
+  </li>
+
+  <guide>
+  You have completed steps 1 - 4 above
+  A list of artists displays when the url matches `/artists`
+  </guide>
+
+  @[Action] View One 
+  Clicking on an `<Link>` element in the list of artists should change the url to be `/artists/:artistId`, and change the view to show that artist's information! 
+
+  <ol>
+  <li>Create an `Artist` component with the following (temporary) JSX.
+  </li>
+
+  ```html
+  <div>
+    <h3>ARTIST NAME</h3>
+    <h4>ALBUMS</h4>
+    <h4>SONGS</h4>
+  </div>
+  ```
+
+  <li> Once that's done, create a new `Route` in `index.js`.
+  </li>
+  <li> Now, in our `Artists` component, make sure that the `Link` component for each artist appropriately links the url each artist's id.
+  </li>
+  <br />
+  Once you're done, confirm that clicking on any artist's name in our list causes the url to update and our view to switch to show our dummy JSX above.
+
+  <guide>
+  You have completed steps 1 - 3 above
+  Clicking an artist's name changes the view to show the dummy JSX
+  </guide>
+
+  @[Action] Load One 
+  Let's fill out the rest of the view for an artist. It should something look like:
+
+  <img src="http://goo.gl/TWUX3J">
+
+  In order to get that information from the server, you'll need to hit multiple routes: one for the artist, one for the artist's albums, and one for the artist's songs. We should perform these requests the same way that we request a *single* album's information from the server...do you remember what we did?
+
+  <hint title="Loading artist data">
+  You'll want to hit `/api/artists/[theartistid]`, `/api/artists/[theartistid]/albums`, and `/api/artists/[theartistid]/songs`. And on top of that, you'll have to transform the data in the same way we've already done for the album image URL and audio URL.
+  </hint>
+
+  <hint title="Where to fetch data">
+  Follow the pattern of selecting a single album to create a `selectArtist` function in AppContainer that uses `axios.get`. Pass this function as a prop to the `Artist` (singular) component, and get the artist id from our `this.props.routeParams` in `componentDidMount`. 
+  </hint>
+
+  Also, that UI looks very familiar...
+
+  <hint title="Approach">
+  The artist detail view is a composite of the all-album view and the one-album view. You could copy and paste...but we know what it means when we copy and paste. Perhaps we should re-use some of our presentational components? Because they're nice and dumb, all we'd need to do is `import` them and pass them the props that they need...
+  </hint>
+
+  <guide>
+  You have completed the task above and all of an artist's albums and songs display properly in the Artist component
+  </guide>

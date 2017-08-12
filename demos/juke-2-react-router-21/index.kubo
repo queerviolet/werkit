@@ -1,0 +1,22 @@
+@[Workshop] Juke 2. React Router (2.1)
+@  description  "Incorporate declarative navigation into your single-page-funky-tune-playing web app. Discover how SPAs use the browser history API to fake page loads and change the address bar."
+@  learnDotWorkshopId "581352970ddf5600032480e1"
+@  artwork      require("./1478617151455.jpeg")
+
+    @[...] ./intro
+
+    @[...] ./getting-started
+
+    @[...] ./constructing-a-router
+
+    @[...] ./child-routes
+
+    @[...] ./using-link
+
+    @[...] ./artists
+
+    @[...] ./writing-sub-routes
+
+    @[...] ./bonus
+
+    @[...] ./outro

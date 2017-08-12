@@ -1,0 +1,63 @@
+@[Concept] Song Adder 
+  @[Action] Set up the View 
+  Here's the JSX for a nice song-selecting component:
+
+  ```js
+    <div className="well">
+      <form className="form-horizontal" noValidate name="songSelect">
+        <fieldset>
+          <legend>Add to Playlist</legend>
+          <div className="form-group">
+            <label htmlFor="song" className="col-xs-2 control-label">Song</label>
+            <div className="col-xs-10">
+              <select className="form-control" name="song">
+                <option value={/**SONGID_GOES_HERE*/}>song name</option>
+                <option value={/**SONGID_GOES_HERE*/}>another song name</option>
+              </select>
+            </div>
+          </div>
+          <div className="form-group">
+            <div className="col-xs-10 col-xs-offset-2">
+              <button type="submit" className="btn btn-success">Add Song</button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  ```
+
+  Go ahead and render it out beneath the list of songs in the single `Playlist` component. It should look something like the picture below:
+
+  <img src="http://i.imgur.com/dAaHii1.png">
+
+  <guide>
+  The "add song" form renders with the dummy data
+  </guide>
+
+  @[Action] Manage State and Behavior 
+  Now we need to deal with the local state of this form as well - we'll want to control the selected value on state, have an `onChange` listener...this is all sounding very familiar. You'll also want to fetch a list of all songs from the server to show in the list of options.
+
+  We're almost at the end, so training wheels are off! This is a pretty challenging exercise, but don't worry - you've got this. Write a help ticket if you get stuck!
+
+  Good luck!
+
+  <guide>
+  Clicking the add song button adds the selected song to the playlist in the database
+  The new song renders into the song list immediately
+  You are still able to play/pause the songs in the song list and they interact appropriately with the player
+  </guide>
+
+  @[Action] Dealing with Server Errors 
+  We've seen how we can validate and show users errors before they submit the form -- but what if something were to go wrong on our server?
+
+  If you add a duplicate song to a playlist, that will cause our server to respond with an error. We could validate this on the front end (and normally, we would), but as an extra challenge let's allow users to do this, and instead catch and display an error just like we did when we validated the length of the new playlist input.
+
+  Bonus points if you use some kind of error component that you share with the new playlist form!
+
+  <hint title="Some advice">
+  Is the method that adds the song returning anything? Remember that `axios` requests return a `Promise`!
+  </hint>
+
+  <guide>
+  An error appears whenever you try to add a duplicate song to a playlist
+  </guide>

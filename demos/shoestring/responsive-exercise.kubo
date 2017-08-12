@@ -1,0 +1,45 @@
+@[Concept] Responsive Exercise 
+  @[Action] Write the Responsive Branch 
+  Let's make a new file called `media-queries.scss`. This file should be imported to your `shoestring.scss`, but at the *end* of the file to ensure proper *cascading*. Remember that the last CSS rule declared will override any previous rules that affect an element.
+
+  ```css
+  /* rest of shoestring.scss file */
+
+  @import 'media-queries';
+  ```
+
+  How can you define the responsive classes such that they apply to the correct screen sizes? Review the presentation for an example of useful **media queries.** Also, here is a well-written and detailed [tutorial](http://www.smashingmagazine.com/2011/01/12/guidelines-for-responsive-web-design/) ([permalink](https://diigo.com/01ywor)) on responsive web design that should help.
+
+  Add the necessary classes to your `media-queries` file to make the Shoestring framework responsive.
+
+  <hint title="SCSS and media queries">
+  Consider creating a `@mixin` that utilizes your column `@for` to dynamically create the size for each column (i.e. `xs`,`sm`,`md` and `lg`). Once you feel able to do that, look into how you might incorporate `@each` to shorten these media queries even more.
+  </hint>
+
+  @[Action] Pull Requests 
+  Once you have a working responsive CSS framework, make sure to `git commit` the `responsive` branch. Now we are going to want to merge these changes back into the `master` branch.
+
+  We *could* simply `git checkout master` and then use `git merge responsive`. However, that wouldn't be very responsible in a team setting. A more civilized procedure is to **submit a *pull request*** on Github. This signals that you have some work you want pulled into the main project, and creates a space for others to:
+
+  * Comment on the request and ask questions
+  * Review the differences between your branch and the branch you want to merge into
+  * Check to see if the branch can be merged automatically (without conflicts)
+
+  ---
+
+  Let's make such a request now. First, we'll need to `git push` our branch up to Github, but how do we push to a branch and not master?!
+
+  <terminal>
+  git push origin responsive
+  </terminal>
+
+  Next visit your project on Github. You should see a note in the middle of the page to the effect that the `responsive` branch was recently published, and you can `compare & pull request`. Click on that button to be taken to the pull request form.
+
+  When creating the pull request, **make sure that you are comparing your Shoestring fork's master branch to your responsive branch**, and *not* Fullstack Academy's original Shoestring master branch to your fork's responsive branch. Use the pull-down menu to change the base fork to your fork's master branch.
+
+  Like this: <br />
+  <img src="https://www.dropbox.com/s/1kij55deytk1a2l/output.gif?raw=1" />
+
+  Note the green "Able to merge" notification on the right. Then, **create a pull request** (green button on the right), and have your partner **merge the request** (green button below). Now that the branch has been merged, it is no longer needed, so use the **delete branch** button to remove it.
+
+  Finally, use `git checkout master` and `git pull` on your local machine to see the results of your hard work. Your changes have been merged into master.

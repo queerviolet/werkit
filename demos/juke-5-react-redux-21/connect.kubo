@@ -1,0 +1,250 @@
+@[Concept] Connect 
+  @[Action] The Stations View 
+  With that little bit of unpleasantness behind us, let's get to the goods: implementing our stations!
+
+  This initial part will all be review: first, we'll just get the Stations component to show up. Then we'll write the new container using `react-redux`.
+
+  Here is some dummy data we can use to mock out our view:
+
+  ```js
+  const DUMMY_STATIONS_DATA = [
+    { name: '90s Hip Hop' },
+    { name: 'Death Metal' },
+    { name: 'Classical' }
+  ];
+  ```
+
+  And here is some dummy JSX for our `Stations` component.
+
+  ```js
+      <div>
+        <h3>Stations</h3>
+        <div className="list-group">
+        {
+          DUMMY_STATIONS_DATA.map(station => {
+            return (
+              <div className="list-group-item" key={station.name}>
+                <Link to={'fill/me/in/later'}>{station.name}</Link>
+              </div>
+            );
+          })
+        }
+        </div>
+      </div>
+  ```
+
+  Do this:
+  * Write a new stateless presentational component that will render our dummy data.
+  * Add a new `Route` to our `Router` that will cause this component to render when the url matches "/stations"
+
+  <guide>
+  Navigating to http://localhost:1337/#/stations causes the dummy component to be rendered appropriately
+  </guide>
+
+  @[Action] Navigation Station 
+  Of course, our users are going to want to click a link to get there. Add a new `Link` to the Sidebar component (just like the other ones) that will pull our new stations component into view.
+
+  <guide>
+  Clicking the "STATIONS" link in the sidebar causes the Stations component to render into view
+  </guide>
+
+  @[Action] A New Connection 
+  The moment of truth is at hand! Get ready to write your first `connect` component using `react-redux`. If you haven't had the chance yet, read [this page of the redux docs](http://redux.js.org/docs/basics/UsageWithReact.html) to familiarize yourself with how `connect` works.
+  <ol>
+  <li> Create a new `StationsContainer` in your `containers/` directory.</li>
+  <li> Import `connect` from `react-redux` (remember, it's **not** a default export).</li>
+  <li> Import your `Stations` component as well.</li>
+  <li> Write two functions - one for `mapStateToProps` and the other for `mapDispatchToProps`. They should expect to receive `state` and `dispatch` respectively, and return an empty object each (we'll fill them in later).</li>
+  <hint title="Solution">
+  ```js
+  const mapStateToProps = function (state) {
+    return {};
+  };
+
+  const mapDispatchToProps = function (dispatch) {
+    return {};
+  }
+  ```
+  </hint>
+  <li> Pass your `mapStateToProps` and `mapDispatchToProps` functions to connect, and then pass your `Stations` component to the function that `connect` returns! Export the result of this by default.</li>
+  <hint title="Solution">
+  ```js
+  const StationsContainer = connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Stations);
+  ```
+  </hint>
+  <li> In your `index.js`, change the "/stations" `Route` to render the container component instead of the presentational component.</li>
+  </ol>
+
+  When you're done, there should be no visual difference - everything should work the same way it did before. Except now, we're ready to pull information off from our state!
+
+  <guide>
+  You have completed steps 1 - 6 above
+  Clicking the "STATIONS" link in the Sidebar causes the Stations component to render exactly like it did before, without any issues
+  </guide>
+
+  @[Action] Calling All Stations 
+  Now that we're set up to start sending state and methods down to our Stations component, you might be wondering - what exactly do we mean by station?
+
+  If you revisit all of the server routes (under `/server/app/routes`), you'll notice that nothing has changed. "Stations" aren't a real thing - all we actually mean when we refer to "stations" is that we're grouping our songs by their genre.
+
+  For example, if we have the following array of songs:
+  ```js
+  const songs = [{
+    id: 1,
+    name: "The Stars Are Out",
+    genre: "Instrumental"
+  },
+  {
+    id: 2,
+    name: "Careless Whisper",
+    genre: "Saxophone Solo"
+  },
+  {
+    id: 3,
+    name: "Shooting Star",
+    genre: "Instrumental"
+  }]
+  ``` 
+
+  Then we might take that array and "group" the songs into an object where each key is the name of a genre, and each value is an array of all of the songs with that genre.
+  ```js
+  const stations = {
+    "Instrumental": [{
+      id: 1,
+      name: "The Stars Are Out",
+      genre: "Instrumental"
+    }, {
+      id: 3,
+      name: "Shooting Star",
+      genre: "Instrumental"
+    }],
+    "Saxaphone Solo": [{
+      id: 2,
+      name: "Careless Whisper",
+      genre: "Saxophone Solo"
+    }]
+  };
+  ```
+
+  So we're not going to change anything about the way we contact our API - instead, we're just going to take the array of songs (like we might receive from `api/songs`), and "group" it by stations.
+
+  ```js
+  // function signature
+  convertSongsToStations(songsArray) => stationsObject
+  ```
+
+  Move on to the next section and we'll start to code this out!
+
+  <guide>
+  You have read and understood the above
+  </guide>
+
+  @[Action] Map it Out 
+  Alrighty, we've got a bit of work to do. Don't worry - I'll walk you through it!
+
+  <ol>
+  <li> Fortunately, we already have a thunk action creator that will fetch all of our songs from the server. It's called `loadAllSongs` and it's located in `/action-creators/playlists.js`. Go find it and make sure you understand how it works.
+  </li>
+  <li> In our `index.js`, write a new `onEnter` hook (called `onStationsEnter`) that will dispatch the `loadAllSongs` thunk, so that when we enter the "/stations" route, we will fetch and add the songs to the store.
+  </li>
+  <hint title="Solution">
+  <pre>
+  const onStationsEnter = (nextRouterState) => {
+    store.dispatch(loadAllSongs());
+  }
+  /* ... */
+  &ltRoute path="stations" component={StationsContainer} onEnter={onStationsEnter} />
+  /* ... */
+  </pre>
+  </hint>
+  <li>Finally (the fun part), in our `StationsContainer`, let's add a field called "stations" to the object that our `mapStateToProps` returns. It should take the result of taking the songs off from our state and passing them into a function that will convert them into the stations object (you can write this function in the same file).
+  </li>
+  <hint title="A hint if you're having trouble getting started">
+  ```js
+  const convertSongsToStations = function (songsArray) {
+    // write me!
+  };
+
+  const mapStateToProps = function (state) {
+    return {
+      stations: convertSongsToStations(state.songs);
+    };
+  }
+  ```
+  </hint>
+
+  <hint title="Possible Solution">
+  <pre>
+  const convertSongsToStations = function (songsArray) {
+    const stations = {};
+    songsArray.forEach(song => {
+      const genre = song.genre;
+      stations[genre] = stations[genre] || [];
+      stations[genre].push(song);
+    });
+
+    return stations;
+  };
+
+  const mapStateToProps = function (state) {
+    return {
+      stations: convertSongsToStations(state.songs);
+    };
+  }
+  </pre>
+  </hint>
+  <li>When you're done all of the above, `console.log` the props that your `Stations` component receives! Confirm that the stations object is there and looks the way you want.
+  </li>
+  </ol>
+
+  <hint title="Remind me again why this all works">
+  Remember that `connect` is automatically subscribing to the store so that it will execute `mapStateToProps` and re-render the Station component when the state inside the store changes (which is what happens when we receive the songs).
+  </hint>
+
+  <guide>
+  You are able to console.log and confirm that "stations" are available as a prop to the Stations component
+  </guide>
+
+  @[Action] Don't Be a Dummy (Data) 
+  Now that we're actually passing our stations down to our stateless component, let's get rid of that dummy data! Modify the Stations component to render our actual stations (expecting to map over an array of objects with *name* properties will **not** work anymore)! Instead we will need to iterate over the keys of the `props.station` object.
+
+  <hint title="How to iterate over key-value pairs in an object in React">
+  You might normally reach for a `for...in` loop to iterate over object keys, but like `if...else` and regular `for` loops, they can't be interpolated as expressions on their own. [`Object.keys`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys) on the other hand...
+  </hint>
+
+  <hint title="Solution">
+  <pre>
+  export default (props) => {
+    const stations = props.stations;
+    return (
+      &ltdiv>
+        &lth3>Stations&lt/h3>
+        &ltdiv className="list-group">
+        {
+          Object.keys(stations).map(genre => {
+            return (
+              &ltdiv className="list-group-item" key={genre}>
+                &ltLink to={'fill/me/in/later'}>{genre}&lt/Link>
+              &lt/div>
+            );
+          })
+        }
+        &lt/div>
+      &lt/div>
+    );
+  }
+  </pre>
+  </hint>
+
+  Here's something to consider as well: consider the `convertSongsToStations` method we wrote. We put it in the `mapStateToProps` in our container component, but we might have also just passed songs to our `Stations` component and let its render function deal with it. Why might that **not** be such a good idea, though?
+
+  <hint title="Answer">
+  Separation of concerns! Suppose we want to re-use the Stations component, or turn it into a component that lists out any arbitrary collection of data (it is *very* similar to the Artists component after all....) - it wouldn't make sense anymore to have a stations-specific mapping function in the render method, and we'd have to refactor. Mapping the data from our state into the appropriate props that our stateless components want to receive is the responsibility of containers - the dumber our stateless components are, the more modular they become!
+  </hint>
+
+  <guide>
+  The Stations component renders the list of stations based on the props you mapped from state.
+  </guide>

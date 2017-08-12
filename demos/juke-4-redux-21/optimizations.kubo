@@ -1,0 +1,29 @@
+@[Concept] Optimizations 
+  @[Action] Initial/Route-specific Loading 
+  Currently, we are triggering the loading of some initial data such as albums, artists, playlists (and singular entities in those categories) either independently in our `index.js` (router tree) or in `componentDidMount` hooks in our sub-containers.
+
+  An alternative and suggested hook to use for this initialization functionality would be React Router's `<Route>` element prop [`onEnter`](https://github.com/ReactTraining/react-router/blob/master/docs/API.md#onenternextstate-replace-callback).
+
+  Use the above documentation and convert any initial loading over to `onEnter` hooks on your `<Route>`.
+
+  <guide>
+  You've moved all initial AJAX loading to be triggered via onEnter hooks.
+  </guide>
+
+  @[Action] Breaking Apart AppContainer 
+  We still have our master puppeteer, the `AppContainer`, as the controller of nearly all of our state management and action dispatching. Centralization is good, but when it makes our `AppContainer` as fat as it is, it is definitely worth building more specific smart containers. This is now easier because of our global state being controlled through Redux!
+
+  Below is the full contents of our `containers` directly in our solution. Can you refactor your `AppContainer` and move its functionality over to the appropriate components?
+
+  ```
+  AddSongContainer.js
+  AlbumContainer.js
+  AlbumsContainer.js
+  ArtistContainer.js
+  FilterableArtistsContainer.js
+  LyricsContainer.js
+  NewPlaylistContainer.js
+  PlayerContainer.js
+  PlaylistContainer.js
+  SidebarContainer.js
+  ```

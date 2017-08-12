@@ -1,0 +1,93 @@
+@[Concept] Getting Started 
+  @[Action] Starting Point 
+  ## Copy and install Juke 2 Start
+
+  The starting point for this workshop will be supplied in your Library repo as `...Juke/2-react-router/start` or similar. Note that this may not be the same as the ending point for the previous workshop! Copy over the source code from your solutions library and run `npm install`.
+
+  @[Action] Install and Load 
+  Go ahead and `npm install react-router@3 -S`. `-S` is the shortcut for `--save`. See [npm docs](https://docs.npmjs.com/cli/install) for more information.
+
+  To start using react-router, all we need to do is import the components we need into our root js file (the one where we ReactDOM.render everything). Let's see an example...
+
+  @[Action] Example 
+  Let's say you've got this simple Component:
+  ```js
+  export default BillMurray = () => <img src="http://fillmurray.com/100/100" />
+  ```
+
+  And then we have the following in our `main.js`:
+
+  ```html
+  import { Router, Route, hashHistory } from 'react-router';
+  import BillMurray from './BillMurray';
+
+  ReactDOM.render(
+  <div>
+    <h3>FooBar</h3>
+    <Router history={hashHistory}>
+      <Route path="/hello" component={BillMurray} />
+    </Router>
+    <p>This paragraph contains words, but you knew that already.</p>
+  </div>,
+  document.getElementById('app')
+  )
+  ```
+
+  Each Route component within the Router parent will render its component conditionally based on the url. When the url is set to anything other than '/#/hello', we don't render anything in the space where the Router is, but when the url is '/#/hello', the BillMurray component will render.
+
+  That hash (#) is how `react-router` operates, taking advantage of the fact that browsers ignore what comes after the `#` in terms of page refresh. Everything after the hash is part of the "frontend" route. Here's what the view would look like:
+
+  <style>
+  .fake-browser input {
+    border-bottom: 1px solid #0074d9;
+    color: #444;
+  }
+  .fake-browser input:disabled {
+    border-bottom: 1px solid #ddd;
+    color: #aaa;
+  }
+  .fake-browser input:focus {
+    outline: none;
+  }
+  </style>
+
+  <div class="flex flex-wrap">
+    <div class="lg-col-6 col-12 p1 border-box">
+      <p class="center">If the route is `/#/`...</p>
+      <div class="border rounded fake-browser">
+        <div class="bg-silver p1 flex">
+          <i class="fa fa-arrow-left gray"></i><i class="fa fa-arrow-right px1 gray"></i>
+          <code class="h6" style="padding:0;border-radius:0;">
+            <input class="border-none h6" value="http://localhost" size="16" disabled />
+          </code>
+          <code class="h6 flex-auto" style="padding:0;border-radius:0;">
+            <input class="border-none h6 col-12" value="/#/" disabled />
+          </code>
+        </div>
+        <div class="m1">
+          <h3>FooBar</h3>
+          <div></div>
+          <p>This paragraph contains words, but you knew that already.</p>
+        </div>
+      </div>
+    </div>
+    <div class="lg-col-6 col-12 p1 border-box">
+      <p class="center">If the route is `/#/hello`...</p>
+      <div class="border rounded fake-browser">
+        <div class="bg-silver p1 flex">
+          <i class="fa fa-arrow-left gray"></i><i class="fa fa-arrow-right px1 gray"></i>
+          <code class="h6" style="padding:0;border-radius:0;">
+            <input class="border-none h6" value="http://localhost" size="16" disabled />
+          </code>
+          <code class="h6 flex-auto" style="padding:0;border-radius:0;">
+            <input class="border-none h6 col-12" value="/#/hello" disabled />
+          </code>
+        </div>
+        <div class="m1">
+          <h3>FooBar</h3>
+          <div><img src="http://fillmurray.com/100/100"></div>
+          <p>This paragraph contains words, but you knew that already.</p>
+        </div>
+      </div>
+    </div>
+  </div>

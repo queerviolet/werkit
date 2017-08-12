@@ -1,0 +1,27 @@
+@[Concept] Setup 
+  @[Action] Get the Repo 
+  To get started, [fork and clone Shoestring](https://github.com/FullstackAcademy/shoestring.js). This repo is a barebones Node app; in addition to serving as a basic static file server, it uses [Sass](http://sass-lang.com/) (via the `node-sass` module) to compile SCSS files into CSS.
+
+  @[Action] Start the App 
+  Open up the Shoestring project folder, `npm install` and run the app:
+
+  <terminal>
+  cd shoestring.js
+  npm install
+  npm start
+  </terminal>
+
+  If you visit http://localhost:3000 you should see an unfinished-looking version of the site. This is because our app is only partly styled; we need you to finish styling it for us.
+
+  @[Action] Compile SASS 
+  You will be writing all of your CSS inside of `assets/stylesheets/shoestring.scss`. A `scss` file is specifically for SASS formatted styling code -- which doesn't actually run in our browser! What we need to do is use a SASS compiler in order to transform this `scss` code into real CSS!
+
+  If you look in your `package.json`, you will see a script entry called `build-css`. Open another terminal (SEPARATE FROM where you ran `npm start`) and run the command `npm run build-css`. This process will now watch your `shoestring.scss` file for changes and compile into `public/stylesheets/shoestring.css` which is linked in your HTML (`layout.html`).
+
+  # Dev vs. Build vs. Serve
+
+  This highlights a distinction between our *production* behavior and *development* behavior. In our production app, we just want to serve up compiled, minified CSS files that already exist. We don't anticipate those CSS files changing at all, in fact.
+
+  If we as programmers decide to make design alterations, that's really a *development* step. Once we edit our `.scss` files, our ideal setup automatically detects that and *builds* our final CSS files for us. Some kind of watcher might then automatically re-start our server so all new requests show the current design.
+
+  In general, a *build process* is a development step in which files being worked on are "baked" / combined / edited / audited / whatever as a step towards producing the final *production* app. There exist many tools to accomplish automated builds — [Grunt](http://gruntjs.com/), [Gulp](http://gulpjs.com/), etc. In this workshop, we take a baby step and just use our lovely friend NPM to do the trick with this `npm run build-css` script.

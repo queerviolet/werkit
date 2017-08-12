@@ -1,0 +1,353 @@
+@[Concept] All Albums 
+  @[Action] Our Album Collection 
+  Below is a fake album, appropriately filled with fake data:
+
+  ```js
+  const fakeAlbums = [
+    {
+      name: 'Abbey Road',
+      id: 1,
+      imageUrl: 'http://fillmurray.com/300/300',
+      songs: [
+        {
+          id: 1,
+          name: 'Romeo & Juliette',
+          artists: [ 
+            { name: 'Bill' } 
+          ],
+          genre: 'Funk',
+          audioUrl: 'https://learndotresources.s3.amazonaws.com/workshop/5616dbe5a561920300b10cd7/Dexter_Britain_-_03_-_The_Stars_Are_Out_Interlude.mp3'
+        }, 
+        {
+          id: 2,
+          name: 'White Rabbit',
+          artists: [
+            { name: 'Bill' }, 
+            { name: 'Alice' }
+          ],
+          genre: 'Fantasy',
+          audioUrl: 'https://learndotresources.s3.amazonaws.com/workshop/5616dbe5a561920300b10cd7/Dexter_Britain_-_03_-_The_Stars_Are_Out_Interlude.mp3'
+        }, 
+        {
+          id: 3,
+          name: 'Lucy in the Sky with Diamonds',
+          artists: [ 
+            { name: 'Bob' } 
+          ],
+          genre: 'Space',
+          audioUrl: 'https://learndotresources.s3.amazonaws.com/workshop/5616dbe5a561920300b10cd7/Dexter_Britain_-_03_-_The_Stars_Are_Out_Interlude.mp3'
+        }
+      ]
+    },
+    {
+      name: 'Yellow Submarine',
+      id: 2,
+      imageUrl: 'http://fillmurray.com/300/300',
+      songs: [
+        {
+          id: 4,
+          name: 'London Calling',
+          artists: [ 
+            { name: 'Bill' } 
+          ],
+          genre: 'Punk',
+          audioUrl: 'https://learndotresources.s3.amazonaws.com/workshop/5616dbe5a561920300b10cd7/Dexter_Britain_-_03_-_The_Stars_Are_Out_Interlude.mp3'
+        }
+      ]
+    }
+  ];
+  ```
+
+  1. Add this data to a field on your main component's state object. You want to be able to access it by saying `this.state.albums` or something similar.
+  2. Interpolate out some trivial piece of information for each album (for instance, its name) in the render method, just to confirm it works. Do you remember what we can do to iterate over an array in JSX? (_Hint:_ it's just an array method that you should be quite familiar with!)
+
+  <hint title="A nudge in the right direction">
+  Remember that you can use plain ol' Array methods to return JSX - [here's an example](https://facebook.github.io/react/docs/lists-and-keys.html#rendering-multiple-components) from the docs if you forget what this looks like).
+
+  </hint>
+
+  <hint title="Solution">
+  ```js
+  // somewhere in the JSX that your render method returns...
+  {
+    this.state.albums.map(function (album) {
+      return album.name;
+    }) // watch out - no semicolon!
+  }
+  ```
+  </hint>
+
+  <guide>
+  You have completed steps 1 - 2 above
+  You see a bit of information for each album in the fake data displaying on the screen
+  </guide>
+
+  @[Action] Show Me 
+  Now that you have the album on your state, here's some skeletal JSX for the main component to render, appropriately filled with bones:
+
+  ```js
+  <div className="col-xs-10">
+
+    <div className="albums">
+      <h3>Albums</h3>
+      <div className="row">
+
+        <div className="col-xs-4">
+          <a className="thumbnail" href="#">
+            <img src="http://placeholdit.imgix.net/~text?txtsize=33&txt=ALBUMoneIMAGE&w=300&h=300" />
+            <div className="caption">
+              <h5>
+                <span>ALBUM ONE NAME HERE</span>
+              </h5>
+              <small>NUMBER OF SONGS HERE songs</small>
+            </div>
+          </a>
+        </div>
+
+        <div className="col-xs-4">
+          <a className="thumbnail" href="#">
+            <img src="http://placeholdit.imgix.net/~text?txtsize=33&txt=ALBUMtwoIMAGE&w=300&h=300" />
+            <div className="caption">
+              <h5>
+                <span>ALBUM TWO NAME HERE</span>
+              </h5>
+              <small>NUMBER OF SONGS HERE songs</small>
+            </div>
+          </a>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+  ```
+
+  1. Add this JSX to your `Main` components between your `Sidebar` and `Footer` components similar to the original `index.html` structure. 
+  2. Complete that JSX with by interpolating values from the state. Be sure to use `Array.prototype.map` to iterate over all of the albums in the array (don't just hard-code them!)
+
+  You'll know you've succeeded once your view looks something like:
+
+  <img src="https://learndotresources.s3.amazonaws.com/workshop/5817499b3079790003310bcb/Screen%20Shot%202016-11-10%20at%2011.19.24%20AM.png">
+
+  *NB, the current version has a single "genre" field, not "genres."*
+
+  <guide>
+  You have completed steps 1 - 2 above
+  Your view looks similar to the screenshot above 
+  </guide>
+
+  @[Action] The Key 
+  At this point, everything should be looking okay, but if you check the client console, you're probably receiving a big, scary error like this:
+  <hr />
+  <div style="color:red">
+  `Warning: Each child in an array or iterator should have a unique "key" prop. Check the render method of resultTable. See https://fb.me/react-warning-keys for more information`
+  </div>
+  <hr />
+
+  Yikes! As it turns out, this error won't cause any functional problems, but what it means is that React wants you to supply a special attribute to the JSX you return from your map called `key`. Remember that part of what makes React's virtual DOM so performant is that it can calculate the minimum number of changes to make the actual DOM. However, when we create JSX in a loop (like when we use `Array.prototype.map`), it gets hard for React to keep track of the DOM structure. To help React boost its lookup time for these elements, we give the parent of each set of JSX we return from the loop a value called a `key` that should be unique within the loop.
+
+  1. Add a "key" prop to the JSX for our albums. Want an example? Well, why not check out [that page that the warning above](https://fb.me/react-warning-keys) is talking about?
+
+  <guide>
+  You complete the step above
+  You no longer receive the "key" error in your client's console
+  </guide>
+
+  @[Action] Props 
+  Hmm, our main component's render method is looking pretty heavy again. What to do...I've got it! Let's make an `Albums` component to handle all of the JSX we just added! That way, we'll be able to easily re-use all of that JSX if we find another place in our application to show an album.
+
+  Uh oh...looks like we've got a problem though. We're getting all of the album information into the view from our state, but we won't have access to state anymore in our new component. Not to worry though - our stateful main component can pass down the data that our `Albums` component needs via [props](https://facebook.github.io/react/docs/transferring-props.html)!
+
+  1. Refactor the JSX from the previous page into its own `Albums` component.
+  2. Import the new component and add it to our main component's render method.
+  3. Take the data our component needs and pass it down as *props* to the Album component.
+  4. Make sure to change any reference to `state` in our `Albums` component to be `props` instead!
+
+  <guide>
+  You have completed steps 1 - 4 above
+  The fake albums appear the way they did before
+  </guide>
+
+  @[Action] API 
+  API stands for Application Programming Interface and can refer to a lot of things. In our case, we might say that the server exposes a RESTful JSON API, which signifies that:
+
+  * One role of our server is to serve up JSON data.
+  * That data is intended to serve programs, not end-users directly.
+  * Requests and responses for such data conform to a standard and uniform interface (e.g. [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)).
+
+  Look through the server code, particularly <kbd>server/app/index.js</kbd> and the files in <kbd>server/app/routes</kbd>. Figure out what URLs would retrieve:
+
+  <script>
+  $(document).ready(function () {
+    var actionId = angular.element('#checks').scope().action._id;
+    function _getCheck (n) {
+      var stored = localStorage.getItem(actionId + '_checkmark_' + n);
+      if (!stored) return false;
+      return stored == 'complete' ? true : false;
+    }
+    function _setCheck (n, bool) {
+      var toStore;
+      if (bool) toStore = 'complete';
+      else toStore = 'incomplete';
+      localStorage.setItem(actionId + '_checkmark_' + n, toStore);
+    }
+    $('#checks [type="checkbox"]')
+    .each(function (idx, elem) {
+      var $elem = $(elem);
+      $elem.prop('checked', _getCheck(idx));
+      $elem.on('change', function () {
+        _setCheck(idx, $elem.prop('checked'));
+      });
+    });
+  });
+  </script>
+
+  <p id="checks" class="list-reset">
+    <div>
+      <input type="checkbox">
+      <span>All albums</span>
+    </div>
+    <div>
+      <input type="checkbox">
+      <span>A specific album</span>
+    </div>
+    <div>
+      <input type="checkbox">
+      <span>A specific album's cover art (the actual image file)</span>
+    </div>
+    <div>
+      <input type="checkbox">
+      <span>A specific song's audio file (a proper request should cause your fancy modern browser to load a native audio player widget, so you can actually listen to the song)</span>
+    </div>
+  </p>
+
+  Check off each of the above when you navigate to the correct URLs in your browser. It's nice to know we can access all of our server's database through simple HTTP calls like this. Of course, our users might not appreciate having to manually write GET requests, so let's continue our React lesson with a little AJAXification.
+
+  <guide>
+  You have explored the server code and checked off each of the checkboxes above
+  </guide>
+
+  @[Action] Axios 
+  To make our AJAX requests, we're going to use a lightweight and easy-to-use HTTP client called [axios](https://github.com/mzabriskie/axios). 
+
+  To use `axios` for GET requests, simply enter the name of your target url into `axios`'s `.get` method. `axios` returns a promise for the result of that request.
+
+  ```js
+  import axios from 'axios';
+
+  axios.get('api/someData')
+    .then(response => {
+      return response.data;
+    })
+    .then(data => {
+      console.log('success');
+      console.log(data);
+    })
+    .catch(err => {
+      console.error('error');
+      console.error(err);
+    });
+  ```
+
+  ...or we could do the same thing more concisely like so:
+
+  ```js
+  import axios from 'axios';
+
+  const toJson = response => response.data;
+  const log = console.log.bind(console);
+  const logError = console.error.bind(console);
+
+  axios.get('api/someData')
+    .then(toJson)
+    .then(log)
+    .catch(logError);
+  ```
+
+  <small>*Side note: unlike Node, some browsers' console methods like `log` and `error` are not pre-bound to `console`, so you can't simply say something like `.then(console.log)`. The promise machinery will call the `log` function in the future without any context (e.g. `console`), causing an error. The two common solutions are A) pass an anonymous function which in turn calls `console.log` with explicit context, or B) create a bound function yourself, as we do above..*</small>
+
+  ---
+
+  Notice that `axios.get(...)` returns a promise for an HTTP response. You might logically expect this `response` to be the thing we `res.json()`ed from our server on the other end of the internet. Well, it's *actually* an object containing lots of additional information about the response (the body, status code, headers, etc). Our json data is actually stored on the `data` property of that object.
+
+  1. Make a request to our backend using `axios` - you can put it **anywhere** in one of your frontend JavaScript files for now (we'll learn the proper place to put it in the next section). Go ahead and make any request you want (though if I may, `api/albums` seems like a good choice). Log the result of making the request out to the console.
+  2. See if you can find the response body by inspecting the result in Chrome console. 
+  3. Once you've found the HTTP response body in the `response` object, construct a promise chain that resolves to the actual HTTP response body like in the example above.
+
+  <guide>
+  You have completed steps 1 - 3 above
+  You understand how to resolve your HTTP response body with axios
+  </guide>
+
+  @[Action] Component Lifecycle 
+  Before we load data from our API into our React application, let's talk about the [lifecycle](https://facebook.github.io/react/docs/state-and-lifecycle.html#adding-lifecycle-methods-to-a-class) of React Components and the associated lifecycle hooks that React provides. There are quite a few of these, but we'll just go over the basic three for now:
+
+  ##componentWillMount
+  Runs right before the initial render of a component. If you synchronously invoke `this.setState`, the update will happen before render occurs. At this point, our React component only exists in React - there are no real DOM nodes corresponding to the React components and React elements that the component renders (the term _mounting_ refers to creating the actual DOM node in the document).
+
+  ##componentDidMount
+  Runs immediately after the initial render. If a component renders child components, the componentDidMount hooks of the child components run before the parent's. At this point, the component and all of its children have real DOM nodes associated with them.
+
+  ##componentWillUnmount
+  Runs right before a component is removed from the DOM.
+
+  If we want to make an AJAX call that will eventually update the state of our app, in which part of the component lifecycle do you think this belongs?
+
+  <hint title="Answer">
+  [`componentDidMount`](https://facebook.github.io/react/tips/initial-ajax.html), *not* `componentWillMount`.
+  </hint>
+
+  Can you guess why?
+  <hint title="Okay, why?">
+  Imagine if your response takes too long to get back and a user performs some action that takes the component out of the DOM. When that response does get back, the callback will still try to invoke `setState` on the unmounted component! That's pretty bad news! Instead, we ought to make sure that the component is safely mounted in the DOM first. (That way, we can clean up using `componentWillUnmount` if we need to).
+
+  Here's more detail from Stack Overflow: http://stackoverflow.com/questions/27139366/why-do-the-react-docs-recommend-doing-ajax-in-componentdidmount-not-componentwi
+  </hint>
+
+  <guide>
+  You have finished reading the above
+  </guide>
+
+  @[Action] Load 'em 
+  Stop using that fake album data already and render the *actual* albums saved on your server. See if you can figure it out on your own first, but the hint below will give you a more detailed approach if you get stuck. 
+
+  <hint title="Approach">
+  First, we should set some initial state in our `Main` component's constructor (remember **Tom's First Law**). Because we will render once before we receive the album from the server, we need to set something there by default (much like a default function parameter) to make sure we don't get any TypeErrors in our render.
+
+  Secondly, inside our Component's `componentDidMount` method we'll want to make an AJAX request for some data. Once that request completes we can call `this.setState()` to update the state with our data and trigger a re-render.
+
+  The GET request will be something like `'/api/albums'`.
+
+  Again, once the request completes, we can use `this.setState` to place the album on our state and trigger a re-render.
+
+  Also, note that the state should be held by our `Main` component rather than the `Albums` component. The reason for this is we don't know yet whether there will be other components that `Main` renders that will also need to know about the albums, so it's always safer to keep our state ["higher up the component tree"](https://facebook.github.io/react/docs/lifting-state-up.html), at least until we know that it's safe to move it down.
+  </hint>
+
+  Something is undoubtedly broken now, namely album cover art. Our `img src` is set to `{ album.imageUrl }`, but there is no `.imageUrl` in the real album data. There are a number of ways to solve this issue. See what you come up with, and refer to the hinted solutions below if you get stuck or cannot contain your curiosity.
+
+  <hint title="Cover art">
+  Remember that each album's cover art is available at `/api/albums/[thealbumid]/image`. We don't need the database to supply an `imageUrl` field for a given album whose ID we know; we can simply set `.imageUrl` ourselves on the data we set on state:
+
+  <pre>
+  ...
+  axios.get('/api/albums')
+    .then(res => { 
+      return res.data; 
+    })
+    .then(albumsFromServer => {
+      albumsFromServer = albumsFromServer.map(album => {
+        album.imageUrl = `/api/albums/${album.id}/image`;
+        return album;
+      });
+      this.setState({ albums: albumsFromServer });
+    });
+  ...
+  </pre>
+
+  Alternatively we could have modified our backend to create an `imageUrl` virtual… but we're trying to learn React here, so it's good to know we *can* fix the problem in the client.
+  </hint>
+
+  <guide>
+  The albums from your server are rendered onto the screen with the appropriate cover art
+  </guide>

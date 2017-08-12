@@ -1,0 +1,177 @@
+@[Concept] Constructing a Router 
+  @[Action] Setting up the Router 
+  In our `index.js` ( or `app.js`, the one with `ReactDOM.render`), import a `Router`, `Route`, and `hashHistory` like we saw in the Example. Take out the `<AppContainer />` in the call to ReactDOM.render and replace it with `Router`, and pass `hashHistory` to your Router component as a prop.
+
+  <guide>
+  You have completed the step above
+  </guide>
+
+  @[Action] Defining our Main (/) Route 
+  The first `Route` path we should define is what a user should see when they go to our app's main route (`/`). Typically, the component we give to this route provides the scaffolding that will be common to our entire app. Every other Route will be a child route of this main Route.
+
+  Write a `Route` with a path of `/`. Which component should we pass as the component prop? Well, this component will be the parent of all other components in our application...which component was playing that role before?
+  <hint title="Solution">
+  Use the AppContainer!
+
+  <pre>
+  &ltRouter history={hashHistory}>
+    &ltRoute path='/' component={AppContainer}>
+      {/* Our child routes will go here!
+        The components that these child routes render will be the "children" 
+        of the component that the parent route renders!  */}
+    &lt/Route>
+  &lt/Router>
+  </pre>
+  </hint>
+
+  Check your work against the hint and make sure that everything still renders out the way it did before (there won't be any visible difference yet, but nothing should be broken either). Then you're ready to move on!
+
+  <guide>
+  You have completed the step above, and everything renders the way it did at the start
+  </guide>
+
+  @[Action] Our "Picture Frame" 
+  Our `AppContainer` is set up to be the parent of all of the components in our application like it was before. However, we need to identify the space in our `AppContainer`'s render method where our child routes will eventually render.
+
+  Open `AppContainer.js` and check out its render method. Think about the view switching we do now - what JSX represents the "frame" that our view-switching (the "picture") occurs in? Discuss with your partner, and then read on to learn about what we need to do to render our "picture".
+
+  <hint title="Solution">
+  The `Sidebar` and the `Player` component are always present regardless of the view, so they and the JSX surrounding them would be our "frame". Our picture then is the space between the divs containing the ternary expression that conditionally renders the `Album` or `Albums` components.
+  </hint>
+
+  <guide>
+  You have finished reading the above
+  </guide>
+
+  @[Action] this.props.children 
+  We'll need to learn about two new concepts to render our child routes into the space that our conditional render is currently occupying. The first of these is a special prop called `children` that every component in React receives, which references to the child components of that component. Here's how it works:
+
+  Say we have a child component:
+  ```js
+  class Child extends React.Component {
+    render () { /** etc */ }
+  }
+  ```
+
+  And its parent component:
+  ```js
+  class Parent extends React.Component {
+    render () {
+      return (
+        <div>
+          {/** something special is going here in a moment.... */}
+        </div>
+      );
+    }
+  }
+  ```
+
+  And in yet another, even higher-up component, we have the following:
+  ```js
+  class GrandParent extends React.Component {
+    render () {
+      return (
+        <div>
+          <Parent>
+            <Child /> {/* Cool! Up until now all of our React components have been self-closing! */}
+          </Parent> {/* The Parent component has our Child component as its "children" */}
+        </div>
+      );
+    }
+  }
+  ```
+
+  If we go back to our Parent component, we can access the Child component in the Parent's render method off of the special `children` prop!
+  ```js
+  class Parent extends React.Component {
+    render () {
+      return (
+        <div>
+          { this.props.children } {/* This will cause that Child component to get rendered here! */}
+        </div>
+      );
+    }
+  }
+  ```
+
+  Sound good so far? Then read on!
+
+  <guide>
+  You have finished reading the above
+  </guide>
+
+  @[Action] React.cloneElement 
+  What if our Parent component from the previous example wanted to pass props to its Child component (which gets rendered via `{this.props.children}`)? Say, for example, our Parent component was a stateful component, and we want to pass that state down as props to the children?
+
+  To do this, we need to use one of the `React` module's static methods, called `cloneElement`.
+
+  ```js
+  // React.cloneElement(reactComponent, propObjectToPassToTheReactComponent)
+  // returns: a copy of the reactComponent passed in with the specified props
+
+  class Parent extends React.Component {
+    constructor (props) {
+      this.state = { foo: 'bar' }
+    }
+
+    render () {
+      // Unfortunately, if this.props.children doesn't exist, it's null :(
+      // This means we need to check for its truthiness to avoid a TypeError
+      return (
+        <div>
+        { 
+          this.props.children ? 
+            React.cloneElement(this.props.children, { foo: this.state.foo }) 
+            : null 
+        }
+        </div>
+      );
+    }
+  }
+  ```
+
+  In this example, we clone `this.props.children` (which is the `<Child />` component, remember), and pass `this.state.foo` as a prop called `foo` to the clone.
+
+  You may be wondering why we need to "clone" - think of it a being the same in principle as returning a new array when we use `Array.prototype.map` or `Array.prototype.filter`. We want to keep our render method pure, so we **don't want to mutate anything**.
+
+  With these two features in mind (`this.props.children` and `React.cloneElement`), move on to the next action, where we'll return to our "frame" and render our children (the routes)!
+
+  <guide>
+  You have finished reading the above
+  </guide>
+
+  @[Action] Placing the "Picture" in the "Frame" 
+  Okay, now it's time to actually code: using `this.props.children` and `React.cloneElement`, replace the ternary expression in our `AppContainer` with our `children`. 
+
+  Be aware that eventually the child element will be either the `Albums` component or the `Album` component, so the props object that we pass to it will need to contain all of the props for both components (this means that they will each receive the same set of props, but that's fine - we'll only use the ones we care about in each component).
+
+  <hint title="Solution">
+  Be **extra sure** to check that `this.props.children` exists first! If it's null, `React.cloneElement` will error!
+  ```js
+  {
+    this.props.children ?
+      React.cloneElement(this.props.children, {
+
+        // Album (singular) component's props
+        album: this.state.selectedAlbum,
+        currentSong: this.state.currentSong,
+        isPlaying: this.state.isPlaying,
+        toggle: this.toggleOne,
+
+        // Albums (plural) component's props
+        albums: this.state.albums,
+        selectAlbum: this.selectAlbum // note that this.selectAlbum is a method, and this.state.selectedAlbum is the chosen album
+      })
+      : null
+  }
+  ```
+  </hint>
+
+  You'll know you've succeeded when the "picture" (everything except for the sidebar and footer) renders as an empty background. 
+
+  _An empty background?_ Right now, we don't have any `children`, so our `Albums` and `Album` views are gone. To put them back, we need to implement our **child routes** - onward!
+
+  <guide>
+  You have completed the step above
+  The space where the Albums were displaying is a blank background
+  </guide>

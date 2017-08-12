@@ -1,0 +1,141 @@
+@[Concept] New Concepts 
+  @[Action] Your Kingdom Has an Anti-Pattern 
+  Welcome back, awesome person.
+
+  Unfortunately, we've led you into a bit of an anti-pattern. That is: the location of your logic for fetching song lyrics from the server, and dispatching it. This works fine and follows the patterns you've learned so far for interacting with the server via AJAX; however, we have a much more scalable, reusable and testable way of doing it now.
+
+  First, we have to learn about middleware . . .
+
+  @[Action] Middleware 
+  Once we invoke `store.dispatch` with an action (preferably returned to us from an action creator), what happens to it? Two things: the action is passed to the store's reducer function of course, but before that happens the action will go through any `middleware` that have been registered with the store. This is very similar to the way a `request` object will pass through middleware in Express before reaching its endpoint!
+
+  Redux's `createStore` function accepts middleware as its second argument. Let's see how this works using one of the most popular middleware available: `redux-logger`!
+
+  1. `npm install --save redux-logger`
+  2. In `store.js`, import a helper function from redux called `applyMiddleware`.
+  3. `import loggerMiddleware from 'redux-logger'`
+  4. `applyMiddleware` accepts any number of middleware as arguments - pass `loggerMiddleware` into `applyMiddleware`
+  5. Pass the result of `applyMiddleware` into the last argument of `createStore`. **NOTE:** If you have the Redux dev tools installed, you may want to refer to the [more advanced instructions here](https://github.com/zalmoxisus/redux-devtools-extension#12-advanced-store-setup).
+
+  Now, go back and refresh the page to dispatch your `SET_LYRICS` action again (by searching). Check out your console. We will now see logging output for every action that is sent to our store, as well as information about the previous/next states. Pretty cool, right?
+
+  <b>N.B.</b> The steps above apply for `redux-logger` 3.0.0 and above. In `redux-logger` v2.x.x, the default export from 'redux-logger' was a `createLogger` function, which can be used to create an instance of `loggerMiddleware`. This is still available in v3.x.x, just not as a default export: `import { createLogger } from 'redux-logger'`.
+
+  <guide>
+  You've completed the steps above and examined console output.
+  </guide>
+
+  @[Action] redux-thunk 
+  Let's introduce a second piece of middleware that will help us deal with asynchronous actions and side-effects: `redux-thunk`!
+
+  `npm install --save redux-thunk`
+
+  Import `thunkMiddleware` from `redux-thunk` and pass it as another argument to `applyMiddleware`.
+
+  Remember that all actions that are dispatched pass through our middleware before they run through the reducer. Normally, our reducer expects an action to be a plain JavaScript object with some identifying type field. However, thunk middleware will give us a powerful new ability: instead of dispatching an action object, we can dispatch a **new function**! When the `thunkMiddleware` sees that we've dispatched a function instead of a regular object, it will say, 
+
+  *Hmm, it looks like whoever dispatched this function is trying to do something asynchronous - I'll take this function they've given me and instead of giving it to the reducer, I'll invoke it here and pass the store's dispatch method to it, so that whenever that side effect completes or the async action resolves, they can use it to dispatch a new action with whatever data they get. (And just for good measure, I'll give them the store's getState method as well)*.
+
+  What a useful piece of middleware! Now we have a place for all of our side effects and AJAX requests - `async action creators`!
+
+  <guide>
+  You've installed and integrated redux-thunk into your store middleware.
+  </guide>
+
+  @[Action] Refactoring Lyrics Fetching 
+  All of our synchronous action creators returned a plain JavaScript object. Our async action creators, enabled by `thunkMiddleware`, will return a function instead. This function can expect to receive two arguments: the store's `dispatch` method and the store's `getState` method. With these, we can perform side effects, and then dispatch the results to our regular action creators when we're ready. Here are some examples:
+  ```js
+  export const setLyrics = function (text) {
+    return {
+      type: SET_LYRICS,
+      lyric: text
+    };
+  };
+
+  export const fetchLyrics = function (artist, song) {
+    return function (dispatch, getState) {
+      axios.get(`/api/lyrics/${artist}/${song}`)
+        .then(res => {
+          dispatch(setLyrics(res.data.lyric));
+        });
+    };
+  };
+
+  /* BUT WAIT THERE'S MORE! (may be helpful later on!) */
+
+  const fetchAlbumsFromServer =() => {
+    return dispatch => {
+      axios.get('/api/albums')
+        .then(res => res.data)
+        // use the dispatch method the thunkMiddleware gave us
+        .then(albums => dispatch(receiveAlbumsFromServer(albums))); 
+    }
+  }
+
+  const playSong = songId => {
+    return dispatch => {
+      // side effects, like using the audio element belong in async action creators too, even if they aren't "async"
+      audio.play() 
+      dispatch(selectSong(songId));
+    }
+  }
+
+  const doSeveralThings = (stuffId, thingsId) => {
+    return dispatch => {
+      // we can also use async action creators to compose several actions into one!
+      dispatch(doStuff(stuffId));
+      dispatch(doThing(thingId));
+    }
+  }
+
+  ```
+
+  Now we can write an async action creator like the one above to abstract away our AJAX request! Replace the AJAX call and synchronous action creator in your `LyricsContainer handleSubmit()` with a new async action creator `fetchLyrics`.
+
+  <hint title="Solution">
+  ```js
+  // In action-creators/lyrics.js
+  export const fetchLyrics = function (artist, song) {
+    return function (dispatch, getState) {
+      axios.get(`/api/lyrics/${artist}/${song}`)
+        .then(res => {
+          dispatch(setLyrics(res.data.lyric)); 
+        });
+    };
+  };
+  ```
+
+
+  ```js
+  // In LyricsContainer.js
+  handleSubmit() {
+    if (this.state.artistQuery && this.state.songQuery) {
+      store.dispatch(fetchLyrics(this.state.artistQuery, this.state.songQuery));
+    }
+  }
+  ```
+  </hint>
+
+  <guide>
+  You've replaced your handleSubmit function logic with a call to a fetchLyrics async action creator.
+  </guide>
+
+  @[Action] Goodbye Blue Sky, Goodbye 
+  We've completed all there is to complete with our current lyrics feature. There are certainly things that can be done to improve it, but there are bigger fish to fry.
+
+  The remainder of this workshop will be focused on applying the patterns of defining action types, action creators and reducers to existing features of Juke. There is only one more concept about Redux to learn (spoiler alert: it's [combineReducers](http://redux.js.org/docs/api/combineReducers.html)); otherwise, it will be a lot of tough refactoring!
+
+  But for now, we bid our lyrics feature adieu.
+
+  <i>
+  This is our last goodbye<br />
+  I hate to feel the love between us die<br />
+  But it's over<br />
+  Just hear this and then I'll go<br />
+  You gave me more to live for<br />
+  More than you'll ever know<br />
+  </i>
+
+  <guide>
+  You've poured a 40oz for the lyrics feature.
+  </guide>

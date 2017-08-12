@@ -1,0 +1,10 @@
+@[Concept] Outro 
+  @[Action] Review 
+  `react-router` allows us to take control of navigation in a single-page application. Here are some of the tools we've added to our utility-belt:
+
+  - Modular view swapping
+  - Linking with the `Link` component
+  - Loading dynamic data via the `params` prop
+  - Nesting views via the `children` prop
+
+  At the beginning of this workshop, we had to swap out views using conditional statements. Now our component hierarchy is clearly and declaratively enshrined by our Router. On top of that, now that website navigation actually involves the URL, we can use the web browser's forward, back, and refresh buttons without losing our view, and even share links that will actually load the correct UI.

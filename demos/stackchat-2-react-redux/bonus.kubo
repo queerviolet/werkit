@@ -1,0 +1,9 @@
+@[Concept] Bonus 
+  @[Action] Refactor 
+  Get some more practice using connect - refactor the other components that currently import the store directly, and make them use connect instead.
+
+  @[Action] Channel Name in the Navbar 
+  You've come so far! Try to accomplish the bonus goal of syncing up the channel name in the navbar. This could actually be a bit tricky! Consider this an extra challenge!
+
+  @[Action] Retro 
+  Are there any bonus sections from StackChat part 1 that you didn't get to? Give them a go now!

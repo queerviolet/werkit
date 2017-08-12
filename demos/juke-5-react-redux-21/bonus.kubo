@@ -1,0 +1,19 @@
+@[Concept] Bonus 
+  @[Action] Full Stack Genres 
+  For our `Station` functionality, we went ahead and fetched all of the songs via `/api/songs` and formatted them for the front-end. This is no big deal for us because our database is pretty small. But what if we were *actually* Spotify? Would we really want to fetch **every song in the database**?
+
+  Yeah, *no*. We would not.
+
+  So now that you're seasoned front-end React-Redux ninjas, why not refresh your memory of all things `express` and `sequelize` by refactoring the back-end a bit, and then modifying the front-end to make more reasonable API requests? This is a real full-stack challenge!
+
+  Instead of storing genres as `STRING` data types, let's give them a table of their own!
+
+  Here's what I'd expect:
+  * Define a `sequelize` model for "Genres" and relate it to the "Songs" model appropriately
+  * Define several `express` routes for genres. In particular, you'll want a GET route for `/api/genres` in order to get a list of all genres, and a GET route for something like `/api/genres/:genreId/songs` that will fetch all songs with the specified id.
+  * On the front-end, our `Stations` component should only dispatch a thunk that requests the list of genres when we enter its `Route`, and likewise we should only request songs from the specified genre when we enter the single-`Station`'s `Route`.
+
+  This is quite a hefty task, but it should be great review! Good luck!
+
+  @[Action] Retro 
+  Why not go back through the previous Juke workshops and find any bonus sections that you haven't done yet and give them a try?

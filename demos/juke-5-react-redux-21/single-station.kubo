@@ -1,0 +1,312 @@
+@[Concept] Single Station 
+  @[Action] Goal 
+  So far, we've written a new container that uses a `mapStateToProps` function to get our list of songs off of state, and passes them down to our presentational component.
+
+  Next, we'll implement showing a single station (which is really just a list of all songs of a specified genre), and see how we can pass down behavior as well using `connect`'s second argument - `mapDispatchToProps`.
+
+  The steps we'll take will be very similar to what we did before: we'll write a static view that renders dummy data, load in real data from our server, and then implement the dynamic behavior. (By the way, this pattern of first making a static UI and then making it dynamic - it never gets old. You'll follow these exact same steps many times throughout your career!)
+
+  <guide>
+  You have read and understood the above
+  </guide>
+
+  @[Action] Single Station View 
+  Our static UI for the `Station` (singular) component will be quite simple - it's just a header and our familiar `Songs` component! *Isn't modularity great*? 
+
+  <img src="https://learndotresources.s3.amazonaws.com/workshop/58135430b659df00039f518f/jazz-station.png" />
+
+  <ol>
+  <li> Write a new stateless component called `Station.js`. Feel free to borrow the JSX below, but maybe try to work it out for yourself first. Note that the `Songs` component expects several props - for now, just mock them out so that we can get the component to render without any errors. See if you can get it to look like the screenshot above.
+  </li>
+  <hint title="Station JSX">
+  <pre>
+  // Station.js
+  import React from 'react';
+  import Songs from './Songs';
+
+  const DUMMY_GENRE_NAME = 'Jazz';
+  const DUMMY_SONGS = [{
+    id: 1,
+    name: "A Love Supreme",
+    genre: "Jazz",
+    artists: [{ name: "John Coltrane" }]
+  }];
+  const DUMMY_CURRENT_SONG = {};
+  const DUMMY_IS_PLAYING = false;
+  const DUMMY_TOGGLE_ONE = function () {};
+
+  export default function (props) {
+    return (
+      &ltdiv>
+        &lth3>{ DUMMY_GENRE_NAME } Station&lt/h3>
+        &ltSongs 
+          songs={DUMMY_SONGS} 
+          currentSong={DUMMY_CURRENT_SONG} 
+          isPlaying={DUMMY_IS_PLAYING} 
+          toggleOne={DUMMY_TOGGLE_ONE}
+        />
+      &lt/div>
+    );
+  }
+  </pre>
+  </hint>
+  <li>Write a new `Route` that will render the component when the url matches "/stations/:genreName".
+  </li>
+  <hint title="Solution">
+  <pre>
+  &ltRoute path="/stations/:genreName" component={Station} />
+  </pre>
+  </hint>
+
+  Confirm that it works by navigating to http://localhost:1337#/stations/blahblahblah - your view should look like the screenshot above. Clicking the play button won't do anything yet, but don't worry - we'll get there soon!
+
+  <guide>
+  Opening http://localhost:1337#/stations/whatever displays the dummy component properly
+  </guide>
+
+  @[Action] Link From All Stations 
+  Now let's make it so that clicking on the `Link` in the all stations component will cause the single station component to render into view instead. Right now the ":genreName" param won't do anything, but be sure to give it something appropriate so that we can use it later!
+
+  <hint title="Solution">
+  <pre>
+  &ltLink to={`/stations/${genre}`}>{ genre }&lt/Link>
+  </pre>
+  </hint>
+
+  <guide>
+  Clicking any genre in the list of stations causes the single station component to appear
+  </guide>
+
+  @[Action] OwnProps 
+  Before we go any further, let's take a moment to learn about the **second** argument that `connect` passes to both `mapStateToProps` and `mapDispatchToProps`. It's called `ownProps`.
+
+  In addition to `state` as its first parameter, `mapStateToProps` functions can also expect to receive an object called `ownProps` in the second parameter.
+
+  ```js
+  function mapStateToProps = function (state, ownProps) {
+    return {
+      // etc...
+    };
+  }
+  ```
+
+  Likewise, `mapDispatchToProps` receives the **same** thing.
+  ```js
+  function mapDispatchToProps = function (dispatch, ownProps) {
+    return {
+      // etc...
+    };
+  }
+  ```
+
+  This is so that container components can accept props of their own (for example, from other components we write, or from `react-router` if a container is mounted under a `Route`).
+
+  Consider this example:
+
+  ```js
+  import FoodListContainer from '../containers/FoodListContainer';
+
+  export default function MyFavoriteFoods (props) {
+
+    // ["bagels", "chocolate", "key lime pie"]
+    // ...in case anyone was wondering
+    const myFavoriteFoods = props.myFavoriteFoods;
+
+    return (
+      <div>
+        <h3>Blah Blah Blah</h3>
+        <FoodListContainer favorites={myFavoriteFoods} />
+      </div>
+    );
+  }
+  ```
+
+  Now, if `FoodListContainer` is a `connect` component, we will have access to "myFavoriteFoods" as `ownProps.favorites`:
+
+  ```js
+  const mapStateToProps = function (state, ownProps) {
+    return {
+      favorites: ownProps.favorites, // ["bagels", "chocolate", "key lime pie"]
+      hasHealthyDiet: ownProps.favorites.indexOf("broccoli") !== -1 // false :(
+    };
+  }
+
+  const mapDispatchToProps = function (dispatch, ownProps) {
+    return {
+      changeDiet: function () {
+        dispatch(changeDietActionCreator(ownProps.favorites))
+      }
+    };
+  }
+  ```
+
+  Sound good? Then onward!
+
+  <guide>
+  You have read and understood the above
+  </guide>
+
+  @[Action] Real Data 
+  Let's start to replace that dummy data with real data. 
+
+  <ol>
+  <li> We're going to write a new `connect` component (`StationContainer`), but **before** we write it, discuss with your partner: based on the props that the `Station` component expects, what data are we going to need? What behavior are we going to need to define?
+  </li>
+  <hint title="Answer">
+  We need to pull `songs`, `isPlaying` and and `currentSong` off of state. The `songs` we pass down as props needs to be filtered down to only the songs that match the chosen `genreName`. It would help to pass down the `genreName` as a prop as well, so that we can display it in the header.
+
+  For behavior, we need to define the `toggleOne` method, like we've done before.
+  </hint>
+  <li> Write the boilerplate for the `StationContainer` component. Be sure to export the connected component by default.
+  </li>
+  <hint title="Just in case you need a reminder">
+  ```js
+  import { connect } from 'react-redux';
+  import Station from '../components/Station';
+
+  const mapStateToProps = function (state, ownProps) {
+    return {};
+  }
+
+  const mapDispatchToProps = function (dispatch, ownProps) {
+    return {};
+  }
+
+  const StationContainer = connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Station);
+
+  export default StationContainer;
+  ```
+  </hint>
+  <li> In the `Route` for "/stations/:genreName", replace the `Station` component with the `StationContainer` component. You will also want to have the same `onEnter` hook run for both "/stations" and "/stations/:genreName" (for example, if you were to refresh the page on `http://localhost:1337/Industrial`, we will still want all of our songs to be in our store).
+  </li>
+  <hint title="One solution...but not very DRY">
+  You could simply throw the `onEnter` hook onto both `Route` components. This will work - it's just not very DRY...
+  <pre>
+  &ltRoute path="/stations" component={StationsContainer} onEnter={onStationsEnter} />
+  &ltRoute path="/stations/:genreName" component={StationContainer} onEnter={onStationsEnter} />
+  </pre>
+  </hint>
+  <hint title="Much DRYer solution">
+  Ah, much better! We write a parent `Route` that executes the `onEnter` hook, which will render the single station component if the path matches "/stations/:genreName", and uses [`IndexRoute`](https://github.com/ReactTraining/react-router/blob/master/docs/guides/IndexRoutes.md) to render the all-stations component in all other cases.
+  <pre>
+  &ltRoute path="/stations" onEnter={onStationsEnter}>
+    &ltRoute path="/stations/:genreName" component={StationContainer} />
+    &ltIndexRoute component={StationsContainer} />
+  &lt/Route>
+  </pre>
+  </hint>
+  <li> Okay! Let's start mapping out the state in our `mapStateToProps` function (we'll handle `mapDispatchToProps` in the next section)! A few things to keep in mind:
+    <ul>
+      <li> Remember that the `genreName` is accessible off of the `params` object that `Route`s give to their components as a prop.
+      </li>
+      <li> The `songs` array that we want to give to our `Station` component needs to be filtered by the appropriate `genreName`. Also, because we want to play the songs, we need to convert each song so that they have the appropriate audio urls - remember how we did that?
+      </li>
+    </ul>
+  </li>
+  </ol>
+
+  <hint title="Solution for genreName">
+  Remember that we can access the props that get passed to the container component via the `ownProps` parameter.
+  ```js
+  const mapStateToProps = function (state, ownProps) {
+    return {
+      genreName: ownProps.params.genreName
+    };
+  }
+  ```
+  </hint>
+  <hint title="Solution for songs">
+  We need to `filter` and `map` the songs! It's a functional programming paradise!
+  <pre>
+  const mapStateToProps = function (state, ownProps) {
+    return {
+      songs: state.songs
+        .filter(song => song.genre === ownProps.params.genreName)
+        .map(convertSong)
+    };
+  }
+  </pre>
+  </hint>
+  <hint title="Full solution">
+  <pre>
+  const mapStateToProps = function (state, ownProps) {
+    return {
+      genreName: ownProps.params.genreName,
+      songs: state.songs
+        .filter(song => song.genre === ownProps.params.genreName)
+        .map(convertSong),
+      currentSong: state.player.currentSong,
+      isPlaying: state.player.isPlaying
+    };
+  };
+  </pre>
+  </hint>
+
+  When all of that is done, `console.log` the props that we receive in the `Station` component and make sure they look right (don't worry about rendering them out yet - remember that we'll do that last).
+
+  <guide>
+  You are able to console.log and confirm that the appropriate props have been passed to the "Station" component
+  </guide>
+
+  @[Action] Defining Methods With mapDispatchToProps 
+  Now that we've mapped the data our component needs to props, we've just got one last thing to take care of: the `toggleOne` method. We'll define this method in the object that `mapDispatchToProps` returns. It should be **very** similar to the other `toggleOne` methods we've defined before. The only difference is that now, instead of needing to import the store ourselves, it's given to us by `mapDispatchToProps` - much cleaner! Don't peek at the solution unless you've really given it a go and aren't sure.
+
+  <hint title="Solution">
+  ```js
+  import { toggleSong } from '../action-creators/player';
+
+  const mapDispatchToProps = function (dispatch, ownProps) {
+    return {
+      toggleOne: function (song, list) {
+        dispatch(toggleSong(song, list));
+      }
+    };
+  };
+  ```
+  </hint>
+
+  Make sure that it reaches your `Station` component with a `console.log` as well!
+
+  <guide>
+  You are able to console.log and confirm that toggleOne is now included in the props of your Station component
+  </guide>
+
+  @[Action] Pulling it All Together 
+  The moment we've all been waiting for is here! Get rid of all that dummy data and plug in the goods!
+
+  When everything is all hooked up, test it out and make sure that everything works. Try playing the songs and manipulating them with the player - everything should work as expected. Everything should also work just as well regardless of where you refresh the page (i.e. if you refresh the page at "/stations/:genreName", the songs should still appear in the list).
+
+  <hint title="Solution">
+  <pre>
+  import React from 'react';
+  import Songs from './Songs';
+
+  export default function (props) {
+
+    const genreName = props.genreName;
+    const songs = props.songs;
+    const isPlaying = props.isPlaying;
+    const currentSong = props.currentSong;
+    const toggleOne = props.toggleOne;
+
+    return (
+      &ltdiv>
+        &lth3>{ genreName } Station&lt/h3>
+        &ltSongs
+          songs={songs}
+          currentSong={currentSong}
+          isPlaying={isPlaying}
+          toggleOne={toggleOne}
+        />
+      &lt/div>
+    );
+  }
+  </pre>
+  </hint>
+
+  <guide>
+  You can navigate to different stations, which display a list of songs with the appropriate genres, and playing the songs in the list works as expected
+  </guide>

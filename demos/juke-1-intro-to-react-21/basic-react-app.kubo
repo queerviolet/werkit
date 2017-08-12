@@ -1,0 +1,286 @@
+@[Concept] Basic React App 
+  @[Action] Webpack 
+  With React, we can take advantage of a special syntax called `JSX` to write JavaScript that looks **a lot** like HTML. However, our JavaScript interpreter doesn't know how to read JSX on its own. Up until now, we've written JavaScript that's safe for our browser to run without any special treatment, but if we want to leverage the readability of JSX, we need another tool that will take our JSX, parse it, and `transpile` it into regular JavaScript.
+
+  Our tool of choice for this task is `Webpack`. Webpack is an extremely powerful and highly configurable `module builder` that can read our JavaScript files, parse special syntax like JSX, and give us back `a single JavaScript file` with all of our code transpiled in such a way that a JavaScript interpreter can make sense of it (including all of our module's dependencies as well).
+
+  Here are just some of the things webpack can and will do for us:
+  1. Interpret JSX and turn it into regular JavaScript
+  2. Interpret ES6 syntax and turn into ES5 JavaScript so that less-advanced browsers can safely run our code
+  3. Condense all of our code and any modules we require into a single JavaScript file, so our `index.html` will only need to include one script tag to load our entire application! (How cool is that?)
+
+  That being said, webpack has the downside of being quite complex, and its [documentation](https://webpack.github.io/) can be frustratingly opaque. For now, all you need to know is that when you run `npm start`, the start script will run webpack, which will cause all of your JavaScript to be built into a single file in your project's `public` directory called `bundle.js`.
+
+  That should be enough for you to get started, but if you want to learn a bit more about how webpack knows what to do, here's a quick breakdown of the config file webpack is using to build your project, called `webpack.config.js`. (Feel free to skip this for now and come back to it later - you'll learn a lot more about webpack in senior phase!)
+
+  ```javascript
+  'use strict';
+
+  // Firstly, we require webpack of course! Webpack typically runs and builds our 
+  // JavaScript on our backend when our server is started
+  var webpack = require('webpack');
+
+  // The exports is a configuration object that tells webpack what to do
+  module.exports = {
+
+    // The entry field tells webpack where our application starts.
+    // Webpack will start building this file and any subsequent file(s) that are imported by that file
+    entry: './browser/react/index.js',
+
+    // The output field specifies where webpack's output will go. In this case, we've specified
+    // that it should put it into a file called bundle.js in our public directory
+    output: {
+      path: __dirname,
+      filename: './public/bundle.js'
+    },
+
+    // The context field simply sets the context for relative pathnames
+    context: __dirname,
+
+    // Here is where we specify what kinds of special syntax webpack should look out for
+    module: {
+      // Loaders are special node modules that we've installed that know how to parse certain syntax.
+      // There are loaders for all different kinds of syntax.
+      loaders: [
+        {
+          // Here, we want to test and see if any files end with .js or .jsx.
+          // Only files that match this criteria will be parsed by this loader.
+          test: /jsx?$/,
+          // We want webpack to ignore anything in a node_modules or bower_components directory.
+          // This is very important - modules have a responsibility to build their own js files.
+          // If we were to do this ourselves, building our bundle.js would take forever!
+          exclude: /(node_modules|bower_components)/,
+          // We're using the babel-loader module to read our files - it can handle both ES6 and JSX!
+          loader: 'babel',
+          // Here, we telling webpack to look for any syntax that looks like ES6 and any syntax that looks like JSX.
+          // If it finds it, the babel-loader will transpile it for us!
+          query: {
+            presets: ['react', 'es2015']
+          }
+        }
+      ]
+    }
+  };
+  ```
+
+  <guide>
+  You have finished reading the above
+  </guide>
+
+  @[Action] Modules 
+  Because Webpack is a `module-builder`, all of our js files act like `modules` - this means that any variables or functions we declare are restricted to the namespace of the module, just like in Node! This is a huge advantage! (Remember how in TripPlanner we need to use IIFE's to namespace our modules)?
+
+  This means that, to import other modules into our file, we can use `require`, and export using `module.exports`!
+
+  ```js
+  const React = require('react');
+
+  class Main extends React.Component {
+    /** Hello world! **/
+  }
+  module.exports = Main;
+  ```
+
+  We also have another choice - we can use the `import` and `export` keywords that have been specified by the ES6 specification:
+
+  ```js
+  // use `import...from` instead of `require`
+  import React from 'react';
+
+  // say `export` or `export default` instead of `module.exports`
+  export default class Main extends React.Component {
+    /** Hello world! **/
+  }
+  ```
+
+  The ES6 import syntax also supports something very much like [object destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Object_destructuring) to extract specific values off from the module we're importing. For example, instead of saying `React.Component`, we could extract `Component` off of the React module like so:
+
+  ```js
+  // use {} to extract the value, and separate any values with commas
+  import React, {Component} from 'react';
+
+  // now we can just say Component
+  export default class Main extends Component {
+    /** Hello world! **/
+  }
+  ```
+
+  With `export`, we also have a choice - each module can have a single `default` export, as well as any number of regular exports. The only difference is that when we `import` the module, any exports that aren't the `default` need to be within curly braces, like so:
+
+  ```js
+  /** ourExports.js */
+
+  // we export foo and bar
+  export const foo = 1;
+  export const bar = 'hello world';
+
+  // we export default baz
+  const baz = () => console.log('goodbye world!');
+  export default baz;
+  ```
+
+  ```js
+  /** ourImports.js */
+
+  // we can import baz by default without using curly braces
+  import baz, { foo, bar } from './ourExports.js';
+  // foo and bar, however, need to be within curly braces
+  ```
+
+  That's enough to get you started - however, you can use whichever you feel more comfortable with! You could even use them both together (though this might be frowned upon for cosmetic reasons).
+
+  <guide>
+  You have finished reading the above
+  </guide>
+
+  @[Action] Loading our JS 
+  Hit the root route with http://localhost:1337/. You should see a simple layout with a sidebar, main content area, and footer.
+
+  Right now this is nothing but static HTML, but we're going to use React to render our view instead! Open `browser/index.html` and let's comment out everything inside the `<body>` for now, and just include one simple div, like this:
+
+  `<div id="app"></div>`
+
+  Be sure to give it the id - when our React code runs, it will find this div and render our view into it!
+
+  To get our code into the picture, we need to include a script tag with the path to our `bundle.js`. Because we need the div above to be part of the DOM when we render, we need to either include the script below our body tag, or use the `defer` attribute to make sure it loads after the DOM.
+
+  `<script src="/bundle.js" defer></script>`
+
+  Kill the server and run `npm start` again - if the sidebar and footer are gone and you see the words 'Hello React' logged to the client console, then you're ready to go!
+
+  <guide>
+  You've added a script tag to your HTML for bundle.js
+  You open the Chrome/client console and see the words 'Hello React' logged
+  </guide>
+
+  @[Action] Say Hello 
+  Right now, our `index.js` simply says hello to the browser's console. Let's use React and put our greeting somewhere the world can see it!
+
+  Here's what we'll need to do.
+
+  1. Import `React` from our `react` module. (Remember you can either `import React from 'react'`, or `const React = require('react')`)
+  2. Import `ReactDOM` from our `react-dom` module.
+  3. Use `ReactDOM`'s `render` method to render "Hello React" onto the DOM. Remember that this method takes two arguments:
+    * The first argument is some JSX (which looks like HTML). The only important thing is that you can only have one root element in your JSX!
+    * A DOM node to render the view into. We can grab the div we placed in our index.html using `document.getElementById`
+
+  When you're done, go right ahead and refresh the page and see what you get. (No need to restart the server - webpack will rebuild your bundle.js file every time you save a change - cool!)
+
+  After you're done - take a look at the file `bundle.js` inside of `public/` and see how Webpack has changed your `JSX` into JavaScript code.
+
+  <guide>
+  You have completed steps 1 - 3 above
+  You successfully render the words 'Hello React' onto the screen
+  </guide>
+
+  @[Action] Create a Component 
+  While the `ReactDOM` library contains other methods for dealing with the real DOM, we generally only use it to define the entry point into our React app. Instead of writing JSX into the `ReactDOM.render` method directly, let's write a new component that will serve as the "root component" for our app.
+
+  1. In your `browser/react` folder, Create a new js file with the name of our component (something like Main.js might be appropriate). 
+  2. Import React
+    * _Again? Didn't we already import React?_ That's true, but don't forget that webpack is a module builder - this means that every js file we create acts like an isolated module similar to the way a module behaves in Node! This means we don't need to worry about polluting the `window` object anymore - any variables we declare are local to that module, and if we want to use them somewhere else, we need to export and import them.
+  3. Create and export a class that extends `React.Component`.
+  4. Define a `render` method on that class that returns some JSX (remember - only one root element allowed). I suggest starting with the following:
+  ```html
+  <div id="main" className="container-fluid">
+    <h1>Hello world!</h1>
+  </div>
+  ```
+    * Be sure to note that we need to say `className` instead of `class`! [Remember why](https://facebook.github.io/react/docs/introducing-jsx.html#specifying-children-with-jsx)? It'll take some getting used to, but you'll get the hang of it!
+  5. Import our class into our `index.js` file and give it as the first parameter to `ReactDOM.render`.
+    * Note that it's important for components you write to start with a capital letter, like `<App />` or `<Main />`. This is how React tells the difference between React classes and React elements (like `div`, `span`, `a`, `h1`, etc).
+
+  <guide>
+  You have completed steps 1 - 5 above
+  The JSX from your 'Main.js' renders onto the screen
+  </guide>
+
+  @[Action] A Stately Component 
+  When we used `Nunjucks`, we interpolated our data into a template that got rendered on our server and then sent to our browsers to render. Later, we used `jQuery` to attach our data directly into the DOM. For the React equivalent of this, we'll use something called `state`.
+
+  In our React applications, state should be the *minimum amount of data necessary to render our UI*, and is usually represented by a regular JavaScript object.
+
+  1. If you haven't already, write a constructor method for your class from the previous step.
+  2. Define `this.state` (e.g. `this.state = {foo: 'bar'}`) in your main component's constructor as a JavaScript object with some data in it. It could be whatever you want for now (it could be a greeting, or a number - something simple).
+  3. In your class's render method, you can now access properties from `this.state` just like any method on an object would. Interpolate the value(s) from your state into your JSX using single curly braces!
+
+  <guide>
+  You have completed steps 1 - 3 above
+  You see a value from your state object rendered out onto the screen
+  </guide>
+
+  @[Action] Tom's First Law 
+  Notice how in the previous example, we initialized state in the constructor to be `this.state = { foo: 'bar' }`? It was actually pretty important that we gave our state some default value. Why wouldn't we want to to initialize the state to be something like `this.state = { foo: null }` or `this.state = {}`?
+
+  Consider the difference between the following constructors:
+
+  ```
+  constructor (props) {
+    super(props);
+    this.state = {
+      favoritePuppy: {},
+      allPuppies: [],
+      numberOfDogTreatsRemaining: 0,
+      ownerName: ''
+    }
+  }
+  ```
+
+  vs:
+
+  ```
+  constructor (props) {
+    super(props);
+    this.state = {
+      favoritePuppy: null,
+      allPuppies: null,
+      numberOfDogTreatsRemaining: null,
+      ownerName: null
+    }
+  }
+  ```
+
+  Which code would you rather maintain? By initializing your state object with default values, you *self-document* the types of data being held on state. That's pretty useful!
+
+  What's more, when we initialize our types properly, we *implicitly guard against TypeErrors*. Consider the following:
+
+  ```
+  constructor (props) {
+    super(props);
+    this.state = { kittens: [] } // no kittens yet
+  }
+
+  render () {
+    return (
+      <div>
+        { this.state.kittens.map(kitten => <div>{kitten.name}</div>) }
+      </div>
+    );
+  }
+  ```
+
+  In this example, we don't have any kittens (perhaps we're going to get them from our server later). However, our render method can safely and declaratively use `Array.prototype.map` without fear of a TypeError (this wouldn't be the case if this.state.kittens was initialized to null!)
+
+  These two advantages of *initializing state at least one level deep* are referred to in the Fullstack community as <h3>Tom's First Law: State must always be initialized with the appropriate data type</h3>
+
+  *Never* break Tom's first law - always initialize your state appropriately!
+  <guide>
+  You have finished reading the above
+  </guide>
+
+  @[Action] Child Components 
+  Now that we understand the basics of rendering, let's bring our sidebar and footer back into the picture. We _could_ take the markup from our `index.html` and put into our main classes's render method, but if we did that for our entire app, things would get out of hand pretty quickly, wouldn't they? Instead, let's make some new components.
+
+  1. Make two new Components, one for the `Sidebar` and one for the `Footer`. You can call them `Sidebar.js` and `Footer.js`, respectively, and place them in your `browser/react` directory. 
+  2. Take the markup from the original `index.html` (what we commented out earlier) and move it into the two components you just created. 
+  3. Import them and use them in our main class's render method. This will also cause their render methods to be invoked as well. 
+
+  When you're done, things should be back to looking a lot like when we started!
+
+  <hint title="Check here if things look messed up">
+  Make sure that the `Sidebar` component includes the &ltsidebar> tags themselves, and likewise the `Footer` component should include the &ltfooter> tags.
+  </hint>
+  <guide>
+  You have completed steps 1 - 3 above
+  The sidebar and footer appear the way they did at the start
+  </guide>

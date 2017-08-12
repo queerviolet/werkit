@@ -1,0 +1,33 @@
+@[Concept] Intro 
+  @[Action] Pre-reading 
+  Read up on the following topics:
+
+  * [Handling Events](https://facebook.github.io/react/docs/handling-events.html)
+  * [Forms](https://facebook.github.io/react/docs/forms.html)
+  * [Composition vs Inheritance](https://facebook.github.io/react/docs/composition-vs-inheritance.html)
+  * [SyntheticEvent](https://facebook.github.io/react/docs/events.html)
+  * [Refs and the DOM](https://facebook.github.io/react/docs/refs-and-the-dom.html)
+
+  @[Action] Forms & Inputs 
+  Interactive software has user input. As the web has become more interactive, such inputs have become increasingly powerful. jQuery, for example, provided much-needed normalization for dealing with many types of inputs across many different user environments. At the time, this sufficed, but user input has grown to such proportions that it demands a greater level of organization and modularity.
+
+  At the heart of the issue is data synchronization. How does data that users provide synchronize with backend, or even other parts of the application? No less difficult is the task of validating and managing the state of forms. Is this field invalid? Has it yet been edited? If so, should we display such concerns to the user?
+
+  @[Action] Goal 
+  In today's adventure, we will implement playlists. Users of the application will be able to create a playlist, browse all playlists, view one playlist, and add songs to any playlist. We will learn how to deal with inputs in React and handle form data.
+
+  <div class="flex flex-wrap">
+    <div class="md-col-6 xs-col-12 p2 border-box">
+      <h3>Starting Point</h3>
+      <img src="http://i.imgur.com/iJiaLjO.png">
+    </div>
+    <div class="md-col-6 xs-col-12 p2 border-box">
+      <h3>Workshop Goal</h3>
+      <img src="http://goo.gl/b9nDbR">
+    </div>
+  </div>
+
+  @[Action] Starting Point 
+  ## Copy and install Juke 3 Start
+
+  The starting point for this workshop will be supplied in your Library repo as `...Juke/3-forms/start`. Note that this may not be the same as the ending point for the previous workshop! Copy over the source code from your solutions library and run `npm install`.

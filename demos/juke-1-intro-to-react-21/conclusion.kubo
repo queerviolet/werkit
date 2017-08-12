@@ -1,0 +1,43 @@
+@[Concept] Conclusion 
+  @[Action] Exit Music 
+  ReactJS is a powerful frontend library that allows you to calculate your UI in a functional style. Think back to when we were calculating our UI in TripPlanner using jQuery - it quickly became difficult to manage the state of the application (even though it was quite small). By separating container components from presentational components and reducing the number of ways to trigger a mutation to one (`setState`), reasoning about our view becomes as simple as reading a series of functions.
+
+  That being said, our code right now isn't perfect - our main component is getting fairly large, and as we introduce more and more features, it could get bloated. It's also a pain to have to pass down a prop from our main state container all the way to the bottom of our view tree - in a larger app, this could be quite far. Fortunately, React is a lightweight, un-opinionated library - we'll soon see that there are many solutions within the React ecosystem that can help us with these problems.
+
+  # Progress Rubric
+
+  This workshop is a plunge into many facets of React, forming the foundation for all to come. If you don't feel you grasp all the complexities yet, start panicking. Wait no, the other other thing, don't sweat it - totally natural and expected. Below, we'll break down what we think are the important takeaways from this workshop. 
+
+  Primarily, state and props are fundamental building blocks of any React app, so it is important to gain a working understanding of them ASAP. Please connect with a fellow or instructor if this part of the puzzle seems opaque to you.
+
+  And though webpack (the build tool we introduced at the start) will become an important tool for us in the weeks to come, it is not important to understand its intricacies right now - it is much more important to focus on learning the fundamentals and principles of React, as they will guide our thinking in not just how to use the React library, but how to construct front-end applications in general. 
+
+  # Main Takeaways
+
+  * React fundamentals
+    * Front-end view library
+    * Motivation & goals
+    * The principles of unidirectional data flow
+  * React components
+    * What they are
+    * How to define them
+    * How they relate to the DOM
+    * Component lifecycle
+    * How and why to implement AJAX, event listeners and other side effects in componentDidMount
+  * Stateful (Container) components
+    * What distinguishes a stateful component from a stateless component
+    * How to initialize state in a constructor
+    * The usage of `this.setState`
+    * Binding the `this` context of a method
+    * How a stateful component communicates with stateless components (props)
+  * Stateless components and JSX
+    * How to receive props
+    * How to implement view logic using interpolated expressions
+    * How to refer to HTML attributes in JSX
+    * How to attach listeners (such as onClick) to a JSX element
+    * How to manage classes and inline-styles with JSX
+    * How to transform an array of data into JSX using `.map`, and why to use the `key` prop
+
+  # Resources
+
+  * http://busypeoples.github.io/post/react-component-lifecycle/

@@ -1,0 +1,28 @@
+@[Concept] Bonus 
+  @[Action] Song Removal 
+  <style>
+  .example-btn {
+    background-image: linear-gradient(#484e55, #3a3f44 60%, #313539);
+    background-repeat: no-repeat;
+    border-color: rgba(0, 0, 0, 0.6);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    color: #ffffff;
+    background-color: #3a3f44;
+  }
+  .example-btn:hover {
+    background-image: linear-gradient(#020202, #101112 40%, #191b1d);
+    background-color: #232628;
+  }
+  </style>
+
+  Add a <button class="btn example-btn"><i class="fa fa-remove"></i></button> to each song in a playlist. Wire this up so clicking it will remove that song from that playlist.
+
+  @[Action] Typeahead 
+  The song dropdown is a real design bummer. Swap it out for a typeahead - if you Google search for react typeaheads, you'll find many options that can help you with the implementation. You could also build your own - it's not *that* hard! (It's not that easy, either...)
+
+  @[Action] Orderable 
+  Allow users to re-order songs in their playlist. Start by updating the backend model so that each song in a playlist also has a field corresponding to its order in the list. Make sure the songs render in the proper order in the view. Then try using a library like [react-sortable](https://github.com/danielstocks/react-sortable) so that users can easily edit this order.

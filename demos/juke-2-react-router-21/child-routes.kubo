@@ -1,0 +1,88 @@
+@[Concept] Child Routes 
+  @[Action] All Albums Route 
+  Now that we've got our main `/` route set up, let's make a child route for the `Albums` component. We want to be able to access it when the url reads `/albums`.
+
+  <hint title="Solution">
+  Use the `AppContainer`! Note how the "/albums" `Route` is a child component of the "/" `Route`.
+
+  <pre>
+  &ltRouter history={hashHistory}>
+    &ltRoute path='/' component={AppContainer}>
+      &ltRoute path='/albums' component={Albums} /> {/* This one is self-closing */}
+    &lt/Route>
+  &lt/Router>
+  </pre>
+  </hint>
+
+  You'll know you've succeeded when navigating to `http://localhost:1337/#/albums` yields the `Albums` component in the view.
+
+  <guide>
+  You have completed the step above
+  </guide>
+
+  @[Action] Index Redirect 
+  Now, when you navigate to `http://localhost:1337/#/albums`, you should see the albums in your view again! Pretty cool, huh?
+
+  What happens when we just go to `http://localhost:1337/#/`? Hmm, not so cool. Let's fix that with [IndexRedirect](https://github.com/ReactTraining/react-router/blob/v3/docs/API.md#indexredirect), which is based on [Redirect](https://reacttraining.com/react-router/web/api/Redirect) This will allow one of our Routes to serve as a 'default' route. 
+
+  1. Import `IndexRedirect` from `react-router`
+  2. Set it up so that going to our plain `/` will go to `/albums` instead!
+
+  You'll know you've succeeded when navigating to the base route `http://localhost:1337/#/` causes the url to become redirected to `http://localhost:1337/#/albums`.
+
+  <guide>
+  You have completed steps 1 - 2 above
+  </guide>
+
+  @[Action] Parameterized Routes 
+  Time to set up our single album Route! The difference here is that now our url will take parameters corresponding to the id of the album or artist we want to view. This is very similar to the way that we create route params in Express.
+
+  Add the following Route to your `index.js`:
+
+  ```js
+  <Route path="albums/:albumId" component={Album} />
+  ```
+
+  *(Bear in mind that this Route is a **sibling** of the albums Route. The fact that the path builds off of `/albums` seems to imply some kind of parent-child relationship, but remember that the `Album` (singular) component and `Albums` (plural) component both appear in the same space. Parent-child relationships are defined by where the components render in the view, not by the route path)*
+
+  We haven't used any of them up until now, but the `Route` components are giving the components they render some special props! In the example above, the Album component would receive a special prop corresponding to the url parameter with the preceding colon. So in `Album.js`, the Album component would have access to a prop called `props.params.albumId` - this means that if the url was `localhost:1337/#/albums/2`, `props.params.albumId` would be '2'!
+
+  I wonder - could we use this `params` value together with that `selectAlbum` method to get the album when we navigate a single album's url? *Why would I be asking if the answer wasn't yes!?!* **Keep reading** and we'll learn how to do it!
+
+  <guide>
+  You have added the new Route component to your index.js
+  </guide>
+
+  @[Action] Using Params 
+  Go into the `Album` (singular) component and log the `props` object to the console. Then type something like `http://localhost:1337/#/albums/1` into your url bar to render the `Album` (singular) component. You might be surprised by what you see in the console! In addition to the props we've passed to it, you'll notice a whole lot of other props you won't recognize - things like `location`, `router`, `routeParams`, etc. These are all being passed by the `Route` component!
+
+  The one we're interested in is `routeParams` - expand it in your dev-tools and check it out! It's our `:albumId`! 
+
+  Use the `params` prop so that we can get the appropriate album and put it on state when we navigate to our single album routes. *How to do this*, you ask? How do we always get information when a component loads?
+
+  <hint title="Hmm, need a hint...">
+  Remember that the appropriate way to fetch information when a component loads is using the `componentDidMount` lifecycle hook. We can turn the `Album` component into a class and load the album using this hook.
+
+  You might be thinking...**doesn't this break Tom's second law?** Remember that Tom's second law says that dumb components should be as dumb _as possible_ - and unfortunately, right now we don't have another way, so this time it gets a pass. We'll find a better way soon though - don't worry!
+  </hint>
+
+  <hint title="Need a little bit more...">
+  Check out the props that the `Album` component is receiving. Because `Albums` and `Album` are receiving the same props now, we already have access to the `selectAlbum` method - how convenient!
+  </hint>
+
+  <hint title="Solution">
+  Add the following to your `Album` component (you will need to refactor from a function to a class).
+  ```js
+  componentDidMount () {
+    const albumId = this.props.routeParams.albumId;
+    const selectAlbum = this.props.selectAlbum;
+
+    selectAlbum(albumId);
+  }
+  ```
+  This way, when we navigate to `http://localhost:1337/#/albums/1`, we will fetch the album with the id of 1, set it onto our state, and then re-render the component with the appropriate album!
+  </hint>
+
+  <guide>
+  Entering http://localhost:1337/#/albums/{someAlbumId} into the url bar displays the single Album component with the corresponding album id.
+  </guide>

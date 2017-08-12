@@ -1,0 +1,58 @@
+@[Concept] Introduction 
+  @[Action] Pre-reading 
+  Article | Estimated or Recommended Time | Priority Level | Intended Takeaway
+  --------|-------------------------------|----------------|------------------
+  [Box Model](http://learn.shayhowe.com/html-css/opening-the-box-model/) | 20 minutes | High | 
+  [Positioning Content](http://learn.shayhowe.com/html-css/positioning-content/) | 20 minutes | High | 
+  [Advanced HTML & CSS](http://learn.shayhowe.com/advanced-html-css/) - Lessons 2, 3, & 4 | 1 hour | Low |
+  [SCSS Intro](http://sass-lang.com/guide) | 10 minutes | Med |
+
+  @[Action] Overview & Objectives 
+  Many companies use a CSS framework for development speed & convenience. Popular frameworks are carefully designed, compatible across many browsers, and rich in features. However, there is a contingent of developers who believe that frameworks like Bootstrap are too aggressive or opinionated in what they provide, and that it's better to either build your own framework or write ad-hoc styles for each project.
+
+  ---
+
+  In this workshop, we're going to try to recreate the look of a certain [Bootstrap Template](http://blackrockdigital.github.io/startbootstrap-modern-business/) without actually using Bootstrap. To accomplish this, we'll have to create our own CSS framework — a subset of Bootstrap which we'll affectionately call "Shoestring". Shoestring will have three key components:
+
+  * Typography
+  * Grids
+  * Forms
+  * You are also encouraged to implement another major Bootstrap component, the navbar.
+
+  Along the way we'll learn about building modern semantic CSS using tools like Sass (a high-quality CSS extension language).
+
+  @[Action] Instructor Notes 
+  @  draftMode true
+  Keep these notes in "Draft Mode" so only Instructors / Fellows can see them.
+
+  What to make sure to cover in lecture:
+  - What is the Cascading portion of CSS
+  - Chrome dev tools - mutating/adding/deleting styles quickly without having to run compiler
+  - Some way to handle a grid (floats are the solution code so that might be best)
+  - What SASS compiler is
+  	- SCSS high level overview of variables, loops and mixins (how they might be used in workshop - grid system and media query)
+
+  Keeping a list of most asked questions/major difficulties, so that everyone can be adequately prepared.
+
+   - This is a potential cheat sheet to send about https://www.smashingmagazine.com/wp-content/uploads/images/css3-cheat-sheet/css3-cheat-sheet.pdf
+   - Space between inline-block elements https://css-tricks.com/fighting-the-space-between-inline-block-elements/
+   - Q: What is the difference between SCSS and SASS?
+  	- A: .scss (what we use) and .sass (indentation based) are both syntaxes of SASS that can be compiled. SASS the compiler is different than .sass (the syntax)
+   - Q: Can node-sass minify my .css file
+  	- A: Yes. Use `compressed` as the `outputStyle` https://github.com/sass/node-sass#outputstyle
+   - Q: If I makeup a property will the rest of my CSS file be run
+  	- A: Yes it will all run, and you will get *no* errors in your console
+   - Q: Export your class style changes from chrome
+  	- A: This stackoverflow shows how (http://stackoverflow.com/questions/3355111/export-css-changes-from-inspector-webkit-firebug-etc)
+   - Q: Max-device-width vs. max-width
+       - A: **max-width** is the width of the target display area, e.g. the browser. It can be used to target specific sizes or orientations. **max-device-width** is the width of the device's entire rendering area, i.e. the actual device screen, regardless of orientation, current scale or resizing.
+  - Carousel with only css [codepen](http://codepen.io/epainter/pen/jdLvG)
+
+  @[Action] Other Pre-Reading 
+  @  draftMode true
+  Video | Estimated or Recommended Time | Priority Level | Intended Takeaway
+  --------|-------------------------------|----------------|------------------
+  [Frontend Foundations](https://www.codeschool.com/courses/front-end-foundations) | 1 Hour | High | 
+  [CSS Cross Country](https://www.codeschool.com/courses/css-cross-country) | 20 minutes | High | 
+  [Frontend Formations](https://www.codeschool.com/courses/front-end-formations) - Lessons 2, 3, & 4 | 1 hour | Low |
+  [Intro to Sass](https://www.codeschool.com/courses/assembling-sass) |

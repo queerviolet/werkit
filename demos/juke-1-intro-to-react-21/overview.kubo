@@ -1,0 +1,102 @@
+@[Concept] Overview 
+  @[Action] Instructor Notes 
+  @  draftMode true
+  Keep these notes in "Draft Mode" so only Instructors / Fellows can see them.
+
+  Just wanting to keep a list of most asked questions, so that everyone can be adequately prepared.
+
+  ### Gabriel's notes on student Q's during lecture:
+
+  * Mostly some uncertainty about what was "running" JSX, how webpack/Babel transpilation fit in
+  * "Can we run logic in the `return` (of a JSX-returning func)?" Some uncertainty about what you can do in, on, and around JSX
+  * Students definitely still very fuzzy on ES6 class syntax. I'd say that's one of the biggest things adding complexity to learning components.
+
+  ### Geoff's notes on student Q's during lecture:
+
+  * When does the constructor function run and why do we pass in props then invoke super w/ props?
+  * How is the context set in functions like onClick?
+  * What is the difference between props and state and when would we use each?
+  * Do we need to use something like getState since we're using setState?
+  * Can we write if statements in JSX or do we have to use ternaries?
+
+  @[Action] Pre-Reading 
+  The moment you have long awaited is upon us — it's time to learn about `ReactJS`, the powerful front-end library that's taken the JavaScript world by storm! To do so we'll be making a wonderful Single-Page App (SPA) called "Juke."
+
+  <h3>Pre-reading</h3>
+
+  In preparation for the first phase of this workshop, please read the following sections from the React documentation. I know it seems like a lot, but please try to read as much of it as possible. 
+  * [Hello World](https://facebook.github.io/react/docs/hello-world.html)
+  * [Introducing JSX](https://facebook.github.io/react/docs/introducing-jsx.html)
+  * [Rendering Elements](https://facebook.github.io/react/docs/rendering-elements.html)
+  * [State and Lifecycle](https://facebook.github.io/react/docs/state-and-lifecycle.html)
+  * [Conditional Rendering](https://facebook.github.io/react/docs/conditional-rendering.html)
+  * [Lists and Keys](https://facebook.github.io/react/docs/lists-and-keys.html)
+  * [Lifting State Up](https://facebook.github.io/react/docs/lifting-state-up.html)
+  * [Tutorial](https://facebook.github.io/react/docs/tutorial.html)
+  * [Thinking in React](https://facebook.github.io/react/docs/thinking-in-react.html)
+
+
+  You do not need to read any other sections for now — this is already a significant amount of reading! However, it will definitely help you **hit the ground running**, so please make an effort to complete these readings and exercises.
+
+  <h3>Work Environment Setup</h3>
+
+  React syntax is very similar to HTML, and most default JavaScript linters and syntax highlighters are probably going to...be upset, to put it lightly.
+
+  Take a moment (but don't worry about getting it perfect) to find some additional plugins in your editor that will help support your React development. Syntax highlighting is usually easy to switch, but linters can be finicky - if you do anything, at least get your syntax highlighting to look okay. Here are some suggestions:
+
+  **Syntax Highlighting**
+
+  * `sublime text`: [babel sublime](https://github.com/babel/babel-sublime)
+  * `visual studio code`: [babel es6/es7](https://marketplace.visualstudio.com/items?itemName=dzannotti.vscode-babel-coloring)
+  * `vim`: [react-vim](https://github.com/mxw/vim-jsx)
+  * `emacs`: [web-mode.el](http://web-mode.org/)
+  * `atom`: [atom react plugin](https://orktes.github.io/atom-react/)
+
+  **Linters**
+
+  There are a few options listed below. If you already have `eslint-config-fullstack` working, you're set — no need for anything else!
+
+  _Linter Options_
+
+  * `eslint`
+    * [eslint-config-fullstack](https://github.com/fullstackacademy/eslint-config-fullstack) (core rule set + React/JSX support — everything ready for you)
+    * [eslint-plugin-react](https://www.npmjs.com/package/eslint-plugin-react) (just React/JSX support, no core rule set — you must define your own rules)
+  * `jshint`
+    * [jsxHint](https://github.com/STRML/JSXHint) (requires that you name files with JSX with the .jsx extension)
+
+  @[Action] Preparation 
+  For our music app to be interesting, it will need some music! You can use one or both of the following sources:
+
+  ---
+
+  ### Source A: Provided CC-licensed music
+
+  Juke's seed script automatically includes a selection of free music. It imports this music by default, no preparation needed.
+
+  ### Source B: iTunes tracks
+
+  Juke's seed script also attempts to read your iTunes database (if you have one), assuming it's in the default OS X location, and imports any music tracks that follow certain criteria:
+
+  * Must have a `Kind` containing the word `audio` (e.g. `MPEG audio file`).
+  * Must not be an Apple Lossless file.
+  * Must have `name`, `artist`, and `album` fields.
+  * Must have a `location` field, i.e. needs to be on-disk music — no iCloud subscription links or similar.
+
+  For the most part, purchased or ripped music in iTunes will qualify, so long as it exists as an actual file on your hard drive. We will explain the seed process in more detail during a later step of this workshop.
+
+  @[Action] Trajectory 
+  This is the first in a series of workshops designed to increase your ReactJS momentum. Over the course of the next few days, you will build a Spotify clone we have affectionately dubbed **Juke**. As our application grows broader and deeper, we'll learn about tools in the React ecosystem that will help us manage complexity and prepare our app to scale!
+
+  @[Action] This Workshop 
+  In this workshop you will be given a working server backed by a modest database of music. You will craft a website where users can browse and play the songs in one album. In doing so, you will learn about the lifecycle of React components, state and props, working with HTML5 audio, and so much more.
+
+  <div class="flex flex-wrap">
+    <div class="md-col-6 xs-col-12 p2 border-box">
+      <h3>Starting Point</h3>
+      <img src="http://i.imgur.com/Lcb98ZP.png">
+    </div>
+    <div class="md-col-6 xs-col-12 p2 border-box">
+      <h3>Workshop Goal</h3>
+      <img src="https://goo.gl/6onUiW">
+    </div>
+  </div>

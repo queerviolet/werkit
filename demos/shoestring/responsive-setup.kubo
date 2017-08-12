@@ -1,0 +1,39 @@
+@[Concept] Responsive Setup 
+  @[Action] What Is Responsive Layout? 
+  **NOTE**: make sure to `git commit -m` your current Shoestring project before moving on.
+
+  ---
+
+  Resize the browser and note some of the design problems that occur at smaller window dimensions. 
+
+  * Do your "Portfoilo" items change in size nicely?
+  * Do they change from a 2-column layout to a 1-column layout when the screen width gets very small?
+  * What about the font-sizes? Are there any that are too big or too small?
+
+  ---
+
+  In Part 1 of Shoestring we built a functioning CSS framework. Now we are going to take a step forward and make the layout responsive. To get a refresher on *responsive CSS*, read [this guide](http://www.adamkaplan.me/grid/). Responsive layout and mobile-first design are two sides of the same coin; it's all about giving the end user the best experience for their window size.
+
+  Visit the [original theme](http://blackrockdigital.github.io/startbootstrap-modern-business/) we were trying to replicate and try varying the size there. You will notice that the page design adapts nicely. Our goal will be to replicate these changes in our own framework.
+
+  @[Action] Feature Branches 
+  Hopefully you and your partner have been practicing some basic Git collaboration by pushing and pulling to/from Github.
+
+  As mentioned earlier, pushing directly to the `master` branch can be problematic. If two people edit the same file, *merge conflicts* may arise and cause difficulties. A cleaner approach is to use *branches* — parallel, independent versions of your repo. Committing to a branch means that the `master` branch remains safe. When you are ready to merge your changes back into `master`, you must first make sure your branch is up to date with other peoples' work. Merge conflicts occur in isolated branches, while the `master` branch should (in theory) never have a merge conflict.
+
+  ---
+
+  Let's set up a `responsive` branch for Shoestring now.
+
+  <terminal>
+  git checkout -b responsive
+  </terminal>
+
+  The command `git checkout -b responsive` is short for the two commands `git branch responsive` and `git checkout responsive`. This creates a new branch called `responsive` and switches to it. Once you are done with your work on this branch, you can switch back to the `master` branch and merge in the new code from `responsive`.
+
+  @[Action] Update the View 
+  Before we continue, we need to make sure our HTML itself is set to use the responsive classes. Change **home.html** to [this gist](https://gist.github.com/khumphrey/03a0231c769334aa8a6c953cc6bc31a4). Check out the markup in your HTML "rows;" you will see attributes like `col-lg-4 col-md-6 col-sm-12`. This is Bootstrap's grid classes structure. The naming scheme has specific meanings:
+
+  * `col-lg-4`: when the screen size is large, the column width should be 4 grid units (third width)
+  * `col-md-6`: when the screen size is medium, the column width should be 6 grid units (half width)
+  * `col-sm-12`: when the screen size is small, the column width should be 12 grid units (full width)

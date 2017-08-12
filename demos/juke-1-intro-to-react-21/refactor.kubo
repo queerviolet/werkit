@@ -1,0 +1,50 @@
+@[Concept] Refactor 
+  @[Action] Single Responsibility Principle 
+  ---
+
+  <span style="color: darkred">**Sanity Check: now would be a good time to `git commit`!**</span>
+
+  ---
+
+  One of the great things about React is that it allows you to build components that can be reused throughout your application. For this pattern to be effective however, we must bear in mind the [single responsibility principle](https://medium.com/@ericclifford/single-responsibility-principle-in-javascript-4d51f78b6d5b#.q55so4ccs) - every component we write should do one thing and do it well.
+
+  Right now, we have one component managing state for our entire app. That's a big job - why should it also have to worry about our view logic? Let's take all of our view logic out of our Main component and put it into another stateless component. That way, our state management can be totally separate from our view logic. 
+
+  In the React ecosystem, we would refer to our stateful component as a `container`, because it contains state. Separating our containers from our stateless components, or `presentational` components can be a powerful pattern - that frees up our stateless components to be moved around and reused however we like - all we need to do is send them the right props, and they'll work no matter what component is managing their state.
+
+  Imagine we wanted to scale up our Juke app to be pretty big - how else could we break up the view structure into smaller, more modular components?
+
+  @[Action] Stateless Functional Components 
+  Right now, our stateless components are classes that just contain a render method. This is fine, but there's a better way! Read up about [stateless functional components](https://facebook.github.io/react/docs/components-and-props.html#functional-and-class-components) and refactor our stateless classes to simply be functions. Writing stateless components as functions makes our code leaner and more readable. It also makes it clear that, in React, our view should just be a pure, predictable function of our state: `function render(state) => view`.
+
+  @[Action] Tom's Second Law 
+  So at this point, we should probably have a distinction between our `container` components (or `smart` components, or `stateful` components), and our `presentational` components (or `dumb` components, or `stateless` components). You may be wondering how much to render in a smart component, whether to define any logic in your dumb components. The answer to that is enshrined in a second law, known worldwide as:
+
+  <h3>Tom's Second Law: Dumb components must be as dumb as possible - they should only calculate the view and nothing more!</h3>
+
+  This means that all of our methods and state should be held by stateful components, and any view logic should be the sole responsibility of dumb (but pure) presentational components. A good indication that you're **breaking** Tom's second law is if a presentational component can't be written as a `stateless functional component`.
+
+  Do you have any components that are breaking **Tom's Second Law**? Go through your code and check! Refactor if necessary!
+
+  @[Action] Better Living Through ES6 
+  Since we're already transpiling our JavaScript for JSX, we might as well make sure we're taking full advantage of some of the awesome new language features in ES6! It's more than just a cosmetic change as well - we can use some ES6 features to make our code more readable and less verbose, which makes it more resilient to errors in the long run. Here are a few places you might consider cleaning up...
+
+  * Are you using arrow functions effectively? Check and see if there's anywhere you're using the `function` keyword that could be replaced with a cleaner arrow
+  * Are you accessing all of the props you send down one by one, like `this.props.album` and `this.props.handleClick`? There's a better way! You can use destructured assignment to extract the values you want from an object.
+
+  ```js
+  render () {
+    const { album, handleClick } = this.props;
+    return (
+      /* ...JSX... */
+    );
+  }
+  ``` 
+
+  * Even better - if you're using stateless functional components, you can use destructured assignment `in the function definition`! Not only will this clean up your namespace, but it will also allow you to *see all of the dependencies for a stateless component without having to read through the JSX*. This is a huge win. For example, if the render method above was a stateless function:
+
+  ```js
+  export default ({ album, handleClick }) => (
+    /* ...JSX... */
+  );
+  ```
