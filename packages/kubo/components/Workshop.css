@@ -24,14 +24,20 @@ div.workshop {
   .workshop-left { display: none; }
 }
 
+@media screen and (max-width: 760px) {
+  .workshop-content > main {
+    max-width: initial;
+    width: 100%;
+  }
 
-.workshop-content > main {
-  max-width: 720px;
-  margin: auto;
+  .workshop-content {
+    width: calc(100% - 18px);
+  }
 }
 
 .workshop-content {
   margin: auto;
+  max-width: 720px;
 }
 
 @keyframes blur-out {

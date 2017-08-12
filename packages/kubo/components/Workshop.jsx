@@ -155,6 +155,7 @@ module.exports = class extends React.Component {
       background: `${gradient}, url('${artwork}')`,
       backgroundRepeat: 'no-repeat, no-repeat',
       backgroundSize: 'cover',
+      backgroundPosition: '50% 0%',
       width: '100%',
       height: '100%',
       animationDelay: '-' + scrollY + 's',
@@ -164,12 +165,11 @@ module.exports = class extends React.Component {
   }
 
   render() {
-    const {name, children, artwork} = this.props 
+    const {name, children} = this.props 
     return <div className='workshop'>
-      {/* <img src={artwork} className='workshop-watermark' style={this.watermarkStyle} /> */}
       <div className='workshop-watermark' style={this.watermarkStyle} />
       <div className='workshop-left'>
-        <Navigator artwork={artwork}>{children}</Navigator>
+        <Navigator>{children}</Navigator>
       </div>
       <div className='workshop-content'>
         <main>    
