@@ -1,6 +1,6 @@
 Werkit is a collection of tools for writing coding workshops.
 
-Its current status is foetal.
+It's currently in its third trimester.
 
 # Getting Started
 
