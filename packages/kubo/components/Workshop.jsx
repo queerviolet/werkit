@@ -53,7 +53,7 @@ class Navigator extends React.Component {
   }
 
   get navSections() {
-    return Array.from(document.querySelectorAll('.nav-action.visible'))
+    return Array.from(document.querySelectorAll('.nav-concept.visible,.nav-action.visible'))
   }
 
   scheduleUpdate = () => this.frameRequest ||
@@ -85,10 +85,9 @@ class Navigator extends React.Component {
     this.setState({visible}, this.scrollSelf)
   }
 
-  scrollSelf = () => {
-    const active = this.navSections[0]
-    if (active) active.scrollIntoViewIfNeeded()
-  }
+  scrollSelf = () =>
+    this.navSections.forEach(active =>
+      active.scrollIntoView({behavior: 'smooth'}))
 
   render() {
     return <nav className='workshop'>
