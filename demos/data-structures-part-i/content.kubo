@@ -1,0 +1,74 @@
+@[Concept] Content 
+  @[Action] Queue ADT via Array DS 
+  The *Queue* ADT is a container for multiple elements. Those elements are *ordered* (i.e., they are arranged in a sequence) and may repeat (unlike a mathematical set). The main operations associated with a queue are as follows:
+
+  ---
+
+  Operation | Action | Notes
+  --|--|--
+  `enqueue` | add a value to the queue | respects existing order, i.e. is placed "after" existing elements
+  `dequeue` | remove a value from the queue | **obeys FIFO** (first in, first out) and handles underflow (i.e. what to do when dequeueing an empty queue?)
+  `size` | reports number of items in the queue |
+
+  Queues occur frequently in programming, whenever new items are not immediately used but rather are destined to be consumed at a later time. For example, consider an office printer, which can hold more than one print job at a time, even while the current job is being printed.
+
+  ### Solution 1: the Array DS
+
+  Since the Queue is an ADT, there are multiple possible DSs we could use to write it. But to begin, use a simple array.\*
+
+  To simulate some aspects of using a lower-level data structure than the actual JavaScript array, <strong style="color: DarkRed;">you may not use *any* Array.prototype methods (e.g. `push` / `pop` / `shift` / `unshift`), nor the `.length` property.</strong> Instead, use `head` and `tail` (or whatever you want to call those variables) indices that increment when functions like `enqueue` and `dequeue` are called. Indeed, the built-in methods actually perform similar "accounting" internally.
+
+  Go ahead and code out the Queue spec now.
+
+  <small>**Note: strictly speaking, JS arrays are not "true" arrays, but rather variations on the Object built-in data type, which is implemented in the V8 engine by both real arrays and hash tables on a dynamic basis. For the purposes of this workshop, we will ignore this inconvenient fact. In fact, Node Buffers and ES6 Typed Arrays do implement true arrays, but lie beyond the scope of this exercise.*</small>
+
+  @[Action] Linked List DS 
+  A **Linked List** is a data structure, meaning a concrete programmatic way of managing information in memory. They can be used to implement a number of ADTs, including Queues, Stacks, Lists, and others.
+
+  Linked Lists are collections of *nodes* — wrapper structures which encapsulate a `value` and one or more *pointers* (references) to other nodes. The Linked List instance typically only has a reference to a so-called *handle* node, e.g. the `head` (first node) — it has no direct knowledge of other nodes in the list. However, the handle then points to a `next` node, which itself points to another `next` node, and so on and so forth. A list ends when a node's `next` pointer is `null` or `undefined`. The act of starting from a handle and visiting nodes in sequence is known as "traversing" a linked list.
+
+  Below is a description of a singly-linked list with a `head` handle and three nodes total:
+
+  ```txt
+  Head reference -> Node A
+  Node A has value 56 and pointer next -> Node B
+  Node B has value 33 and pointer next -> Node C
+  Node C has value 12 and pointer next -> null
+  ```
+
+  <pre style="font-family: 'Courier New'">
+  HEAD  ────────┐                                                  ┌───────── TAIL
+                │                                                  │
+                │                                                  │
+                ▼                                                  ▼
+       ┌────────┬───────┐       ┌────────┬───────┐        ┌────────┬───────┐
+       │        │       │       │        │       │        │        │       │
+       │   56   │   ────┼─────> │   33   │   ────┼──────> │   12   │   ────┼─────>
+       │        │       │       │        │       │        │        │       │
+       └────────┴───────┘       └────────┴───────┘        └────────┴───────┘</pre>
+
+  Linked Lists can come in various flavors. For example, in doubly-linked lists, each node might point both to the `next` node and to the `previous` node as well. In some variations, the parent Linked List instance might maintain both `head` *and* `tail` references. For this workshop, follow the (opinionated) spec to implement a doubly-linked list with both handles.
+
+  <small>*Side note: in JavaScript, an object is maintained in memory so long as there exist references to it. Once an object has no references pointing to it, automatic garbage collection will eventually free that memory so that the program can use it for other variables (it does not matter if the object itself has references to other variables). So the only real way to "delete" an object in JS to remove all references to it.*</small>
+
+  <hint title='Adding a node'>
+  <tonic>
+  LinkedList.prototype.addToTail = function(val) {
+    var newNode = new Node(val, this.tail);
+    if (this.tail) this.tail.next = newNode;
+    else this.head = newNode;
+    this.tail = newNode;
+  };
+  </tonic>
+  </hint>
+
+  @[Action] Queue ADT via LL DS 
+  If you have implemented the Linked List data structure with time to spare, you should now go back to your Queue ADT solution and *re-implement* it using a linked list.
+
+  1. Copy your LL solution into a new `ll.js` file in the queue folder
+  2. Comment out your current queue solution
+  3. Write a Queue solution that uses your LL, instead of an array
+
+  Note that the same spec (queue) has been solved using two very different solutions. This gets at the heart of the distinction between an ADT and a DS — the former is what we want, the latter is how we accomplish it. It is very often the case that a given ADT has several competing DS implementations, each with pros and cons. A good programmer will select the best DS for their use case.
+
+  Discuss with your pair partner the pros & cons of using a linked list vs a fixed array to implement the queue ADT. You may look at the lecture slides for reference.

@@ -1,0 +1,3 @@
+@[Concept] Extra Credit 
+  @[Action] Circular Buffers with Typed Arrays 
+  If you have finished creating a queue using both an array data structure and a linked list data structure, we invite you to explore the the folder labeled `03_extra_credit`, which contains a guided exploration of [circular buffers](https://en.wikipedia.org/wiki/Circular_buffer) and [typed arrays](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array).

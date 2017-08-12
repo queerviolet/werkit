@@ -1,0 +1,69 @@
+@[Concept] Introduction 
+  @[Action] Overview 
+  **Abstract data types** and **data structures** are fundamental to general computer science, and are also a great way to better understand object-oriented programming (OOP).
+
+  ## Abstract Data Type (ADT)
+
+  An ADT is a description of information, how that information is connected, and performable operations on the information. For example, a list is an ordered collection of elements, which you can add to or read from. A dictionary is a set of key-value pairs, where you can get or set a value (e.g. "Emily") by key (e.g. "name"). Notice that an ADT says nothing about programs, memory, steps, etc. — it's just a concept.
+
+  ## Data Structure (DS)
+
+  A DS on the other hand is a *specific programmatic solution* for storing, referencing, and accessing data in computer memory. The purpose of a data structure is to implement some ADT — for example, to take the concept of a "list" and realize it in actual code (place such-and-such data at this memory address, increment a variable, etc.).
+
+  Often an ADT can be implemented via more than one DS. Since different DSs have advantages and disadvantages from functionality and performance standpoints, it is beneficial to have a solid understanding of how they work.
+
+  # What You'll Be Doing
+
+  This workshop will be broken into two parts. Through the course of the workshop, you will write JavaScript implementations of several ADTs/DSs: *queues*, *linked lists, * *hash tables* and *binary search trees*. In this first part, we will focus on implementing the *queue* ADT using an array DS. Afterward, we will implement our own *Linked List* DS, before a final culminating exercise where we reimplement our *queue*, except this time using our *Linked List* under the hood.
+
+  Along the way we will use object-oriented principles like inheritance.
+
+  Since JavaScript is a very high-level language with (almost) no *direct* memory management, some of our "implementations" will more accurately be "simulations" — but that's ok, we'll still be adhering to the spirit of the concept if not always the law.
+
+  <!--- Comment: Why are we discouraging Object.create ? -->
+  You should write your code using the `new` keyword instead of `Object.create`.
+
+  @[Action] Pre-Reading 
+  Video | Estimated or Recommended Time | Priority Level | Intended Takeaway
+  --------|-------------------------------|----------------|-----------
+  [Stacks and Queues](https://www.youtube.com/watch?v=6QS_Cup1YoI) | 5 minutes | High | Stacks are LIFO and have `push` and `pop` methods. Queues are FIFO and have `enqueue` and `dequeue` methods
+  [Linked Lists](https://www.youtube.com/watch?v=LOHBGyK3Hbs) | 6-8 minutes | High | What is the overall structure of a Linked List? How is it laid out in memory? How do you think you would chain together two `nodes` in Javascript? How about more than 2 nodes?
+
+  Article | Estimated or Recommended Time | Priority Level | Intended Takeaway
+  --------|-------------------------------|----------------|-----------
+  [Fundamentals Explained](https://www.interviewcake.com/article/python/data-structures-coding-interview) | 30-45 minutes | Med-High | A broad overview of memory fundamentals and how they underpins data structures.
+
+
+  Also, the workshop includes references to the following Abstract Data Types (ADT) and Data Structures (DS), which you may optionally elect to research on your own time:
+
+  * Queue ADT
+  * Stack ADT
+  * Array DS
+  * Linked List DS
+  * Circular Buffer DS
+
+
+  # Pro Pair Programming
+
+  We want you to begin practicing [pair programming](https://www.agilealliance.org/glossary/pairing/). Pair programming is not only a common industry tool, but also a great way to learn software development. While you work on these Data Structures, be sure to:
+
+  * Follow the driver-navigator role split
+  * Exchange roles regularly
+  * Take note of techniques or tricks your partner may know
+  * Discuss and question your approaches productively
+  * Respect your partner's inputs and efforts
+  * Have fun!
+
+  @[Action] Setup 
+  [Fork this repo](https://github.com/FullstackAcademy/data-structures-I) and clone it to your machine. You can run `testem` in the root directory to test all specs at once, or run `testem` in each sub-directory to test only one suite at a time. Complete each of the test specs in order.
+
+  @[Action] Instructor Notes 
+  @  draftMode true
+  Keep these notes in "Draft Mode" so only Instructors / Fellows can see them.
+
+  Just wanting to keep a list of most asked questions/major difficulties, so that everyone can be adequately prepared.
+
+   - The need for `valueOf` in the Linked Lists portion of the workshop is no longer necessary, but still in the review video, so you might need to explain this.
+   - Questions about good size of buckets for a hash table.
+  	- Note that a good hashing function is also key!
+  	- A good rule of the thumb (not always ideal though) is to re-hash if the hashtable is filled up to 80%. That means if you have 100 buckets and 80 items inside, regardless how many collision you had before, it's getting time to increase capacity. Sourced [here](http://stackoverflow.com/questions/225621/how-many-hash-buckets), and I saw something similar in other places.
