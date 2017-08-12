@@ -38,7 +38,6 @@ class Navigator extends React.Component {
   state = {visible: {}}
 
   componentDidMount() {
-    this.query = document.querySelectorAll('[id]')
     window.addEventListener('scroll', this.scheduleUpdate)
     window.addEventListener('resize', this.scheduleUpdate)
     this.scheduleUpdate()
@@ -49,6 +48,14 @@ class Navigator extends React.Component {
     window.removeEventListener('resize', this.scheduleUpdate)
   }
 
+  get contentElements() {
+    return Array.from(document.querySelectorAll('[id]'))
+  }
+
+  get navSections() {
+    return Array.from(document.querySelectorAll('.nav-action.visible'))
+  }
+
   scheduleUpdate = () => this.frameRequest ||
     (this.frameRequest = requestAnimationFrame(this.updateVisible))
   
@@ -56,7 +63,7 @@ class Navigator extends React.Component {
     this.frameRequest = null
     const height = window.innerHeight
     
-    const visibleElementBoxes = Array.from(this.query)
+    const visibleElementBoxes = this.contentElements
       .map(getElementBoxes)
       .filter(boxesInViewport)
       .sort(topToBottom)
@@ -75,7 +82,12 @@ class Navigator extends React.Component {
       if (window.location.hash !== hash)
         history.replaceState(null, name, hash)
     }
-    this.setState({visible})
+    this.setState({visible}, this.scrollSelf)
+  }
+
+  scrollSelf = () => {
+    const active = this.navSections[0]
+    if (active) active.scrollIntoViewIfNeeded()
   }
 
   render() {

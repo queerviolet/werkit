@@ -132,6 +132,7 @@ a {
 
 a.nav-action-link {
   color: #767;
+  position: relative;
 }
 
 a.nav-concept-link {
@@ -154,6 +155,7 @@ a.nav-action-link.visible {
 
 li.nav-action.visible {
   list-style-type: disc;
+  color: #a0a;
 }
 
 .hint {
