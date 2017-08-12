@@ -2,7 +2,7 @@ Werkit is a collection of tools for writing coding workshops.
 
 Its current status is foetal.
 
-# Setup
+# Getting Started
 
 This is a monorepo managed by lerna. Install lerna if you don't have it:
 
@@ -16,7 +16,31 @@ Then setup this repo:
 lerna bootstrap
 ```
 
-# Import and run a learndot workshop
+Then you can run a demo workshop:
+
+```sh
+npm run kubo demos/pledge
+```
+
+The workshop will serve on [port 9876](http://localhost:9876).
+
+
+# Things you can do
+
+## Run a demo workshop
+
+There are several workshops in this repo, in the [`demos`](./demos) folder. To run one,
+
+```sh
+npm run kubo demos/node-shell-v-20
+```
+
+The workshop will serve on [port 9876](http://localhost:9876).
+
+
+## Import and run a learndot workshop
+
+You can import and run a new learndot workshop in one fell swoop.
 
 ```sh
 npm run learn.kubo <workshop-id>
@@ -25,7 +49,13 @@ npm run learn.kubo <workshop-id>
 The workshop will be imported into `demos` and served on
 [port 9876](http://localhost:9876).
 
-# Import a workshop from Learndot
+
+## Update a workshop that's already been imported
+
+You can re-import a workshop without going and finding its workshop id:
+
+
+## Import a workshop from Learndot
 
 ```sh
 node packages/learn.kubo <workshop-id>
@@ -34,35 +64,58 @@ node packages/learn.kubo <workshop-id>
 This will convert the workshop to JSX and dump its files into a directory named
 after it (`game-of-life`, for instance).
 
-# Run the workshop
+
+## Run a workshop
+
+You can use kubo to serve any folder with JSX, kubo, or mmm
+files. Try the [many minor matters documentation](./packages/many-matters),
+for instance:
 
 ```sh
-npm run kubo my-workshop
+npm run kubo packages/many-matters/matters.mmm
 ```
 
 Once started, you can view the workshop on [port 9876](http://localhost:9876).
 
+
+# Development
+
+It appears to be easy to break lerna's cross-package linkages when installing.
+To avoid this, use this npm script to install packages in subpackages:
+
+```sh
+npm run add many-matters resolve
+```
+
+That will install the `resolve` npm in the `many-matters` subpackage, and re-run
+`lerna bootstrap` to ensure everything stays happy.
+
 # TODO
 
-- [X] Refactor with lerna
-  - [X] Move components out of root and into werkit
-  - [X] Move ProviderPlugin out of rxquire and into werkit
-- [X] Give Concepts, Actions keys #importing
-- [ ] Markdown -> JSX converter
-  - [X] Refactor serializer with state machine
-  - [X] Webpack integration
-    - [X] `require()` markdown  
-    - [X] `require()` images
-    - [X] Loader rxquire config option
-  - [X] Support markdown parsing in components
-    - This is suboptimal; it'd be better if this happened at compile time. But it *has* to happen
-      at runtime for markdown that's inlined, so we'll just handle them the same for now.
-    - remarkable-react or remark-react?
-      - remark-react looks like it has better syntax highlighting support
-    - Everything sucked and I just did this myself, parsing marked -> HTML -> JSX.
-- [ ] Bonsai
-  - [ ] Cut sections
-  - [ ] Assemble branches
-- [ ] Command line ergonomics for werkit
-- [ ] Audit dependencies #chore
-  
+### Kubo
+- [ ] Command line ergonomics
+  - [ ] Should accept ports as flags
+- [ ] Theming
+  - This may be entirely subsumed by many matters theming, but will probably
+    require some support in kubo.
+- [ ] Help desk   
+  - [ ] Plugins?
+    - It may be easier to support help desk with a plugin.
+
+### Many matters
+- [X] Webpack loader
+  - [X] Async
+  - [X] Inclusions
+- [ ] Func/Exec blocks
+- [ ] Theming
+  - This will be a mapping of names to modules
+
+### Chores
+- [ ] Audit dependencies
+- [ ] Figure out if this npm add script is really necessary?
+
+### Bonsai
+- [ ] Cut sections
+- [ ] Assemble branches  
+- [ ] Figure out appropriate clip sentinels for common languages
+- [ ] Specify assembly instructions
