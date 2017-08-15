@@ -92,8 +92,6 @@ for instance:
 kubo packages/many-matters/matters.mmm
 ```
 
-Once started, you can view the workshop on [port 9876](http://localhost:9876).
-
 
 # Development
 
