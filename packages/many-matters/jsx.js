@@ -67,7 +67,23 @@ function toJsxFile(matters, params={
   const importStatements = Object.keys(imports)
     .map(mmmModule => {
       const {Component, mmm} = imports[mmmModule]
-      return `import ${Component} from ${str(mmmModule)}`
+      return `
+        import $Module_${Component} from ${str(mmmModule)};
+        const ${Component} =
+          typeof $Module_${Component} === 'string'
+            ? (text => {
+              const component = props => {
+                const {$Text='div'} = props
+                if ($Text === 'div')
+                  return React.createElement($Text, null, text)
+                return React.createElement($Text, props, text)
+              }
+              component.mmm = text
+              return component
+            })($Module_${Component})
+            : $Module_${Component};
+      
+      `
     })
     .join('\n')
 

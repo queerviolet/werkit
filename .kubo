@@ -114,3 +114,6 @@
       But it *is* very nice. I'm using it now and I love it!
 
   @[...] ./packages/many-matters/matters
+
+  @[Concept] Repository readme
+    @[...] ./README.md

@@ -116,6 +116,7 @@ const theme = flow(
   }))
 )({
   Code: my(`./components/Code/Code`),
+  $Text: my(`./components/Markdown`),
 })
 
 for (const themeModule of program.theme) {

@@ -134,8 +134,9 @@ by the importer.
     - It may be easier to support help desk with a plugin.
 
 ### Many matters
-- [ ] Matters loader can load strings
+- [X] Matters loader can load strings
   - This would be insanely useful.
+  - And they're even themed. Such power, wow.
 - [ ] Func/Exec blocks
 - [X] Webpack loader
   - [X] Async
