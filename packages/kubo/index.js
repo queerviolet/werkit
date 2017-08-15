@@ -35,12 +35,13 @@ module.exports = {serve, exports}
 const entryPointSrcRaw = entry => `
   import React from 'react'
   import {render} from 'react-dom'
+  import { AppContainer } from 'react-hot-loader'
   import App from ${entry}
   
   ${themeSrc(theme)}
 
   const run = Component =>
-    render(<Component {...theme} />, main)
+    render(<AppContainer><Component {...theme} /></AppContainer>, main)
   
   run(App)
 
@@ -154,6 +155,7 @@ const babel = {
 const werk = output => rxquire()
   .config(config(output))
   .config(resolveExt('.kubo'))
+  .config(resolveExt('.mmm'))
   .config(rule({
     test: /\.jsx?$/,
     use: babel,

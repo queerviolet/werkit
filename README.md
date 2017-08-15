@@ -123,7 +123,9 @@ by the importer.
 ### Kubo
 - [ ] Needs a welcome doc
 - [X] Command line ergonomics
-  - [X] Should accept ports as flags
+  - [X] Accepts ports as flags
+  - [X] Finds an open port
+  - [X] Opens the user's browser
 - [X] Theming
   - This may be entirely subsumed by many matters theming, but will probably
     require some support in kubo.
@@ -132,11 +134,11 @@ by the importer.
     - It may be easier to support help desk with a plugin.
 
 ### Many matters
+- [ ] Func/Exec blocks
 - [X] Webpack loader
   - [X] Async
   - [X] Inclusions
-- [ ] Func/Exec blocks
-- [ ] Theming
+- [X] Theming
   - This will be a mapping of names to modules
 
 ### Chores

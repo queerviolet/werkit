@@ -56,7 +56,8 @@ function toJsxFile(matters, params={
        getChildContext() {
          return {mmm: Matter.mmm}
        }
-    }`
+    }
+    `
 
   const decl = asComponent(
     matters.length === 1

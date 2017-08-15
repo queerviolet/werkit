@@ -1,0 +1,102 @@
+@[Workshop] Kubo
+  @[Concept] Introduction
+    Kubo is a little program that serves up interactive documentation.
+
+    @[Action] Quick start
+    To run the kubo for a repository, the recipe is simple:
+
+      @[Code] sh
+      kubo
+
+    That'll start the server and open a browser pointing at it.
+
+    The server supports hot loading, so you can see changes to the workshop
+    as you make them.
+    
+    @[Action] If you...
+    Don't want to open the browser automatically?
+
+      @[Code] sh
+      kubo -w
+    
+    Want to launch docs from a specific place?
+
+      @[Code] sh
+      kubo ${path_to_docs}
+
+    Want to run the server on a specific port?
+
+      @[Code] sh
+      kubo -p ${port}
+
+    Note that kubo currently always tries to find a port. If you do,
+
+      @[Code] sh
+      kubo -p 1234
+    
+    And port 1234 is in use, it'll try 1235, 1236, and so on.
+    
+    @[Action] What's going on?
+    When you run kubo without a path, it looks for documentation:
+
+      1. First it looks for a `kubo` entry in `package.json`.
+         If such an entry exists, it uses it as the documentation module.
+      2. If there's no `kubo` in `package.json`, it tries to import
+         `.kubo` from the root of the package.
+    
+    If it can't find docs anywhere, kubo quietly exits to hang its head
+    in shame.
+
+  @[Concept] Theming Kubo
+    
+    Kubo themes are just a mapping of a tag name (like "Concept") to a
+    module that `export default`s a React Component.
+
+    @[Action] Using a theme    
+    Kubo comes bundled with a theme that gives you `Workshop`, `Concept`,
+    `Action`, `Hint`, and `Guide` components. You can override these
+    or add new ones by specifying a theme.
+
+    Currently, the only way to do this is on the command line:
+
+      @[Code] sh
+      kubo -t ./path/to/theme -t some-theme-module
+    
+    Note that these args follow the path specification of Node modules. If
+    you want to reference a theme from your current dir, you need to use
+    an explicitly relative path (like this: `./some-theme`).
+    
+    You'll soon be able to specify these in `package.json`.
+
+    @[Action] Writing a theme
+
+    Themes are just modules that export an Object mapping component names
+    to module names. Here's a theme:
+
+      @[Code] json
+      {
+        "SnazzyComponent": "./components/Snazzy"
+      }
+    
+    That's `json`, but you can also use `js`:
+
+      @[Code] js
+      module.exports = {
+        SnazzyComponent: "./components/Snazzy",
+      }
+    
+    Note that themes are *not* currently run through webpack, so you must
+    use `module.exports`. You also can't specify actual Component classes—
+    you must specify modules.
+
+    This will change.
+
+  @[Concept] mmmmmmmmmm
+    @[Action] Many minor matters
+      Kubo comes bundled with the [many minor matters](#many-minor-matters)
+      loader to make writing this documentation easier. You don't have to use it;
+      Kubo is agnostic to how the components it loads are specified.
+
+      But it *is* very nice. I'm using it now and I love it!
+
+  @[...] ./packages/many-matters/matters
