@@ -51,7 +51,7 @@ async function entryPoint(entry) {
 async function serve(entry, port=9876) {
   const entryPointFile = await entryPoint(entry)
 
-  const {compiler} = werk({filename: 'index.js'})
+  const {compiler, config} = werk({filename: 'index.js'})
     .config(target('web'))
     .config(plugin(new webpack.HotModuleReplacementPlugin))  // enable HMR globally
     .config(plugin(new webpack.NamedModulesPlugin))          // Better module names in the browser
@@ -64,6 +64,7 @@ async function serve(entry, port=9876) {
       'webpack/hot/dev-server',
       entryPointFile,
     ])
+  console.log('config:', config.module.rules)
   const server = new WebpackDevServer(compiler, {    
     host: 'localhost',
     port,
@@ -125,6 +126,7 @@ const babel = {
       },
     }
 
+
 const werk = output => rxquire()
   .config(config(output))
   .config(resolveExt('.kubo'))
@@ -151,6 +153,10 @@ const werk = output => rxquire()
     test: /\.(txt|md|markdown)$/,
     use: 'raw-loader',
     exclude: /node_modules/,    
+  }))
+  .config(rule({
+    test: /\.(glsl|frag|vert)$/,
+    use: 'glslify-loader',
   }))
   // Add our node modules to the search path  
   .config(resolveAll(path.join(__dirname, 'node_modules')))

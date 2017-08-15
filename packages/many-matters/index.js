@@ -4,8 +4,9 @@ module.exports = parse
 
 const PlainText = '@line'
 
-const matter = ({type=null, props={}, children=[], indent=0}={}) => ({
+const matter = ({type=null, head, props={}, children=[], indent=0}={}) => ({
   type,
+  head,
   props,
   children,
   indent,
@@ -42,6 +43,7 @@ function parse(input) {
         top.current = matter({
           type: tag.type,
           props: {name: JSON.stringify(tag.head)},
+          head: tag.head,
           indent
         })
         continue
@@ -71,6 +73,7 @@ function parse(input) {
           current: matter({            
             type: tag.type,
             props: {name: JSON.stringify(tag.head)},
+            head: tag.head,
             indent
           })})
         continue

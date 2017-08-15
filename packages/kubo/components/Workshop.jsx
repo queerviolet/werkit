@@ -6,16 +6,33 @@ const Concept = require('./Concept')
     , Action = require('./Action')
     , slug = require('../slug'), {Link} = slug
 
-const tree = visible => ({type, props}, key) => {
-  if (type === Concept)
-    return <Nav.Concept {...props} visible={visible} key={key}><Nav visible={visible}>{props.children}</Nav></Nav.Concept>
-  if (type === Action)
+const tree = visible => (child, key) => {
+  if (!child) return
+  if (typeof child === 'string') return
+  const {type, props: rawProps={}, children} = child || {}
+  const props = Object.assign(...Object.keys(rawProps)
+    .map(prop => {
+      try {
+        const val = JSON.parse(rawProps[prop])
+        return {[prop]: val}
+      } catch(x) {}
+      return null
+    }).filter(x => x))
+  if (type === 'Concept')
+    return <Nav.Concept {...props} visible={visible} key={key}>
+            <Nav visible={visible} mmm={children} />
+          </Nav.Concept>
+  if (type === 'Action')
     return <Nav.Action {...{...props, children: null}} visible={visible} key={key} />
+  if (children)
+    return <div>
+              <Nav visible={visible} mmm={children} />
+           </div>
   return
 }
 
-const Nav = ({visible={}, children}) =>
-  <ul>{React.Children.map(children, tree(visible))}</ul>
+const Nav = ({visible={}, mmm}) => <ul>{mmm.map(tree(visible))}</ul>
+const parse = JSON.parse
 
 Nav.Concept = ({name, children, visible, className=slug(name) in visible ? 'visible' : ''}) =>
   <div className={`nav-concept ${className}`}>
@@ -115,9 +132,14 @@ class Navigator extends React.Component {
 
   render() {
     return <nav className='workshop' ref={this.navElementDidMount}>
-      <Nav visible={this.state.visible}>{this.props.children}</Nav>
+      <Nav visible={this.state.visible} mmm={this.context.mmm} />
     </nav>
   }
+}
+
+const PropTypes = require('prop-types')
+Navigator.contextTypes = {
+  mmm: PropTypes.array
 }
 
 const getElementBoxes = element => ({
@@ -169,7 +191,7 @@ module.exports = class extends React.Component {
     return <div className='workshop'>
       <div className='workshop-watermark' style={this.watermarkStyle} />
       <div className='workshop-left'>
-        <Navigator>{children}</Navigator>
+        <Navigator />
       </div>
       <div className='workshop-content'>
         <main>    

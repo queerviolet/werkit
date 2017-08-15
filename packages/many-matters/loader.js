@@ -48,11 +48,14 @@ function load(source) {
   }
   
   this.cacheable && this.cacheable()
-  compile(this.resourcePath, this.context, {[this.resourcePath]: true}, source)
-    .then(jsx)
-    .then(value => this.value = value)
-    .then(out => done(null, out))
-    .catch(console.error)
+  this.value = source
+  done(null, jsx(parse(source)))
+
+  // compile(this.resourcePath, this.context, {[this.resourcePath]: true}, source)
+  //   .then(jsx)
+  //   .then(value => this.value = value)
+  //   .then(out => done(null, out))
+  //   .catch(console.error)
 }
 
 const error = err =>
