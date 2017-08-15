@@ -3,7 +3,9 @@ const program = require('commander')
   .usage('[-t themes] [path]')
   .option('-t, --theme [themes]', 'Themes', (val, memo) => [...memo, val], [])
   .option('-w, --no-window', 'Do not open a browser window after starting server')
-  .option('-p, --port [port]', 'Serve on <port>', 9876)
+  .option('-p, --port [port]',
+    'Serve on <port>, and then try <port + 1>, <port + 2>, etc...',
+    9876)
   .parse(process.argv)
 
     , path = require('path')
@@ -92,6 +94,13 @@ async function serve(entry, port=program.port) {
     const url = `http://localhost:${port}`
     console.log(url)
     if (program.window) open(url)
+  }).on('error', err => {
+    if (err.code === 'EADDRINUSE') {
+      return serve(entry, port + 1)
+    }
+    console.log(`Kubo couldn't start.`)
+    console.log(err)
+    process.exit(1)
   })
 }
 
