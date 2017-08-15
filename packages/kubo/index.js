@@ -28,11 +28,14 @@ module.exports = {serve, exports}
 
 
 const entryPointSrcRaw = entry => `
+  import React from 'react'
   import {render} from 'react-dom'
   import App from ${entry}
   
+  ${themeSrc(theme)}
+
   const run = Component =>
-    render(<Component/>, main)
+    render(<Component {...theme} />, main)
   
   run(App)
 
@@ -41,6 +44,13 @@ const entryPointSrcRaw = entry => `
 `
 
 const entryPointSrc = raw => entryPointSrcRaw(JSON.stringify(raw))
+
+const themeSrc = components => Object.keys(components)
+  .map(c =>
+    `import ${c} from ${JSON.stringify(components[c])}`)
+  .concat(
+    `const theme = {`, Object.keys(components).join(','), '}')
+  .join('\n')
 
 async function entryPoint(entry) {
   const temp = await mktemp(path.join(tmpdir(), 'XXXXXXXXXX.js'))
@@ -51,7 +61,7 @@ async function entryPoint(entry) {
 async function serve(entry, port=9876) {
   const entryPointFile = await entryPoint(entry)
 
-  const {compiler, config} = werk({filename: 'index.js'})
+  const wrk = werk({filename: 'index.js'})
     .config(target('web'))
     .config(plugin(new webpack.HotModuleReplacementPlugin))  // enable HMR globally
     .config(plugin(new webpack.NamedModulesPlugin))          // Better module names in the browser
@@ -64,7 +74,8 @@ async function serve(entry, port=9876) {
       'webpack/hot/dev-server',
       entryPointFile,
     ])
-  console.log('config:', config.module.rules)
+  const {compiler, config} = wrk    
+
   const server = new WebpackDevServer(compiler, {    
     host: 'localhost',
     port,
@@ -77,7 +88,7 @@ async function serve(entry, port=9876) {
   }).listen(port, () => console.log(`http://localhost:${port}`))
 }
 
-const globals = flow(
+const theme = flow(
   ...[
     'Workshop',
     'Concept',
@@ -87,7 +98,6 @@ const globals = flow(
     [name]: my(`./components/${name}`)
   }))
 )({
-  React: my('react'),
   Code: my(`./components/Code/Code`),
 })
 
@@ -99,7 +109,7 @@ for (const themeModule of program.theme) {
   const theme = require(resolvedTheme)
   const themeDir = path.dirname(resolvedTheme)  
 
-  Object.assign(globals,
+  Object.assign(theme,
     ...Object.keys(theme)
         .map(id => ({
           [id]: resolve.sync(theme[id], {
@@ -109,8 +119,6 @@ for (const themeModule of program.theme) {
         }))
   )
 }
-
-console.log('globals:', globals)
 
 const babel = {
       loader: 'babel-loader',
@@ -160,8 +168,8 @@ const werk = output => rxquire()
   }))
   // Add our node modules to the search path  
   .config(resolveAll(path.join(__dirname, 'node_modules')))
-  // Provide our globals
-  .config(plugin(new webpack.ProvidePlugin(globals)))
+  // Provide our theme
+  // .config(plugin(new webpack.ProvidePlugin({React: my('react')})))
 
 const lookup = (file, parser=JSON.parse) =>
   async function(entry=process.cwd()) {

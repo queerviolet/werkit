@@ -1,3 +1,4 @@
+const React = require('react')
 const slug = require('../slug')
 
 module.exports = ({name, children}) =>

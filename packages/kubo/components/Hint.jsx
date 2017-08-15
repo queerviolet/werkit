@@ -1,3 +1,4 @@
+const React = require('react')
 const Markdown = require('./Markdown')
 
 module.exports = class Hint extends React.Component {

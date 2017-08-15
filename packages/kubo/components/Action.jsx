@@ -1,3 +1,5 @@
+const React = require('react')
+
 const Markdown = require('./Markdown')
     , slug = require('../slug')
 

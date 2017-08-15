@@ -1,3 +1,5 @@
+const React = require('react')
+
 const slug = module.exports = (name='') => name
   .toLowerCase()
   .replace(/\s+/g, '-')

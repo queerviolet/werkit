@@ -1,3 +1,5 @@
+const React = require('react')
+
 const Code = module.exports = ({language, children}) =>
   language in languages?
     <Lowlight prefix='hljs-light-' className='hljs-inline' language={language} value={src(children)} />

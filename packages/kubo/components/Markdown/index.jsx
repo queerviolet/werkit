@@ -1,3 +1,5 @@
+const React = require('react')
+
 const marked = require('marked')
     , rehype = require('rehype')
     , Default = require('./Default')

@@ -19,6 +19,7 @@ function config(output={
   
   return ({entry}) => ({
     config: {
+      name: 'kubo',
       target: 'node',
       entry, output,
       devtool: 'inline-source-map',

@@ -3,7 +3,7 @@ module.exports = toJsxFile
 function toJsxFile(matters, params={
   createElement: 'React.createElement',
 }) {
-  const imports = {}
+  const imports = {}, components = {}
   let nextImportId = 0
 
   const includes = mmmModule => {
@@ -11,10 +11,9 @@ function toJsxFile(matters, params={
     const id = nextImportId++
     return imports[mmmModule] = {
       id,
-      Component: `MatterComponent${id}`,
+      Component: `$MatterComponent${id}`,
     }
   }
-
 
   const mmmify = matters =>
     '[' + matters.map(mmmifyOne) + ']'
@@ -37,7 +36,17 @@ function toJsxFile(matters, params={
 
   const asComponent = jsx =>
     `
+    import React from 'react'
     import PropTypes from 'prop-types'
+
+    const NotFound = ({mmm}) =>
+      <div class='many-minor-matters-malfunction error no-component-found'>
+        <h1>{(mmm[0] || {}).type}: Component not found</h1>
+        Are you using the right theme?
+        <pre>
+        {JSON.stringify(mmm, 0, 2)}
+        </pre>
+      </div>
 
     class Matter extends React.PureComponent {
        render() {
@@ -78,12 +87,10 @@ function toJsx(matter, params) {
           includes(matter.head).Component
           : matter.type
       , {props: rawProps, children} = matter  
-      , isComponent = type && type[0] === type[0].toUpperCase()
   
-  if (isComponent) {
+  if (isComponent(matter.type)) {
     rawProps.mmm = mmmify([matter])
   }
-  rawProps.foo = "2"
 
   const propsSrc = formatProps(rawProps)
       , childrenSrc = children
@@ -91,7 +98,7 @@ function toJsx(matter, params) {
           .map(c => toJsx(c, params)).join(',\n')
       , childSrc = childrenSrc ? `, ${childrenSrc}` : ''
       , indent = new Array(matter.indent).fill(' ').join('')
-      , typeSrc = isComponent ? type : str(type)
+      , typeSrc = componentSrcFor(type)
   return `${indent}${createElement}(${typeSrc}, ${propsSrc} ${childSrc})`
 }
 
@@ -104,9 +111,16 @@ function mergeLines(children, child) {
 
 const str = str => JSON.stringify(str)
 
+const isComponent = type => type && type[0] === type[0].toUpperCase()
+const isImport = type => type.startsWith('$')
+
+const componentSrcFor = type => isComponent(type)
+  ? isImport(type) ? type : `(this.props.${type} || NotFound)`
+  : str(type)
+
 function formatProps(props) {
   if (!props) return 'null'  
-  return '{' +
+  return '{...this.props,' +
     Object.keys(props)
       .map(key => `${str(key)}: ${props[key].toString()}`)
       .join(', ') +

@@ -1,5 +1,6 @@
 'use strict'
 
+const React = require('react')
 require('./Workshop.css')
 
 const Concept = require('./Concept')

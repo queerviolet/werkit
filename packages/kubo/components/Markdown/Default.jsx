@@ -1,3 +1,5 @@
+const React = require('react')
+
 const voids = require('void-elements')
 
 const Default = module.exports = (tag='span', displayName=`marked.${tag}`) => {
