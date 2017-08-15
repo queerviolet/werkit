@@ -8,7 +8,7 @@ It's currently in its third trimester.
 npm install
 ```
 
-The first time you `npm install`, your browser will open with documentation. (Note: currently, this is the many minor matters documentation; Kubo should obviously have its own Kubo.)
+The first time you `npm install`, your browser will open with documentation.
 
 # Set up aliases
 
