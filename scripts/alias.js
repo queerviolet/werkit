@@ -5,9 +5,11 @@
 const fs = require('fs')
     , {dirname, join} = require('path')
     , root = dirname(__dirname)
+    , demosDir = join(root, 'demos')
     , aliases = {
       kubo: join(root, 'packages/kubo'),
       mmm: join(root, 'packages/many-matters'),
+      'learn.kubo': join(root, 'packages/learn.kubo'),
     }
 
 fs.writeFileSync('.alias', Object.keys(aliases)

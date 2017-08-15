@@ -4,60 +4,82 @@ It's currently in its third trimester.
 
 # Getting Started
 
-This is a monorepo managed by lerna. Install lerna if you don't have it:
-
 ```sh
-npm i -g lerna
+npm install
 ```
 
-Then setup this repo:
+The first time you `npm install`, your browser will open with documentation. (Note: currently, this is the many minor matters documentation; Kubo should obviously have its own Kubo.)
+
+# Set up aliases
+
+If you're working with kubo from this repository, it can be helpful to set up
+aliases. There's a script for this:
 
 ```sh
-lerna bootstrap
+$(node scripts/alias)
 ```
 
-Then you can run a demo workshop:
+You must run it with the `$()` around it. This will cause the shell in your
+current terminal to set up aliases for `kubo`, `learn.import`, and `mmm`,
+all pointed at *this directory*. 
 
-```sh
-npm run kubo demos/pledge
-```
-
-The workshop will serve on [port 9876](http://localhost:9876).
+(To see all the aliases it creates, `cat .aliases`.)
 
 
 # Things you can do
+
+These assume that you have [set up your aliases](#set-up-aliases).
+
+If you haven't, you can use `npm run kubo` instead of `kubo`, for much the same
+effect.
 
 ## Run a demo workshop
 
 There are several workshops in this repo, in the [`demos`](./demos) folder. To run one,
 
 ```sh
-npm run kubo demos/node-shell-v-20
+kubo demos/pledge
 ```
-
-The workshop will serve on [port 9876](http://localhost:9876).
-
 
 ## Import and run a learndot workshop
 
 You can import and run a new learndot workshop in one fell swoop.
 
 ```sh
-npm run learn.kubo <workshop-id>
+npm run learn.kubo ${workshop_id}
 ```
 
-The workshop will be imported into `demos` and served on
-[port 9876](http://localhost:9876).
+The workshop will be imported into `demos` and kubo will launch serving it.
 
-
-## Import a workshop from Learndot
+## Import a workshop from Learndot into demos
 
 ```sh
-node packages/learn.kubo <workshop-id>
+npm run learn.kubo ${workshop-id}
 ```
 
 This will convert the workshop to JSX and dump its files into a directory named
-after it (`game-of-life`, for instance).
+after it (`demos/game-of-life`, for instance).
+
+## Import a workshop from Learndot anywhere
+
+```sh
+learn.kubo ${workshop-id}
+```
+
+This will import the workshop into the current dir, in a directory based on its
+title (`./game-of-life`, for instance).
+
+```sh
+learn.kubo -d somewhere/else/:title ${workshop-id}
+```
+
+Will import into `somewhere/else/game-of-life`, for instance
+
+```sh
+learn.kubo -d .kubo ${workshop-id}
+```
+
+Will import into `.kubo`, ignoring the workshop's title.
 
 
 ## Run a workshop
@@ -67,7 +89,7 @@ files. Try the [many minor matters documentation](./packages/many-matters),
 for instance:
 
 ```sh
-npm run kubo packages/many-matters/matters.mmm
+kubo packages/many-matters/matters.mmm
 ```
 
 Once started, you can view the workshop on [port 9876](http://localhost:9876).
@@ -85,12 +107,13 @@ npm run add many-matters resolve
 That will install the `resolve` npm in the `many-matters` subpackage, and re-run
 `lerna bootstrap` to ensure everything stays happy.
 
+
 ## Re-download a workshop that's already been imported
 
 You can re-import a workshop without going and finding its workshop id:
 
 ```sh
-node packages/learn.kubo -u <path>
+learn.kubo -u ${path}
 ```
 
 This relies on the presence of a `learn.id` file in the directory, created
@@ -100,9 +123,10 @@ by the importer.
 # TODO
 
 ### Kubo
-- [ ] Command line ergonomics
-  - [ ] Should accept ports as flags
-- [ ] Theming
+- [ ] Needs a welcome doc
+- [X] Command line ergonomics
+  - [X] Should accept ports as flags
+- [X] Theming
   - This may be entirely subsumed by many matters theming, but will probably
     require some support in kubo.
 - [ ] Help desk   

@@ -5,6 +5,7 @@
  */
 
 const fs = require('fs')
+    , Promise = require('bluebird')
     , path = require('path')
     , {promisify} = require('util')
     , {join} = require('path')
@@ -20,6 +21,7 @@ async function main(argv) {
     .version('0.0.1')
     .usage('[-u] <workshop-id,...|path,...>')
     .option('-u, --update', 'Update an existing dir pulled from learn.')
+    .option('-d, --dir [dir]', 'Import into dir', ':title')
     .parse(argv)
 
   if (!program.args.length) {
@@ -28,19 +30,21 @@ async function main(argv) {
   }
 
   if (program.update) {
-    return Promise.all(program.args.map(id => update(id)))
+    await Promise.all(program.args.map(id => update(id)))
+    return id
   } else {
-    return Promise.all(program.args.map(path => fetch(path)))
+    return Promise.all(program.args.map(path => fetch(path, program.dir)))
+              .then(paths => paths.join('\n'))
   }
 }
 
-async function fetch(workshopId, outDir) {
+async function fetch(workshopId, dir) {
   const workshop = await learn.get(`api/workshops/${workshopId}`)
     .then(fetchConcepts)
   
   const assets = convertWorkshop(workshop)
   
-  const outputDir = outDir || key(workshop.name)
+  const outputDir = dir.replace(/:title/g, key(workshop.name))
   await mkdir(outputDir)
     .catch(error => error.code === 'EEXIST' || Promise.reject(error))
     .then(() => console.error('created', outputDir))
@@ -52,7 +56,7 @@ async function fetch(workshopId, outDir) {
 const update = path =>
   readFile(join(path, 'learn.id'))
     .then(id => fetch(id, path))   
-    .catch(err => console.log(path, ':', err.message)) 
+    .catch(err => console.error(path, ':', err.message)) 
 
 const fetchConcepts = async workshop =>
   Object.assign(workshop, {
@@ -110,12 +114,20 @@ const key = (name='') => name
   .replace(/\s+/g, '-')
   .replace(/[^a-zA-Z0-9_\-]/g, '')
 
-const write = (outputDir, assets) => Promise.all(
-  Object.keys(assets)
-    .map(async path => assets[path] &&
-      writeFile(join(outputDir, path), await assets[path])
-        .then(() => path))
-)
+const write = (outputDir, assets) =>
+  Promise.map(
+    Object.keys(assets),
+    path => {
+      const assetPath = join(outputDir, path)
+      return Promise.resolve(assets[path])
+              .then(data => writeFile(assetPath, data))
+              .then(() => {
+                console.error('wrote', assetPath)
+                return assetPath
+              })
+              .catch(err => console.error(path, ':', err.message))
+    }
+  ).then(() => outputDir)
 
 if (module === require.main) main(process.argv)
   .then(console.log, err => console.error(err))

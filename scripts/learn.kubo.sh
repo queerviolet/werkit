@@ -1,4 +1,2 @@
  #!/bin/sh
- cd demos
- workshop=$(node ../packages/learn.kubo $1)
- npm run kubo demos/${workshop}
+npm run kubo $(node packages/learn.kubo -d demos/:title $1)
