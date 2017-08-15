@@ -3,11 +3,15 @@
   "version": "0.0.1",
   "description": "Tooling for building interactive code workshops with JSX.",
   "main": "packages/werkit",
+  "kubo": "packages/many-matters/matters.mmm",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "add": "scripts/add.sh",
     "kubo": "node packages/kubo",
-    "learn.kubo": "scripts/learn.kubo.sh"
+    "learn.kubo": "scripts/learn.kubo.sh",
+    "lerna": "lerna bootstrap",
+    "first-time": "scripts/first-time.sh",
+    "postinstall": "npm run lerna && npm run first-time"
   },
   "author": "",
   "license": "ISC",
