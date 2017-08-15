@@ -136,6 +136,26 @@
       @[...] ./intro.mmm
   
     It includes all the matters from `intro.mmm` right here.
+  
+  @[Concept] Themes
+
+  When loaded via Webpack, Matters become Components. These components take
+  as props a mapping of Matter types to Components:
+
+     @[Code] js
+     import Homework from './homework/problem-3.mmm'     
+     import Workshop from './components/Workshop'
+     import Hint from './components/Hint'
+
+     export default () =>
+       <Homework Workshop={Workshop} Hint={Hint} />
+  
+  This "theme" is passed down transitively (Matters pass all their props down
+  to their children), but can be overridden, even within a Matter:
+
+     @-[Code] mmm
+     @[...] ./example
+     @  Code  Code.Dark   /* Use a dark theme for code in this example */
 
   @[Concept] Why?
     @[Action] The problem
@@ -208,9 +228,7 @@
     Evaluation blocks don't work yet.
 
     @[Action] @import directives  
-    Right now, MMM prays that everything it needs is global. This is true,
-    because werkit uses the webpack ProvidePlugin to inject some global-ish names,
-    like Workshop, Concept, Action, and so on.
+    Right now, the only way to put components into a mmm file is through a theme.
 
     In general, it would be nice to be able to insert `import` statements in the
     top of the generated file. Maybe any kind of statement? I think the syntax
