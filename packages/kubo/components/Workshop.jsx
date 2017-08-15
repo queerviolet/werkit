@@ -132,14 +132,9 @@ class Navigator extends React.Component {
 
   render() {
     return <nav className='workshop' ref={this.navElementDidMount}>
-      <Nav visible={this.state.visible} mmm={this.context.mmm} />
+      <Nav visible={this.state.visible} mmm={this.props.mmm} />
     </nav>
   }
-}
-
-const PropTypes = require('prop-types')
-Navigator.contextTypes = {
-  mmm: PropTypes.array
 }
 
 const getElementBoxes = element => ({
@@ -191,7 +186,7 @@ module.exports = class extends React.Component {
     return <div className='workshop'>
       <div className='workshop-watermark' style={this.watermarkStyle} />
       <div className='workshop-left'>
-        <Navigator />
+        <Navigator mmm={this.props.mmm}/>
       </div>
       <div className='workshop-content'>
         <main>    

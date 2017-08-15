@@ -15,7 +15,25 @@ function toJsxFile(matters, params={
     }
   }
 
-  const p = Object.assign({}, params, {includes})
+
+  const mmmify = matters =>
+    '[' + matters.map(mmmifyOne) + ']'
+
+  const mmmifyOne = matter => {
+    if (typeof matter === 'string') return str(matter)
+    return matter.type === '...'
+      ? '...' + includes(matter.head).Component + '.mmm'
+      : `{ type: ${str(matter.type)},
+          head: ${str(matter.head)},
+          props: ${str(matter.props)},
+          children: ${mmmify(matter.children)} }`
+  }
+
+  const p = Object.assign({}, params, {
+    includes,
+    mmmify,
+    mmmifyOne,
+  })
 
   const asComponent = jsx =>
     `
@@ -47,26 +65,33 @@ function toJsxFile(matters, params={
   Matter.childContextTypes = {
     mmm: PropTypes.array,
   }
-  Matter.mmm = ${mmmify(matters, imports)}`
+  Matter.mmm = ${mmmify(matters)}`
   const exports = `export default Matter`
   return [str('use strict'), importStatements, decl, mmm, exports].join('\n')
 }
 toJsxFile.toJsx = toJsx
 
 function toJsx(matter, params) {
-  const {includes, createElement='React.createElement'} = params
+  const {includes, mmmify, createElement='React.createElement'} = params
   if (typeof matter === 'string') return str(matter)
   const type = matter.type === '...' ?
           includes(matter.head).Component
           : matter.type
-      , {props: rawProps, children} = matter
-      , propsSrc = formatProps(rawProps)
+      , {props: rawProps, children} = matter  
+      , isComponent = type && type[0] === type[0].toUpperCase()
+  
+  if (isComponent) {
+    rawProps.mmm = mmmify([matter])
+  }
+  rawProps.foo = "2"
+
+  const propsSrc = formatProps(rawProps)
       , childrenSrc = children
           .reduce(mergeLines, [])
           .map(c => toJsx(c, params)).join(',\n')
       , childSrc = childrenSrc ? `, ${childrenSrc}` : ''
       , indent = new Array(matter.indent).fill(' ').join('')
-      , typeSrc = type && type[0] === type[0].toUpperCase() ? type : str(type)
+      , typeSrc = isComponent ? type : str(type)
   return `${indent}${createElement}(${typeSrc}, ${propsSrc} ${childSrc})`
 }
 
@@ -86,17 +111,4 @@ function formatProps(props) {
       .map(key => `${str(key)}: ${props[key].toString()}`)
       .join(', ') +
   '}'
-}
-
-const mmmify = (matters, imports) =>
-  '[' + matters.map(mmmifyOne(imports)) + ']'
-
-const mmmifyOne = imports => matter => {
-  if (typeof matter === 'string') return str(matter)
-  return matter.type === '...'
-    ? '...' + imports[matter.head].Component + '.mmm'
-    : `{ type: ${str(matter.type)},
-         head: ${str(matter.head)},
-         props: ${str(matter.props)},
-         children: ${mmmify(matter.children, imports)} }`
 }
