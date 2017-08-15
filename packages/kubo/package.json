@@ -30,6 +30,7 @@
     "marksy": "^5.0.0",
     "memory-fs": "^0.4.1",
     "mktemp": "^0.4.0",
+    "open": "0.0.5",
     "raw-loader": "^0.5.1",
     "react": "^15.6.1",
     "react-css": "0.0.2",

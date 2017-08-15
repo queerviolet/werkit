@@ -2,6 +2,8 @@ const program = require('commander')
   .version('0.0.1')
   .usage('[-t themes] [path]')
   .option('-t, --theme [themes]', 'Themes', (val, memo) => [...memo, val], [])
+  .option('-w, --no-window', 'Do not open a browser window after starting server')
+  .option('-p, --port [port]', 'Serve on <port>', 9876)
   .parse(process.argv)
 
     , path = require('path')
@@ -23,6 +25,7 @@ const program = require('commander')
     , {config} = require('rxquire/webpack')
     , {plugin, rule, resolveExt, resolveAll, target} = config
     , flow = require('rxquire/flow')
+    , open = require('open')
 
 module.exports = {serve, exports}
 
@@ -58,7 +61,7 @@ async function entryPoint(entry) {
   return temp
 }
 
-async function serve(entry, port=9876) {
+async function serve(entry, port=program.port) {
   const entryPointFile = await entryPoint(entry)
 
   const wrk = werk({filename: 'index.js'})
@@ -85,7 +88,11 @@ async function serve(entry, port=9876) {
     contentBase: path.join(__dirname, 'static'),
     watchContentBase: true,
     log: x => x,
-  }).listen(port, () => console.log(`http://localhost:${port}`))
+  }).listen(port, () => {
+    const url = `http://localhost:${port}`
+    console.log(url)
+    if (program.window) open(url)
+  })
 }
 
 const theme = flow(
