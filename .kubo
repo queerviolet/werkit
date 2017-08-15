@@ -1,6 +1,13 @@
 @[Workshop] Kubo
   @[Concept] Introduction
-    Kubo is a little program that serves up interactive documentation.
+    Kubo is a little program that serves up interactive documentation.    
+    
+      @[Hint] These instructions presume that you have set up aliases.
+      If you haven't, do this:
+
+        @[Code] sh
+        npm install            # you've probably done this already
+        $(node scripts/alias)  # loads aliases into your terminal.
 
     @[Action] Quick start
     To run the kubo for a repository, the recipe is simple:
@@ -12,6 +19,13 @@
 
     The server supports hot loading, so you can see changes to the workshop
     as you make them.
+
+    @[Action] Demos
+    There are some demo workshops in this repo. They're in the `demos/` folder.
+    To run one:
+
+      @[Code] sh
+      kubo demos/pledge
     
     @[Action] If you...
     Don't want to open the browser automatically?
