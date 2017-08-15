@@ -61,7 +61,7 @@ function toJsxFile(matters, params={
   const decl = asComponent(
     matters.length === 1
       ? toJsx(matters[0], p)
-      : matters.map(m => toJsx(m, p)))
+      : `React.createElement('div', null, ${matters.map(m => toJsx(m, p)).join(',')})`)
 
   const importStatements = Object.keys(imports)
     .map(mmmModule => {

@@ -1,240 +1,237 @@
-@[Workshop] Many Minor Matters
-@  author   `Ashi Krishnan <hi@ashi.io>`
+@[Concept] Introduction
+Many minor matters is a mechanism for maintainably managing many markups
+(or downs).
 
-  @[Concept] Introduction
-  Many minor matters is a mechanism for maintainably managing many markups
-  (or downs).
+  @[Action] Say again?
+  MMM uses indentation and a very light syntax to distinguish between embedded
+  pieces of text in different languages. This is to solve the various escaping
+  problems that can happen when you try to, for example, write `JS` code or
+  *Markdown* inside JSX.
 
-    @[Action] Say again?
-    MMM uses indentation and a very light syntax to distinguish between embedded
-    pieces of text in different languages. This is to solve the various escaping
-    problems that can happen when you try to, for example, write `JS` code or
-    *Markdown* inside JSX.
-
-    This file starts with a matter header with a single prop.
-    
-  @[Concept] About matters
-    @[Action] Simple matters
-    This is what a matter looks like: indented, and with a head at the top.
-    Indented lines without tags are not considered new matters.
-
-      @[Hint] click to show
-      This matter is a Hint. It'll generate a `<Hint>` tag in the JSX output. That's
-      the extent of what MMM knows about what it's doing---it's a very thin wrapper
-      on top of JSX.
-
-    @[Action] Separators and leaf blocks
-
-    MMM aims to get out of the way of whatever languages you want to write about:
-
-      @---[Code] mmm
-      @-[Code] js
-      // This is a tag with a separator. The separator is the '-' before the
-      // [Code], and it tells MMM that this matter is a *leaf*. MMM will not
-      // try to parse deeper Matters.
-      /*
-        So,
-          @[This]
-          is not a new matter.
-      */
-      // MMM will still try to parse consecutive Matters, though. You must
-      // include the separator again, like this:  
-      
-      @-[Code] python
-      # The purpose of all this is to keep MMM from getting tripped up on 
-      # languages where '@[' is a reasonable way to start a line.
-
-      @-[Code] objc  
-      // So we can show an array literal in objective C, for instance:
-      @[@"Apples", @"Bananas", @"Cucumbers"];    
-
-  When displayed, the above matters look like:
-
-      @-[Code] js
-      // This is a tag with a separator. The separator is the '-' before the
-      // [Code], and it tells MMM that this matter is a *leaf*. MMM will not
-      // try to parse deeper Matters.
-      /*
-        So,
-          @[This]
-          is not a new matter.
-      */
-      // MMM will still try to parse consecutive Matters, though. You must
-      // include the separator again, like this:  
-      
-      @-[Code] python
-      # The purpose of all this is to keep MMM from getting tripped up on 
-      # languages where '@[' is a reasonable way to start a line.
-
-      @-[Code] objc  
-      // So we can show an array literal in objective C, for instance:
-      @[@"Apples", @"Bananas", @"Cucumbers"];
-
-    @[Action] Using HTML tags
-
-    MMM compiles to JSX. You can use HTML tags just like you would in JSX---just
-    reference by using a lower case tag.
-
-      @-[Code] mmm
-      @[pre]
-      Hello.
-    
-    Looks like this:
-
-      @[pre]
-      Hello.
-
-    @[Action] Props
-
-    You can specify props to give to a component (or tag).
-    
-    Props are specified by a `@`, *followed by whitespace*, then the name of the prop,
-    more spaces, then the prop's value. The whitespace between the `@` and the prop is
-    non-optional (this disambiguates it from other MMM directives, like `@import`).
-
-    Prop values must be valid JS expressions; they are inserted directly into the
-    generated JSX output:
-
-      @-[Code] mmm 
-      @[strong]
-      @  style {backgroundColor: 'lightblue'}
-      Boo!
-
-    Renders this:
-
-      @[strong]
-      @  style {backgroundColor: 'lightblue'}
-      Boo!
-    
-    You can even use functions.
-
-    All together then, here's the Matter for a working button:
-
-      @-[Code] mmm
-      @[button]
-      @  style         {backgroundColor: 'fuchsia', padding: '9px', color: 'white'}
-      @  data-message  `Hi there.`
-      @  onClick       evt => window.alert(evt.target.dataset.message)
-      Click me, please!
-
-    It renders as this:
-
-      @[button]
-      @  style        {backgroundColor: 'fuchsia', padding: '9px', color: 'white'}
-      @  data-message `Hi there.`
-      @  onClick      evt => window.alert(evt.target.dataset.message)
-      Click me, please!
-    
-    I don't know if that's useful, exactly. MMM is explicitly not designed to be
-    a good way to express programmic structures. For that, you'll probably want
-    to use JSX.
-
-    @[Action] Inclusions
-    This is an inclusion:
-
-      @-[Code] mmm
-      @[...] ./intro.mmm
+  This file starts with a matter header with a single prop.
   
-    It includes all the matters from `intro.mmm` right here.
+@[Concept] About matters
+  @[Action] Simple matters
+  This is what a matter looks like: indented, and with a head at the top.
+  Indented lines without tags are not considered new matters.
+
+    @[Hint] click to show
+    This matter is a Hint. It'll generate a `<Hint>` tag in the JSX output. That's
+    the extent of what MMM knows about what it's doing---it's a very thin wrapper
+    on top of JSX.
+
+  @[Action] Separators and leaf blocks
+
+  MMM aims to get out of the way of whatever languages you want to write about:
+
+    @---[Code] mmm
+    @-[Code] js
+    // This is a tag with a separator. The separator is the '-' before the
+    // [Code], and it tells MMM that this matter is a *leaf*. MMM will not
+    // try to parse deeper Matters.
+    /*
+      So,
+        @[This]
+        is not a new matter.
+    */
+    // MMM will still try to parse consecutive Matters, though. You must
+    // include the separator again, like this:  
+    
+    @-[Code] python
+    # The purpose of all this is to keep MMM from getting tripped up on 
+    # languages where '@[' is a reasonable way to start a line.
+
+    @-[Code] objc  
+    // So we can show an array literal in objective C, for instance:
+    @[@"Apples", @"Bananas", @"Cucumbers"];    
+
+When displayed, the above matters look like:
+
+    @-[Code] js
+    // This is a tag with a separator. The separator is the '-' before the
+    // [Code], and it tells MMM that this matter is a *leaf*. MMM will not
+    // try to parse deeper Matters.
+    /*
+      So,
+        @[This]
+        is not a new matter.
+    */
+    // MMM will still try to parse consecutive Matters, though. You must
+    // include the separator again, like this:  
+    
+    @-[Code] python
+    # The purpose of all this is to keep MMM from getting tripped up on 
+    # languages where '@[' is a reasonable way to start a line.
+
+    @-[Code] objc  
+    // So we can show an array literal in objective C, for instance:
+    @[@"Apples", @"Bananas", @"Cucumbers"];
+
+  @[Action] Using HTML tags
+
+  MMM compiles to JSX. You can use HTML tags just like you would in JSX---just
+  reference by using a lower case tag.
+
+    @-[Code] mmm
+    @[pre]
+    Hello.
   
-  @[Concept] Themes
+  Looks like this:
 
-  When loaded via Webpack, Matters become Components. These components take
-  as props a mapping of Matter types to Components:
+    @[pre]
+    Hello.
 
-     @[Code] js
-     import Homework from './homework/problem-3.mmm'     
-     import Workshop from './components/Workshop'
-     import Hint from './components/Hint'
+  @[Action] Props
 
-     export default () =>
-       <Homework Workshop={Workshop} Hint={Hint} />
+  You can specify props to give to a component (or tag).
   
-  This "theme" is passed down transitively (Matters pass all their props down
-  to their children), but can be overridden, even within a Matter:
+  Props are specified by a `@`, *followed by whitespace*, then the name of the prop,
+  more spaces, then the prop's value. The whitespace between the `@` and the prop is
+  non-optional (this disambiguates it from other MMM directives, like `@import`).
 
-     @-[Code] mmm
-     @[...] ./example
-     @  Code  Code.Dark   /* Use a dark theme for code in this example */
+  Prop values must be valid JS expressions; they are inserted directly into the
+  generated JSX output:
 
-  @[Concept] Why?
-    @[Action] The problem
-    Markdown is nice. You can just put in code `like this`,
-    or like this:
+    @-[Code] mmm 
+    @[strong]
+    @  style {backgroundColor: 'lightblue'}
+    Boo!
 
-      @[Code] md
+  Renders this:
+
+    @[strong]
+    @  style {backgroundColor: 'lightblue'}
+    Boo!
+  
+  You can even use functions.
+
+  All together then, here's the Matter for a working button:
+
+    @-[Code] mmm
+    @[button]
+    @  style         {backgroundColor: 'fuchsia', padding: '9px', color: 'white'}
+    @  data-message  `Hi there.`
+    @  onClick       evt => window.alert(evt.target.dataset.message)
+    Click me, please!
+
+  It renders as this:
+
+    @[button]
+    @  style        {backgroundColor: 'fuchsia', padding: '9px', color: 'white'}
+    @  data-message `Hi there.`
+    @  onClick      evt => window.alert(evt.target.dataset.message)
+    Click me, please!
+  
+  I don't know if that's useful, exactly. MMM is explicitly not designed to be
+  a good way to express programmic structures. For that, you'll probably want
+  to use JSX.
+
+  @[Action] Inclusions
+  This is an inclusion:
+
+    @-[Code] mmm
+    @[...] ./intro.mmm
+
+  It includes all the matters from `intro.mmm` right here.
+
+@[Concept] Themes
+
+When loaded via Webpack, Matters become Components. These components take
+as props a mapping of Matter types to Components:
+
+   @[Code] js
+   import Homework from './homework/problem-3.mmm'     
+   import Workshop from './components/Workshop'
+   import Hint from './components/Hint'
+
+   export default () =>
+     <Homework Workshop={Workshop} Hint={Hint} />
+
+This "theme" is passed down transitively (Matters pass all their props down
+to their children), but can be overridden, even within a Matter:
+
+   @-[Code] mmm
+   @[...] ./example
+   @  Code  Code.Dark   /* Use a dark theme for code in this example */
+
+@[Concept] Why?
+  @[Action] The problem
+  Markdown is nice. You can just put in code `like this`,
+  or like this:
+
+    @[Code] md
+    ```js
+      // hi
+    ```
+
+  And if you want to extend it, you can use HTML tags.
+  Our workshops have hints:
+    @[Code] md
+    <hint title='a secret'>
+      This won't show until you click.
+    </hint>
+  
+  That's nice. We're often writing about JSX, so we have stuff
+  that looks like this:
+
+    @[Code] md
+    ```js
+      export default () => <Component>
+      </Component>
+    ```
+
+  And sometimes that's inside a `<hint>`:
+
+    @[Code] md
+    <hint title='click to confuse the markdown parser'>      
       ```js
-        // hi
-      ```
-
-    And if you want to extend it, you can use HTML tags.
-    Our workshops have hints:
-      @[Code] md
-      <hint title='a secret'>
-        This won't show until you click.
-      </hint>
-    
-    That's nice. We're often writing about JSX, so we have stuff
-    that looks like this:
-
-      @[Code] md
-      ```js
+        // Frankly, I can understand why the parser is confused
+        // at this point. Are we inside HTML? Getting parsed as
+        // markdown? Does the HTML parser take precedence because
+        // we're inside a <hint> tag, or do the backticks make it
+        // literal, and oh god, what if my comment has Markdown,
+        // people actually do that? Like, I might say, to generate
+        // this file, run:
+        //
+        //    ```sh
+        //    scream > /dev/null
+        //    ```
+        //
         export default () => <Component>
-        </Component>
+        </Component>        
       ```
+    </hint>
 
-    And sometimes that's inside a `<hint>`:
+  I believe that there's some way of arranging the Markdown and HTML parsers
+  that make this work right. I believe this in the same way I believe 0.99999999 = 1.
+  Yes, but also no.
 
-      @[Code] md
-      <hint title='click to confuse the markdown parser'>      
-        ```js
-          // Frankly, I can understand why the parser is confused
-          // at this point. Are we inside HTML? Getting parsed as
-          // markdown? Does the HTML parser take precedence because
-          // we're inside a <hint> tag, or do the backticks make it
-          // literal, and oh god, what if my comment has Markdown,
-          // people actually do that? Like, I might say, to generate
-          // this file, run:
-          //
-          //    ```sh
-          //    scream > /dev/null
-          //    ```
-          //
-          export default () => <Component>
-          </Component>        
-        ```
-      </hint>
+  So many matters does not try to solve the problem of mingling Markdown and HTML-like
+  tags, and instead tackles the problem of separating blocks written in whatever language
+  from each other, and providing metadata for them.
 
-    I believe that there's some way of arranging the Markdown and HTML parsers
-    that make this work right. I believe this in the same way I believe 0.99999999 = 1.
-    Yes, but also no.
+@[Concept] Things that don't work yet  
+  @[Action] Evaluation blocks
+  This is an evaluation block:
 
-    So many matters does not try to solve the problem of mingling Markdown and HTML-like
-    tags, and instead tackles the problem of separating blocks written in whatever language
-    from each other, and providing metadata for them.
-
-  @[Concept] Things that don't work yet  
-    @[Action] Evaluation blocks
-    This is an evaluation block:
-
-      @-[Code] mmm
-      @!#
-      const data = require('./data')
-          , mapper = require('./mapper')
-      return data.map(mapper)
-    
-    It lets you insert JS code, which will be evaluated in an IFFE.
+    @-[Code] mmm
+    @!#
+    const data = require('./data')
+        , mapper = require('./mapper')
+    return data.map(mapper)
   
-    Evaluation blocks don't work yet.
+  It lets you insert JS code, which will be evaluated in an IFFE.
 
-    @[Action] @import directives  
-    Right now, the only way to put components into a mmm file is through a theme.
+  Evaluation blocks don't work yet.
 
-    In general, it would be nice to be able to insert `import` statements in the
-    top of the generated file. Maybe any kind of statement? I think the syntax
-    will look like this:
+  @[Action] @import directives  
+  Right now, the only way to put components into a mmm file is through a theme.
 
-      @-[Code] mmm
-      @import {Workshop} from 'kubo/components'
-    
-    These don't work yet either.
+  In general, it would be nice to be able to insert `import` statements in the
+  top of the generated file. Maybe any kind of statement? I think the syntax
+  will look like this:
+
+    @-[Code] mmm
+    @import {Workshop} from 'kubo/components'
+  
+  These don't work yet either.
