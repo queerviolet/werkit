@@ -92,7 +92,7 @@ function toJsx(matter, params) {
     rawProps.mmm = mmmify([matter])
   }
 
-  const propsSrc = formatProps(rawProps)
+  const propsSrc = formatProps(type, rawProps)
       , childrenSrc = children
           .reduce(mergeLines, [])
           .map(c => toJsx(c, params)).join(',\n')
@@ -118,11 +118,13 @@ const componentSrcFor = type => isComponent(type)
   ? isImport(type) ? type : `(this.props.${type} || NotFound)`
   : str(type)
 
-function formatProps(props) {
+function formatProps(type, props) {
   if (!props) return 'null'  
-  return '{...this.props,' +
-    Object.keys(props)
-      .map(key => `${str(key)}: ${props[key].toString()}`)
-      .join(', ') +
+  return '{' +
+    (isComponent(type) ? ['...this.props'] : [])
+      .concat(
+        Object.keys(props)      
+          .map(key => `${str(key)}: ${props[key].toString()}`)
+      ).join(', ') +
   '}'
 }
