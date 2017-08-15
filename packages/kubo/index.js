@@ -1,10 +1,10 @@
 const program = require('commander')
   .version('0.0.1')
-  .usage('[-t themes] [path]')
+  .usage('[-w] [-t themes] [-p port] [path]')
   .option('-t, --theme [themes]', 'Themes', (val, memo) => [...memo, val], [])
   .option('-w, --no-window', 'Do not open a browser window after starting server')
   .option('-p, --port [port]',
-    'Serve on <port>, and then try <port + 1>, <port + 2>, etc...',
+    'Serve on <port> (then tries <port + 1>, <port + 2>, etc...)',
     9876)
   .parse(process.argv)
 
