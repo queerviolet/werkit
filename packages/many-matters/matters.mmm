@@ -210,7 +210,66 @@ to their children), but can be overridden, even within a Matter:
   tags, and instead tackles the problem of separating blocks written in whatever language
   from each other, and providing metadata for them.
 
-@[Concept] Things that don't work yet  
+@[Concept] Things that don't work yet
+  @[Action] Slugs
+  We sortof have the concept of slugs now, but matters should know about it.
+
+  Slugs should always be available, and we should be able to set them with some
+  syntax:
+
+    @---[Code] mmm
+    @[Concept #fragment-shaders] About fragment shaders
+
+  Ths space is optional.
+
+  Slugs should always be unique---conflicting slugs will get turned into
+  slug_1, slug_2, etc...  
+
+  @[Action] Refs
+    It would be really powerful if we could leverage refs.
+
+    The slug syntax could give us a ref to name:
+
+      @----[Code] mmm
+      @[Slider #red]
+      @  from 0
+      @  to   255
+      @  initial 128
+    
+    We'll make sure instances of those components are Observable.
+    Then we introduce this syntax:
+
+      @---[Code] mmm
+      @[div]
+      @  style(red, green) {backgroundColor: `rgb(${red}, 0, 0)`}
+
+    Which scans Observables attached to refs `red` and `green`,
+    and updates the prop when either changes.
+
+    We could have some way to define components that exist to
+    be observable things:
+
+      @---[Code] mmm
+      @def color(red, green, blue) rgbaString
+      const rgbaString = `rgba(${red}, ${green}, ${blue})`
+    
+      @def target(blue)  blue + 2
+
+    The way this works is that we'll turn `@defs` into functions that
+    eventually get subscribed to an Observer watching, in this case,
+    the scope names `red`, `green`, and `blue`.
+
+    The functions will return what's in their head; their body is JS
+    code that will go before it. So `color`, above, compiles as this:
+
+      @[Code] js
+      function color(red, green, blue) {
+        const rgbaString = `rgba(${red}, ${green}, ${blue})`
+        return (rgbaString);
+      }
+
+    Which then gets wrapped in an Observable Component.
+
   @[Action] Evaluation blocks
   This is an evaluation block:
 
