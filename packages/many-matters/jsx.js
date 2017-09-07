@@ -21,7 +21,7 @@ function toJsxFile(matters, params={
   const mmmifyOne = matter => {
     if (typeof matter === 'string') return str(matter)
     return matter.type === '...'
-      ? '...' + includes(matter.head).Component + '.mmm'
+      ? '...(' + includes(matter.head).Component + '.mmm' + '|| [])'
       : `{ type: ${str(matter.type)},
           head: ${str(matter.head)},
           props: ${str(matter.props)},

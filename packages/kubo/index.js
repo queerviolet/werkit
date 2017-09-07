@@ -124,13 +124,13 @@ for (const themeModule of program.theme) {
     basedir: process.cwd(),
     extensions: ['.js', '.json', '.jsx'],
   })
-  const theme = require(resolvedTheme)
+  const loadedTheme = require(resolvedTheme)
   const themeDir = path.dirname(resolvedTheme)  
 
   Object.assign(theme,
-    ...Object.keys(theme)
+    ...Object.keys(loadedTheme)
         .map(id => ({
-          [id]: resolve.sync(theme[id], {
+          [id]: resolve.sync(loadedTheme[id], {
             basedir: themeDir,
             extensions: ['.js', '.json', '.jsx'],
           })
