@@ -17,10 +17,7 @@ const program = require('commander')
     , stat = promisify(fs.stat)
     , {createFile: mktemp} = require('mktemp')
     , resolve = require('resolve')  
-    , my = module => resolve.sync(module, {
-        basedir: __dirname,
-        extensions: ['.js', '.json', '.jsx'],
-      })
+    , my = require('./my')
     , webpack = require('webpack')
     , WebpackDevServer = require('webpack-dev-server')
     , rxquire = require('rxquire')    
@@ -28,46 +25,21 @@ const program = require('commander')
     , {plugin, rule, resolveExt, resolveAll, target} = config
     , flow = require('rxquire/flow')
     , open = require('open')
+    , createAppJs = require('./createAppJs')
+    , createWebpackConfig = require('./createWebpackConfig')
 
 module.exports = {serve, exports}
 
-
-const entryPointSrcRaw = entry => `
-  import React from 'react'
-  import {render} from 'react-dom'
-  import { AppContainer } from 'react-hot-loader'
-  import App from ${entry}
-  
-  ${themeSrc(theme)}
-
-  const run = Component =>
-    render(<AppContainer><Component {...theme} /></AppContainer>, main)
-  
-  run(App)
-
-  if (module.hot)
-    module.hot.accept(${entry}, () => run(App))
-`
-
-const entryPointSrc = raw => entryPointSrcRaw(JSON.stringify(raw))
-
-const themeSrc = components => Object.keys(components)
-  .map(c =>
-    `import ${c} from ${JSON.stringify(components[c])}`)
-  .concat(
-    `const theme = {`, Object.keys(components).join(','), '}')
-  .join('\n')
-
 async function entryPoint(entry) {
   const temp = await mktemp(path.join(tmpdir(), 'XXXXXXXXXX.js'))
-  await write(temp, entryPointSrc(entry))
+  await write(temp, createAppJs(entry, theme))
   return temp
 }
 
 async function serve(entry, port=program.port) {
   const entryPointFile = await entryPoint(entry)
 
-  const wrk = werk({filename: 'index.js'})
+  const wrk = createWebpackConfig({filename: 'index.js'})
     .config(target('web'))
     .config(plugin(new webpack.HotModuleReplacementPlugin))  // enable HMR globally
     .config(plugin(new webpack.NamedModulesPlugin))          // Better module names in the browser
@@ -80,7 +52,7 @@ async function serve(entry, port=program.port) {
       'webpack/hot/dev-server',
       entryPointFile,
     ])
-  const {compiler, config} = wrk    
+  const {compiler, config} = wrk
 
   const server = new WebpackDevServer(compiler, {    
     host: 'localhost',
@@ -137,58 +109,6 @@ for (const themeModule of program.theme) {
         }))
   )
 }
-
-const babel = {
-      loader: 'babel-loader',
-      options: {
-        "presets": [
-          [my('babel-preset-es2015'), {modules: false}],
-          my('babel-preset-stage-2'),
-          my('babel-preset-react')
-        ],
-        "plugins": [
-          my('react-hot-loader/babel')
-        ]
-      },
-    }
-
-
-const werk = output => rxquire()
-  .config(config(output))
-  .config(resolveExt('.kubo'))
-  .config(resolveExt('.mmm'))
-  .config(rule({
-    test: /\.jsx?$/,
-    use: babel,
-    exclude: /node_modules/,
-  }))
-  .config(rule({
-    test: /\.(kubo|mmm)$/,
-    use: [babel, 'many-matters/loader'],
-    exclude: /node_modules/,
-  }))
-  .config(rule({
-    test: /\.(jpeg|jpg|png|)$/,
-    use: 'url-loader',
-    exclude: /node_modules/,
-  }))
-  .config(rule({
-    test: /\.css$/,
-    use: ['style-loader', 'css-loader']
-  }))
-  .config(rule({
-    test: /\.(txt|md|markdown)$/,
-    use: 'raw-loader',
-    exclude: /node_modules/,    
-  }))
-  .config(rule({
-    test: /\.(glsl|frag|vert)$/,
-    use: 'glslify-loader',
-  }))
-  // Add our node modules to the search path  
-  .config(resolveAll(path.join(__dirname, 'node_modules')))
-  // Provide our theme
-  // .config(plugin(new webpack.ProvidePlugin({React: my('react')})))
 
 const lookup = (file, parser=JSON.parse) =>
   async function(entry=process.cwd()) {
