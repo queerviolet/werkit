@@ -20,10 +20,6 @@ const program = require('commander')
     , my = require('./my')
     , webpack = require('webpack')
     , WebpackDevServer = require('webpack-dev-server')
-    , rxquire = require('rxquire')    
-    , {config} = require('rxquire/webpack')
-    , {plugin, rule, resolveExt, resolveAll, target} = config
-    , flow = require('rxquire/flow')
     , open = require('open')
     , createAppJs = require('./createAppJs')
     , createWebpackConfig = require('./createWebpackConfig')
@@ -38,21 +34,8 @@ async function entryPoint(entry) {
 
 async function serve(entry, port=program.port) {
   const entryPointFile = await entryPoint(entry)
-
-  const wrk = createWebpackConfig({filename: 'index.js'})
-    .config(target('web'))
-    .config(plugin(new webpack.HotModuleReplacementPlugin))  // enable HMR globally
-    .config(plugin(new webpack.NamedModulesPlugin))          // Better module names in the browser
-                                                             // console on HMR updates
-    .config(plugin(new webpack.NoEmitOnErrorsPlugin))        // Don't emit on errors.
-    ([
-      // activate HMR for React
-      'react-hot-loader/patch',
-      `webpack-dev-server/client?http://localhost:${port}`,
-      'webpack/hot/dev-server',
-      entryPointFile,
-    ])
-  const {compiler, config} = wrk
+      , conf = createWebpackConfig(entryPointFile)
+      , compiler = webpack(createWebpackConfig(entryPointFile))
 
   const server = new WebpackDevServer(compiler, {    
     host: 'localhost',
@@ -77,7 +60,11 @@ async function serve(entry, port=program.port) {
   })
 }
 
-const theme = flow(
+const theme = Object.assign(
+  {
+    Code: my(`./components/Code/Code`),
+    $Text: my(`./components/Markdown`),
+  },
   ...[
     'Workshop',
     'Concept',
@@ -86,10 +73,7 @@ const theme = flow(
   ].map(name => ({
     [name]: my(`./components/${name}`)
   }))
-)({
-  Code: my(`./components/Code/Code`),
-  $Text: my(`./components/Markdown`),
-})
+)
 
 for (const themeModule of program.theme) {
   const resolvedTheme = resolve.sync(themeModule, {
