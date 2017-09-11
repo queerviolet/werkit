@@ -30,8 +30,7 @@ async function main(argv) {
   }
 
   if (program.update) {
-    await Promise.all(program.args.map(id => update(id)))
-    return id
+    return Promise.all(program.args.map(id => update(id)))
   } else {
     return Promise.all(program.args.map(path => fetch(path, program.dir)))
               .then(paths => paths.join('\n'))

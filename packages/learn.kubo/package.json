@@ -23,11 +23,9 @@
     "esformatter": "^0.10.0",
     "esformatter-jsx": "^8.0.1",
     "jsesc": "^2.5.1",
-    "jsx-to-string": "^1.1.0",
     "learn.": "~0",
     "react": "^15.6.1",
     "react-display-name": "^0.2.0",
-    "remark-react": "^4.0.0",
-    "serialize-jsx": "~0"
+    "remark-react": "^4.0.0"
   }
 }
