@@ -54,7 +54,7 @@ The workshop will be imported into `demos` and kubo will launch serving it.
 ## Import a workshop from Learndot into demos
 
 ```sh
-npm run learn.kubo ${workshop-id}
+npm run learn.kubo ${workshop_id}
 ```
 
 This will convert the workshop to JSX and dump its files into a directory named
@@ -63,20 +63,20 @@ after it (`demos/game-of-life`, for instance).
 ## Import a workshop from Learndot anywhere
 
 ```sh
-learn.kubo ${workshop-id}
+learn.kubo ${workshop_id}
 ```
 
 This will import the workshop into the current dir, in a directory based on its
 title (`./game-of-life`, for instance).
 
 ```sh
-learn.kubo -d somewhere/else/:title ${workshop-id}
+learn.kubo -d somewhere/else/:title ${workshop_id}
 ```
 
 Will import into `somewhere/else/game-of-life`, for instance
 
 ```sh
-learn.kubo -d .kubo ${workshop-id}
+learn.kubo -d .kubo ${workshop_id}
 ```
 
 Will import into `.kubo`, ignoring the workshop's title.
