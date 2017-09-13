@@ -21,6 +21,10 @@ const compile = tags => {
   }
 }
 
+const checkbox = /^\s*\[([xX\s])\]\s*(.*)/
+    , withMark = match => match[1].trim()
+        ? `☑ ${match[2]}`
+        : `☐ ${match[2]}`
 Markdown.Renderer = class Renderer extends marked.Renderer {
   code(code, language) {
     return `<codeblock language="${language}">${code}</codeblock>`
@@ -34,6 +38,13 @@ Markdown.Renderer = class Renderer extends marked.Renderer {
       return this.code(rest, lang)
     }
     return super.codespan(code)
+  }
+
+  listitem(text) {
+    const box = text.match(checkbox)
+    if (box)
+      return `<li className="undecorated-list-item">${withMark(box)}</li>`
+    return '<li>' + text + '</li>'
   }
 }
 

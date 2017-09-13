@@ -34,8 +34,8 @@ async function entryPoint(entry) {
 
 async function serve(entry, port=program.port) {
   const entryPointFile = await entryPoint(entry)
-      , conf = createWebpackConfig(entryPointFile)
-      , compiler = webpack(createWebpackConfig(entryPointFile))
+      , conf = createWebpackConfig(entryPointFile, port)
+      , compiler = webpack(conf)
 
   const server = new WebpackDevServer(compiler, {    
     host: 'localhost',

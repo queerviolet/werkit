@@ -8,15 +8,15 @@ const Code = module.exports = ({language, children}) =>
 Code.Inline = Code
 
 Code.Block = ({name, language=fileExt(name), children}) =>
-  language in languages?
-    <Lowlight language={language} value={src(children)} />
-    : <Lowlight value={src(children)} />
+  <div>
+    <header className='code-head'>{name}</header>
+    { language in languages?
+      <Lowlight language={language} value={src(children)} />
+      : <Lowlight value={src(children)} /> }
+  </div>
 
-const fileExt = (filename='') => {
-  const x = (filename.match(/\.(\w+)/) || [,filename])[1]
-  console.log(x)
-  return x
-}
+const fileExt = (filename='') =>
+  (filename.match(/\.(\w+)/) || [,filename])[1]
 
 const Lowlight = require('react-lowlight')
     , js = require('highlight.js/lib/languages/javascript')

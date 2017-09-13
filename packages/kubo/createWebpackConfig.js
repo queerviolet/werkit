@@ -2,11 +2,11 @@ const path = require('path')
     , webpack = require('webpack')
     , my = require('./my')
 
-module.exports = entry => ({
+module.exports = (entry, port) => ({
   target: 'web',
   entry: 
    [ 'react-hot-loader/patch',
-     'webpack-dev-server/client?http://localhost:9876',
+     `webpack-dev-server/client?http://localhost:${port}`,
      'webpack/hot/dev-server',
      entry ],
   output: {filename: 'index.js'},

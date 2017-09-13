@@ -85,7 +85,8 @@ pre.lowlight {
   /* position: relative;
   left: 50%;
   transform: translate(-50%); */
-  box-shadow: 2px 2px 8px gray;  
+  box-shadow: 2px 2px 8px gray;
+  margin-top: 9px;  
 }
 
 pre.hljs-inline {
@@ -179,4 +180,14 @@ li.nav-action.visible {
 
 h1, h2, h3, h4, h5 { 
   font-family: 'Lato';
+}
+
+.undecorated-list-item {
+  list-style: none;
+}
+
+.code-head {
+  color: darkgray;
+  font-size: 16px;
+  font-family: Lato;
 }

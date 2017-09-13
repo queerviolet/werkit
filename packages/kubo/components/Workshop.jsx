@@ -26,7 +26,7 @@ const tree = visible => (child, key) => {
   if (type === 'Action')
     return <Nav.Action {...{...props, children: null}} visible={visible} key={key} />
   if (children)
-    return <div>
+    return <div key={key}>
               <Nav visible={visible} mmm={children} />
            </div>
   return

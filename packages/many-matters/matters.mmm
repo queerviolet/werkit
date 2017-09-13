@@ -1,4 +1,6 @@
 @[Concept] Introduction
+Boo!
+
 Many minor matters is a mechanism for maintainably managing many markups
 (or downs).
 
@@ -25,7 +27,7 @@ Many minor matters is a mechanism for maintainably managing many markups
   MMM aims to get out of the way of whatever languages you want to write about:
 
     @---[Code] mmm
-    @-[Code] js
+    @-[Code] example.js
     // This is a tag with a separator. The separator is the '-' before the
     // [Code], and it tells MMM that this matter is a *leaf*. MMM will not
     // try to parse deeper Matters.
@@ -37,17 +39,17 @@ Many minor matters is a mechanism for maintainably managing many markups
     // MMM will still try to parse consecutive Matters, though. You must
     // include the separator again, like this:  
     
-    @-[Code] python
+    @-[Code] example.py
     # The purpose of all this is to keep MMM from getting tripped up on 
     # languages where '@[' is a reasonable way to start a line.
 
-    @-[Code] objc  
+    @-[Code] array.m  
     // So we can show an array literal in objective C, for instance:
     @[@"Apples", @"Bananas", @"Cucumbers"];    
 
 When displayed, the above matters look like:
 
-    @-[Code] js
+    @-[Code] example.js
     // This is a tag with a separator. The separator is the '-' before the
     // [Code], and it tells MMM that this matter is a *leaf*. MMM will not
     // try to parse deeper Matters.
@@ -59,11 +61,11 @@ When displayed, the above matters look like:
     // MMM will still try to parse consecutive Matters, though. You must
     // include the separator again, like this:  
     
-    @-[Code] python
+    @-[Code] example.py
     # The purpose of all this is to keep MMM from getting tripped up on 
     # languages where '@[' is a reasonable way to start a line.
 
-    @-[Code] objc  
+    @-[Code] example.m  
     // So we can show an array literal in objective C, for instance:
     @[@"Apples", @"Bananas", @"Cucumbers"];
 
