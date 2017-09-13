@@ -5,6 +5,15 @@
     * [ ] Don't write an entrypoint file each time we try a new port
     * [ ] Don't try to start forever if we can't bind a port
 
+    @[Action] Inner package support
+    This is pretty important for usability and maintainability, I think.
+    Basically, the preference should be that `.kubo` is itself a package,
+    with its own package.json. Kubo will auto-install this package.
+
+    * [ ] Automatically install
+      - [ ] Support different packagers
+    * [ ] Trampoline kubo invocations to the local version
+
     @[Action] Stylings
     - [ ] Use CSS *Modules*
     - [ ] Convert existing components
