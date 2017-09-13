@@ -1,0 +1,48 @@
+@[Workshop] Kubo
+  @[Concept] Stylings
+  - [ ] Use CSS *Modules*
+  - [ ] Convert existing components
+  - [ ] Make a Stylings component:
+    @[Code] example.jsx
+    import base from './base.css'
+    import dark from './dark.css'
+
+    <Stylings theme={[base, dark]}>
+      <code className='code-block'>
+      </code>
+    </Stylings>
+
+    @[Code] base.css
+    .code-block {
+      background-color: white;
+    }
+  
+  @[Concept] Code component
+  * [ ] Use Stylings
+  * [ ] Make head a filename, grab language from the file extension (duh)
+  * [ ] Find some way around registering every language in the universe; that's so dumb.
+
+- [ ] Help desk   
+  - [ ] Plugins?
+    - It may be easier to support help desk with a plugin.
+
+### Many matters
+- [X] Matters loader can load strings
+  - This would be insanely useful.
+  - And they're even themed. Such power, wow.
+- [ ] Func/Exec blocks
+- [X] Webpack loader
+  - [X] Async
+  - [X] Inclusions
+- [X] Theming
+  - This will be a mapping of names to modules
+
+### Chores
+- [ ] Audit dependencies
+- [ ] Figure out if this npm add script is really necessary?
+
+### Bonsai
+- [ ] Cut sections
+- [ ] Assemble branches  
+- [ ] Figure out appropriate clip sentinels for common languages
+- [ ] Specify assembly instructions

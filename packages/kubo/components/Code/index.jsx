@@ -7,21 +7,34 @@ const Code = module.exports = ({language, children}) =>
 
 Code.Inline = Code
 
-Code.Block = ({name, language=name, children}) =>
+Code.Block = ({name, language=fileExt(name), children}) =>
   language in languages?
     <Lowlight language={language} value={src(children)} />
     : <Lowlight value={src(children)} />
 
+const fileExt = (filename='') => {
+  const x = (filename.match(/\.(\w+)/) || [,filename])[1]
+  console.log(x)
+  return x
+}
+
 const Lowlight = require('react-lowlight')
     , js = require('highlight.js/lib/languages/javascript')
-    , python = require('highlight.js/lib/languages/python')
-    , objc = require('highlight.js/lib/languages/objectivec')
+    , py = require('highlight.js/lib/languages/python')
+    , m = require('highlight.js/lib/languages/objectivec')
     , md = require('highlight.js/lib/languages/markdown')
+    , css = require('highlight.js/lib/languages/css')
     , languages = {
-      js, javascript: js,
-      python,
-      objc, 'objective-c': objc,
+      css,
+
+      js,
+      es: js,
+      javascript: js,
+      jsx: js,
+
+      m, objc: m, 'objective-c': m,
       md, markdown: md,
+      py, python: py,
     }
 require('./atelier-cave-dark.css')
 require('./atelier-cave-light.css')

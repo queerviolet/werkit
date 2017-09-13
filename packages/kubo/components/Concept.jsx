@@ -1,8 +1,8 @@
 const React = require('react')
 const slug = require('../slug')
 
-module.exports = ({name, children}) =>
+module.exports = ({name, $Text, children}) =>
   <section id={slug(name)}>
     <h1>{name}</h1>
-    {children}
+    <$Text>{children}</$Text>
   </section>
