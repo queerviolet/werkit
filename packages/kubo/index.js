@@ -37,9 +37,8 @@ async function entryPoint(entry) {
   return temp
 }
 
-async function serve(entry, port=program.port) {
-  const entryPointFile = await entryPoint(entry)
-      , conf = createWebpackConfig(entryPointFile, port)
+async function serve(entryPointFile, port=program.port) {
+  const conf = createWebpackConfig(entryPointFile, port)
       , compiler = webpack(conf)
 
   const server = new WebpackDevServer(compiler, {    
@@ -57,7 +56,7 @@ async function serve(entry, port=program.port) {
     if (program.window) open(url)
   }).on('error', err => {
     if (err.code === 'EADDRINUSE') {
-      return serve(entry, port + 1)
+      return serve(entryPointFile, port + 1)
     }
     console.log(`Kubo couldn't start.`)
     console.log(err)
@@ -145,9 +144,10 @@ async function main(kubo) {
   if (!kubo) {
     throw `kubo: no materials found in ${process.cwd()}`
   }
-  console.log(`Serving ${kubo}`)
-  
-  serve(path.resolve(kubo))
+  console.log(`Serving ${kubo}`)  
+
+  const entryPointFile = await entryPoint(path.resolve(kubo))
+  serve(entryPointFile)
 }
 
 if (module === require.main)

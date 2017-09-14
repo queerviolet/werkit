@@ -34,17 +34,17 @@ module.exports = (entry, port) => ({
       {
         test: /\.jsx?$/,
         use: babel,
-        exclude: /node_modules/,
+        exclude: otherNodeModules,
       },
       {
         test: /\.(kubo|mmm)$/,
         use: [babel, 'many-matters/loader'],
-        exclude: /node_modules/,
+        exclude: otherNodeModules,
       },
       {
         test: /\.(jpeg|jpg|png|)$/,
         use: 'url-loader',
-        exclude: /node_modules/,
+        exclude: otherNodeModules,
       },
       {
         test: /\.css$/,
@@ -53,7 +53,7 @@ module.exports = (entry, port) => ({
       {
         test: /\.(txt|md|markdown)$/,
         use: 'raw-loader',
-        exclude: /node_modules/,    
+        exclude: otherNodeModules,
       },
       {
         test: /\.(glsl|frag|vert)$/,
@@ -83,3 +83,5 @@ const babel = {
     ]
   },
 }
+
+const otherNodeModules = /node_modules\/(?!kubo)/
