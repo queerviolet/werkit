@@ -1,6 +1,6 @@
 {
   "name": "many-matters",
-  "version": "0.0.2",
+  "version": "0.0.7",
   "description": "A lightweight structured document format",
   "main": "index.js",
   "scripts": {
