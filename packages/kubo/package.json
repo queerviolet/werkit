@@ -1,6 +1,6 @@
 {
   "name": "kubo",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Tooling for building interactive code workshops",
   "main": "index.js",
   "bin": "./index.js",
