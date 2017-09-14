@@ -5,6 +5,11 @@
     * [ ] Don't write an entrypoint file each time we try a new port
     * [ ] Don't try to start forever if we can't bind a port
 
+    @[Action] publish to npm
+    * [X] Add to bin
+    * [X] Figure out this shrinkwrap thing
+      - Resolved: not bothering for now
+
     @[Action] Inner package support
     This is pretty important for usability and maintainability, I think.
     Basically, the preference should be that `.kubo` is itself a package,
