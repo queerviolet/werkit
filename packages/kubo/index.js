@@ -1,14 +1,17 @@
 #!/usr/bin/env node
 
-const program = require('commander')
-  .version('0.0.1')
-  .usage('[-w] [-t themes] [-p port] [path]')
-  .option('-t, --theme [themes]', 'Themes', (val, memo) => [...memo, val], [])
-  .option('-w, --no-window', 'Do not open a browser window after starting server')
-  .option('-p, --port [port]',
-    'Serve on <port> (then tries <port + 1>, <port + 2>, etc...)',
-    9876)
-  .parse(process.argv)
+const self = require('./package.json')
+    , program = require('commander')
+        .version(self.version)
+        .usage('[-w] [-t themes] [-p port] [path]')        
+        .option('-t, --theme [themes]', 'Themes',
+          (val, memo) => [...memo, val], [])
+        .option('-w, --no-window',
+          'Do not open a browser window after starting server')
+        .option('-p, --port [port]',
+          'Serve on <port> (then tries <port + 1>, <port + 2>, etc...)',
+          9876)
+        .parse(process.argv)
 
     , path = require('path')
     , fs = require('fs')    
@@ -109,7 +112,6 @@ const lookup = (file, parser=JSON.parse) =>
           resolve: (...paths) => path.resolve(dir, ...paths)
         }
       } catch(x) {
-        console.log(p, x)
         if (p !== path.join('/', file))
           p = path.join(path.dirname(path.dirname(p)), file)
         else
