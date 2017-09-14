@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const program = require('commander')
   .version('0.0.1')
   .usage('[-w] [-t themes] [-p port] [path]')
