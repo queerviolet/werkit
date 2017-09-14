@@ -32,7 +32,7 @@ const self = require('./package.json')
 module.exports = {serve, exports}
 
 async function entryPoint(entry) {
-  const temp = await mktemp(path.join(tmpdir(), 'XXXXXXXXXX.js'))
+  const temp = await mktemp(path.join(tmpdir(), 'XXXXXXXXXX.jsx'))
   await write(temp, createAppJs(entry, theme))
   return temp
 }
