@@ -2,7 +2,7 @@
   @[Concept] Kubo
     @[Action] Bugs
     * [X] Hot loader doesn't when the port isn't the default
-    * [ ] Don't write an entrypoint file each time we try a new port
+    * [X] Don't write an entrypoint file each time we try a new port
     * [ ] Don't try to start forever if we can't bind a port
 
     @[Action] publish to npm
