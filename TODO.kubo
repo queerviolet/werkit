@@ -1,14 +1,7 @@
 @[Workshop] TODO
   @[Concept] Kubo
     @[Action] Bugs
-    * [X] Hot loader doesn't when the port isn't the default
-    * [X] Don't write an entrypoint file each time we try a new port
     * [ ] Don't try to start forever if we can't bind a port
-
-    @[Action] publish to npm
-    * [X] Add to bin
-    * [X] Figure out this shrinkwrap thing
-      - Resolved: not bothering for now
 
     @[Action] Inner package support
     This is pretty important for usability and maintainability, I think.
@@ -51,7 +44,13 @@
       - It may be easier to support help desk with a plugin.
 
   @[Concept] Many matters
+    @[Action] Sourcemap support
+    * [ ] Build an honest-to-god AST with SourceNodes    
     @[Action] Slugs
+    * [ ] Every matter has a slugs
+    * [ ] Slugs are deduplicated across sibling matters
+    * [ ] Matters have slug paths
+    * [ ] Slug paths behave appropriately (nesting) when included
     @[Action] Evaluation blocks
     @[Action] refs
     @[Action] import section from
